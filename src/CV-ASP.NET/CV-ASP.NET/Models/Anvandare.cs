@@ -30,9 +30,15 @@ namespace CV_ASP.NET.Models
         [XmlIgnore]
         public virtual Adress? Adress { get; set; }
 
+
         [NotMapped]
         [XmlIgnore]
         public IFormFile Bildfil { get; set; }
 
+        [XmlIgnore]
+        public virtual IEnumerable<Meddelande> skickatMeddelande { get; set; } = new List<Meddelande>();
+
+        [XmlIgnore]
+        public virtual IEnumerable<Meddelande> TagitEmotMeddelande { get; set; } = new List<Meddelande>();
     }
 }
