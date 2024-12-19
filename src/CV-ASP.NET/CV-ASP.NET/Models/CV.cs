@@ -9,9 +9,11 @@ namespace CV_ASP.NET.Models
     {
         public int Cvid {  get; set; } 
         public string? Profilbild { get; set; }
+
         [Required(ErrorMessage = "Var god ange en beskrivning!")]
         [DisplayName("Beskrivning")]
         public string Beskrivning { get; set; }
+
         [NotMapped]
         [DisplayName("Bild")]
         [XmlIgnore]
