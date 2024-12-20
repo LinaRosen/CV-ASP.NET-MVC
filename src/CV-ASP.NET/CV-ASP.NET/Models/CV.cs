@@ -7,6 +7,7 @@ namespace CV_ASP.NET.Models
 {
     public class CV
     {
+        [Key]
         public int Cvid {  get; set; } 
         public string? Profilbild { get; set; }
 

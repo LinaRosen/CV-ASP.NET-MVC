@@ -7,6 +7,7 @@ namespace CV_ASP.NET.Models
 {
     public class Anvandare : IdentityUser
     {
+        [Key]
         public string Anvid { get; set; }
 
         [Required(ErrorMessage = "Du måste ange ett användarnamn")]
@@ -36,9 +37,9 @@ namespace CV_ASP.NET.Models
         public IFormFile Bildfil { get; set; }
 
         [XmlIgnore]
-        public virtual IEnumerable<Meddelande> skickatMeddelande { get; set; } = new List<Meddelande>();
+        public virtual ICollection<Meddelande> skickatMeddelande { get; set; } = new List<Meddelande>();
 
         [XmlIgnore]
-        public virtual IEnumerable<Meddelande> TagitEmotMeddelande { get; set; } = new List<Meddelande>();
+        public virtual ICollection<Meddelande> TagitEmotMeddelande { get; set; } = new List<Meddelande>();
     }
 }

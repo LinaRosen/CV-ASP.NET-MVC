@@ -5,9 +5,12 @@ using System.Xml.Serialization;
 
 namespace CV_ASP.NET.Models
 {
+    
     public class CV_Erfarenhet
     {
+        
         public int Eid { get; set; }
+        
         public int Cvid { get; set; }
 
         [Required(ErrorMessage = "Du måste ange startdatum")]

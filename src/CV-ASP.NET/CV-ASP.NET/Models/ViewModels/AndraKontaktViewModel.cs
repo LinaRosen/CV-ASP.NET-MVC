@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CV_ASP.NET.Models
 {
-    public class AndraKontaktuppgifter
+    public class AndraKontaktViewModel
     {
         [DisplayName("Användarnamn")]
         [RegularExpression(@"^[a-zA-Z0-9._-]{3,20}$", ErrorMessage = "Fel format på användarnamnet")]

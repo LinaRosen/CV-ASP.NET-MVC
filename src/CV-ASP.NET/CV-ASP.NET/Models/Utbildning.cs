@@ -6,6 +6,7 @@ namespace CV_ASP.NET.Models
 {
     public class Utbildning
     {
+        [Key]
         public int Uid { get; set; }
 
         [Required(ErrorMessage = "Du måste ange ett namn")]

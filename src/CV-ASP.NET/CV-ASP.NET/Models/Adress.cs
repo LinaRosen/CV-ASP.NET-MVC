@@ -5,6 +5,7 @@ namespace CV_ASP.NET.Models
 {
     public class Adress
     {
+        [Key]
         public int Aid {  get; set; }
 
         [Required(ErrorMessage = "Du måste ange ett gatunamn")]

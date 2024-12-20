@@ -1,7 +1,12 @@
+using CV_ASP.NET.DataContext;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<DataContext>(opt =>
+opt.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("Datacontext")));
 
 var app = builder.Build();
 

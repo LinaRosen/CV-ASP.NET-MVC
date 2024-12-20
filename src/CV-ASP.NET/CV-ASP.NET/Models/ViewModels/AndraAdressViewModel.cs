@@ -3,8 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CV_ASP.NET.Models
 {
-    public class AndraAdress
+    public class AndraAdressViewModel
+
     {
+
         [Required(ErrorMessage = "Du måste ange ett gatunamn")]
         [RegularExpression(@"^[\p{L}\s]+\s\d+$", ErrorMessage = "Ange ett giltigt gatunamn följt av ett nummer!")]
         [DisplayName("Gatunamn & husnummer")]

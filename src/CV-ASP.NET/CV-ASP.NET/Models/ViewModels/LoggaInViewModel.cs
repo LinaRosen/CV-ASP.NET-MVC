@@ -2,7 +2,7 @@
 
 namespace CV_ASP.NET.Models
 {
-    public class LoggaIn
+    public class LoggaInViewModel
     {
         [Required(ErrorMessage = "Du måste ange ett användarnamn")]
         [RegularExpression(@"^[a-zA-Z0-9._-]{3,20}$", ErrorMessage = "Fel format på användarnamnet")]

@@ -5,6 +5,7 @@ namespace CV_ASP.NET.Models
 {
     public class Kompetenser
     {
+        [Key]
         public int Kid { get; set; }
 
         [Required(ErrorMessage = "Du måste ange ett namn")]

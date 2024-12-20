@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CV_ASP.NET.Models
 {
-    public class AndraCV
+    public class AndraCVViewModel
     {
         [NotMapped]
 

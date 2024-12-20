@@ -6,6 +6,7 @@ namespace CV_ASP.NET.Models
 {
     public class Erfarenhet
     {
+        [Key]
         public int Eid { get; set; }
 
         [Required(ErrorMessage = "Du måste ange en titel")]
