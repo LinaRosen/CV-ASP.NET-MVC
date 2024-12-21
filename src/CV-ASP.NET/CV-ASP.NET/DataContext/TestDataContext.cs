@@ -47,24 +47,36 @@ namespace CV_ASP.NET.DataContext
             modelBuilder.Entity<Anvandare>().HasData(
             new Anvandare
             {
-                Anvid = "1",
-                Anvandarnamn = "",
+                Id = "1", // IdentityUser använder Id som primärnyckel
+                UserName = "LinaRos",
+                Anvandarnamn = "LinaRos",
                 Fornamn = "Lina",
-                Efternamn = "Rosén"
+                Efternamn = "Rosén",
+                Email = "lina@example.com",
+                NormalizedUserName = "LINAROS",
+                NormalizedEmail = "LINA@EXAMPLE.COM"
             },
             new Anvandare
             {
-                Anvid = "2",
-                Anvandarnamn = "",
+                Id = "2",
+                UserName = "NoraBolin",
+                Anvandarnamn = "NoraBolin",
                 Fornamn = "Nora",
-                Efternamn = "Bolin"
+                Efternamn = "Bolin",
+                Email = "nora@example.com",
+                NormalizedUserName = "NORABOLIN",
+                NormalizedEmail = "NORA@EXAMPLE.COM"
             },
             new Anvandare
             {
-                Anvid = "3",
-                Anvandarnamn = "",
+                Id = "3",
+                UserName = "AmandaPerbro",
+                Anvandarnamn = "AmandaPerbro",
                 Fornamn = "Amanda",
-                Efternamn = "Perbro"
+                Efternamn = "Perbro",
+                Email = "amanda@example.com",
+                NormalizedUserName = "AMANDAPERBRO",
+                NormalizedEmail = "AMANDA@EXAMPLE.COM"
 
             }
             );
