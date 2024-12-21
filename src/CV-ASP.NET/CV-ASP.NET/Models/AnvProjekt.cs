@@ -5,7 +5,7 @@ namespace CV_ASP.NET.Models
 {
     public class AnvProjekt
     {
-        public int Anvid { get; set; }
+        public string Anvid { get; set; }
         public int Pid { get; set; }
 
         [ForeignKey(nameof(Anvid))]

@@ -6,6 +6,7 @@ namespace CV_ASP.NET.Models
 {
     public class Projekt
     {
+        [Key]
         public int Pid { get; set; }
 
         [Required(ErrorMessage = "Du måste ange ett namn på projektet")]

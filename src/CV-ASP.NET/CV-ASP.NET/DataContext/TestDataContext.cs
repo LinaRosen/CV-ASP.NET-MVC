@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CV_ASP.NET.DataContext
 {
-    public class DataContext : DbContext
+    public class TestDataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options): base(options) { }
+        public TestDataContext(DbContextOptions<TestDataContext> options): base(options) { }
 
         public DbSet<Adress> Adresser { get; set; }
         public DbSet<Anvandare> Anvandare { get; set; }
@@ -23,15 +23,15 @@ namespace CV_ASP.NET.DataContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Meddelande>()
-                .HasOne(m => m.Frananvandare) // One-to-Many: Sent Messages
-                .WithMany(u => u.skickatMeddelande)            // Meddelande has a Sender
-                .HasForeignKey(m => m.FranAnvandareId)    // Foreign Key in Meddelande
+                .HasOne(m => m.Frananvandare) 
+                .WithMany(u => u.skickatMeddelande)            
+                .HasForeignKey(m => m.FranAnvandareId)    
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Meddelande>()
-                .HasOne(m => m.Tillanvandare) // One-to-Many: Received Messages
-                .WithMany(u => u.TagitEmotMeddelande)            // Meddelande has a Receiver
-                .HasForeignKey(m => m.TillAnvandareId)    // Foreign Key in Meddelande
+                .HasOne(m => m.Tillanvandare) 
+                .WithMany(u => u.TagitEmotMeddelande)            
+                .HasForeignKey(m => m.TillAnvandareId)    
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);
@@ -41,10 +41,33 @@ namespace CV_ASP.NET.DataContext
                 .HasKey(ce => new { ce.CVid, ce.Uid });
             modelBuilder.Entity<CV_Erfarenhet>()
                 .HasKey(cex => new { cex.Cvid, cex.Eid });
-           // modelBuilder.Entity<AnvProjekt>()
-               // .HasKey(up => new { up.Anvid, up.Pid });
+            modelBuilder.Entity<AnvProjekt>()
+                .HasKey(up => new { up.Anvid, up.Pid });
 
+            modelBuilder.Entity<Anvandare>().HasData(
+            new Anvandare
+            {
+                Anvid = "1",
+                Anvandarnamn = "",
+                Fornamn = "Lina",
+                Efternamn = "Rosén"
+            },
+            new Anvandare
+            {
+                Anvid = "2",
+                Anvandarnamn = "",
+                Fornamn = "Nora",
+                Efternamn = "Bolin"
+            },
+            new Anvandare
+            {
+                Anvid = "3",
+                Anvandarnamn = "",
+                Fornamn = "Amanda",
+                Efternamn = "Perbro"
 
+            }
+            );
         }
 
        

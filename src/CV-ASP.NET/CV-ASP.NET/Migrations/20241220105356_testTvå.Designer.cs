@@ -4,16 +4,19 @@ using CV_ASP.NET.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace CV_ASP.NET.Migrations
 {
-    [DbContext(typeof(TestDataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DataContext.TestDataContext))]
+    [Migration("20241220105356_testTvå")]
+    partial class testTvå
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,22 +56,7 @@ namespace CV_ASP.NET.Migrations
                     b.HasIndex("Anvid")
                         .IsUnique();
 
-                    b.ToTable("Adresser", (string)null);
-                });
-
-            modelBuilder.Entity("CV_ASP.NET.Models.AnvProjekt", b =>
-                {
-                    b.Property<string>("Anvid")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Pid")
-                        .HasColumnType("int");
-
-                    b.HasKey("Anvid", "Pid");
-
-                    b.HasIndex("Pid");
-
-                    b.ToTable("AnvProjekt", (string)null);
+                    b.ToTable("Adresser");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.Anvandare", b =>
@@ -145,7 +133,7 @@ namespace CV_ASP.NET.Migrations
 
                     b.HasKey("Anvid");
 
-                    b.ToTable("Anvandare", (string)null);
+                    b.ToTable("Anvandare");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.CV", b =>
@@ -175,7 +163,7 @@ namespace CV_ASP.NET.Migrations
                         .IsUnique()
                         .HasFilter("[AnvandarNamn] IS NOT NULL");
 
-                    b.ToTable("CVs", (string)null);
+                    b.ToTable("CVs");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.CV_Erfarenhet", b =>
@@ -196,7 +184,7 @@ namespace CV_ASP.NET.Migrations
 
                     b.HasIndex("Eid");
 
-                    b.ToTable("CV_Erfarenhet", (string)null);
+                    b.ToTable("CV_Erfarenhet");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.CV_Utbildning", b =>
@@ -217,7 +205,7 @@ namespace CV_ASP.NET.Migrations
 
                     b.HasIndex("Uid");
 
-                    b.ToTable("CV_Utbildning", (string)null);
+                    b.ToTable("CV_Utbildning");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.CV_kompetenser", b =>
@@ -232,7 +220,7 @@ namespace CV_ASP.NET.Migrations
 
                     b.HasIndex("Kid");
 
-                    b.ToTable("CV_Kompetenser", (string)null);
+                    b.ToTable("CV_Kompetenser");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.Erfarenhet", b =>
@@ -257,7 +245,7 @@ namespace CV_ASP.NET.Migrations
 
                     b.HasKey("Eid");
 
-                    b.ToTable("Erfarenhet", (string)null);
+                    b.ToTable("Erfarenhet");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.Kompetenser", b =>
@@ -278,7 +266,7 @@ namespace CV_ASP.NET.Migrations
 
                     b.HasKey("Kid");
 
-                    b.ToTable("Kompetenser", (string)null);
+                    b.ToTable("Kompetenser");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.Meddelande", b =>
@@ -310,36 +298,7 @@ namespace CV_ASP.NET.Migrations
 
                     b.HasIndex("TillAnvandareId");
 
-                    b.ToTable("Meddelande", (string)null);
-                });
-
-            modelBuilder.Entity("CV_ASP.NET.Models.Projekt", b =>
-                {
-                    b.Property<int>("Pid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Pid"));
-
-                    b.Property<string>("Beskrivning")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateOnly>("DatumSkapad")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Namn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SkapadAv")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Pid");
-
-                    b.HasIndex("SkapadAv");
-
-                    b.ToTable("Projekt", (string)null);
+                    b.ToTable("Meddelande");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.Utbildning", b =>
@@ -364,7 +323,7 @@ namespace CV_ASP.NET.Migrations
 
                     b.HasKey("Uid");
 
-                    b.ToTable("Utbildning", (string)null);
+                    b.ToTable("Utbildning");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.Adress", b =>
@@ -376,25 +335,6 @@ namespace CV_ASP.NET.Migrations
                         .IsRequired();
 
                     b.Navigation("anvandare");
-                });
-
-            modelBuilder.Entity("CV_ASP.NET.Models.AnvProjekt", b =>
-                {
-                    b.HasOne("CV_ASP.NET.Models.Anvandare", "Anvandare")
-                        .WithMany()
-                        .HasForeignKey("Anvid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CV_ASP.NET.Models.Projekt", "Projekt")
-                        .WithMany("AnvProjekt")
-                        .HasForeignKey("Pid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Anvandare");
-
-                    b.Navigation("Projekt");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.CV", b =>
@@ -480,15 +420,6 @@ namespace CV_ASP.NET.Migrations
                     b.Navigation("Tillanvandare");
                 });
 
-            modelBuilder.Entity("CV_ASP.NET.Models.Projekt", b =>
-                {
-                    b.HasOne("CV_ASP.NET.Models.Anvandare", "Anvandare")
-                        .WithMany()
-                        .HasForeignKey("SkapadAv");
-
-                    b.Navigation("Anvandare");
-                });
-
             modelBuilder.Entity("CV_ASP.NET.Models.Anvandare", b =>
                 {
                     b.Navigation("Adress");
@@ -508,11 +439,6 @@ namespace CV_ASP.NET.Migrations
             modelBuilder.Entity("CV_ASP.NET.Models.Kompetenser", b =>
                 {
                     b.Navigation("CV_kompetenser");
-                });
-
-            modelBuilder.Entity("CV_ASP.NET.Models.Projekt", b =>
-                {
-                    b.Navigation("AnvProjekt");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.Utbildning", b =>
