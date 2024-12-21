@@ -5,8 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddDbContext<TestDataContext>(opt =>
-opt.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("TestDataContext")));
+opt.UseLazyLoadingProxies(false).UseSqlServer(builder.Configuration.GetConnectionString("TestDataContext")));
 
 var app = builder.Build();
 

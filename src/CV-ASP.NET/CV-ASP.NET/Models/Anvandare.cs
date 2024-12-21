@@ -7,8 +7,8 @@ namespace CV_ASP.NET.Models
 {
     public class Anvandare : IdentityUser
     {
-        [Key]
-        public string Anvid { get; set; }
+        
+        //public string? Anvid { get; set; } Tror inte vi behöver denna då identityUser skapar en automatiskt
 
         [Required(ErrorMessage = "Du måste ange ett användarnamn")]
         [RegularExpression(@"^[a-zA-Z0-9._-]{3,20}$", ErrorMessage = "Fel format på användarnamnet")]
