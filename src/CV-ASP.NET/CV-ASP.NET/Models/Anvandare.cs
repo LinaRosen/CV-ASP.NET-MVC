@@ -25,6 +25,8 @@ namespace CV_ASP.NET.Models
 
         public string? Profilbild { get; set; }
         public bool PrivatProfil {  get; set; } = false;
+
+        public bool Aktiverad { get; set; } = false;
         public bool ListadStartsida { get; set; } = false;
         [XmlIgnore]
         public virtual CV? CV { get; set; }

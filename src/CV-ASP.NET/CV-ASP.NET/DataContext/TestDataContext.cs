@@ -1,9 +1,10 @@
 ﻿using CV_ASP.NET.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CV_ASP.NET.DataContext
 {
-    public class TestDataContext : DbContext
+    public class TestDataContext : IdentityDbContext<Anvandare>
     {
         public TestDataContext(DbContextOptions<TestDataContext> options): base(options) { }
 
@@ -17,6 +18,7 @@ namespace CV_ASP.NET.DataContext
         public DbSet<Kompetenser> Kompetenser { get; set; }
         public DbSet<Meddelande> Meddelande { get; set; }
         public DbSet<Utbildning> Utbildning { get; set; }
+        public DbSet<Projekt> Projekt { get; set; }
 
 
 

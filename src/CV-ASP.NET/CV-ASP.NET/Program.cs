@@ -9,6 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<TestDataContext>(opt =>
 opt.UseLazyLoadingProxies(false).UseSqlServer(builder.Configuration.GetConnectionString("TestDataContext")));
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,24 +1,52 @@
 using System.Diagnostics;
+using CV_ASP.NET.DataContext;
 using CV_ASP.NET.Models;
+using CV_ASP.NET.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CV_ASP.NET.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController  : Controller
     {
+        private TestDataContext testDb;
+
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, TestDataContext dbcontext)
         {
             _logger = logger;
+            testDb = dbcontext;
         }
 
         public IActionResult Index()
+            //Allt detta ska ändras, bara kopierat för att få en grund. 
+        {
+            StartsidaViewModel model = new StartsidaViewModel { };
+
+            //Hämtar 4 CVn från databasen
+            model.Anvandare = testDb.Users.Where(u => !u.PrivatProfil).Where(u => u.CV != null).Where(u => !u.Aktiverad).Take(4).ToList();
+
+            //Hämtar det senaste projektet och sorterar genom datum de skapades (fallande) samt konverterar resultatet till lista
+            model.Projekt = testDb.Projekt
+                .OrderByDescending(p => p.DatumSkapad)
+                .Take(1)
+                .ToList();
+
+            return View(model);
+        }
+
+        public IActionResult Privacy()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult LoggaIn()
+        {
+            return View();
+        }
+
+        public IActionResult Registrera()
         {
             return View();
         }
