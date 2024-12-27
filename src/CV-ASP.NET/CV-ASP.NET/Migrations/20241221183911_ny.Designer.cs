@@ -4,6 +4,7 @@ using CV_ASP.NET.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CV_ASP.NET.Migrations
 {
     [DbContext(typeof(TestDataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241221183911_ny")]
+    partial class ny
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,6 +142,68 @@ namespace CV_ASP.NET.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Anvandare");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            AccessFailedCount = 0,
+                            Anvandarnamn = "LinaRos",
+                            ConcurrencyStamp = "b29d929a-4114-403b-8783-d4c7b5615a8b",
+                            Efternamn = "Rosén",
+                            Email = "lina@example.com",
+                            EmailConfirmed = false,
+                            Fornamn = "Lina",
+                            ListadStartsida = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "LINA@EXAMPLE.COM",
+                            NormalizedUserName = "LINAROS",
+                            PhoneNumberConfirmed = false,
+                            PrivatProfil = false,
+                            SecurityStamp = "5968e922-29f1-4b51-af68-de02baad00b5",
+                            TwoFactorEnabled = false,
+                            UserName = "LinaRos"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            AccessFailedCount = 0,
+                            Anvandarnamn = "NoraBolin",
+                            ConcurrencyStamp = "50bd6cf8-ac91-4d2d-8714-acd293fec102",
+                            Efternamn = "Bolin",
+                            Email = "nora@example.com",
+                            EmailConfirmed = false,
+                            Fornamn = "Nora",
+                            ListadStartsida = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "NORA@EXAMPLE.COM",
+                            NormalizedUserName = "NORABOLIN",
+                            PhoneNumberConfirmed = false,
+                            PrivatProfil = false,
+                            SecurityStamp = "de9c93ea-d3e4-4326-af8e-a8a96125e02c",
+                            TwoFactorEnabled = false,
+                            UserName = "NoraBolin"
+                        },
+                        new
+                        {
+                            Id = "3",
+                            AccessFailedCount = 0,
+                            Anvandarnamn = "AmandaPerbro",
+                            ConcurrencyStamp = "a444b5e0-5cbb-4cad-804e-172753d3c2f4",
+                            Efternamn = "Perbro",
+                            Email = "amanda@example.com",
+                            EmailConfirmed = false,
+                            Fornamn = "Amanda",
+                            ListadStartsida = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "AMANDA@EXAMPLE.COM",
+                            NormalizedUserName = "AMANDAPERBRO",
+                            PhoneNumberConfirmed = false,
+                            PrivatProfil = false,
+                            SecurityStamp = "ee32c93e-3f3d-411e-9547-3b7aac6c5f57",
+                            TwoFactorEnabled = false,
+                            UserName = "AmandaPerbro"
+                        });
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.CV", b =>
