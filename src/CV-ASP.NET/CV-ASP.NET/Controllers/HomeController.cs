@@ -2,7 +2,9 @@ using System.Diagnostics;
 using CV_ASP.NET.DataContext;
 using CV_ASP.NET.Models;
 using CV_ASP.NET.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace CV_ASP.NET.Controllers
@@ -55,6 +57,21 @@ namespace CV_ASP.NET.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Add()
+        {
+            Anvandare nyanvandare = new Anvandare();
+            List<SelectListItem> allaAnvandare = testDb.Anvandare.Select
+            (x => new SelectListItem
+            {
+                Text = x.Anvandarnamn,
+                Value = x.Id.ToString()
+            }).ToList();
+            ViewBag.options = allaAnvandare;
+            return View(nyanvandare);
         }
     }
 }
