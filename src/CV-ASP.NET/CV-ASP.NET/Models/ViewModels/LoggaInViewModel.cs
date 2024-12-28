@@ -11,5 +11,6 @@ namespace CV_ASP.NET.Models
         [Required(ErrorMessage = "Du måste ange ett lösenord")]
         [DataType(DataType.Password)]
         public string Losenord { get; set; }
+        public bool RememberMe { get; set; }
     }
 }
