@@ -25,6 +25,16 @@ namespace CV_ASP.NET.Models
         [RegularExpression(@"^\+?\d{1,4}[-.\s]?\(?\d{1,3}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}$", ErrorMessage = "Ogiltigt telefonnummer. Ange ett giltigt telefonnummer.")]
         public string Telefonnummer { get; set; }
 
+        [DisplayName("Lösenord")]
+        [DataType(DataType.Password)]
+        [StringLength(100, ErrorMessage = "Lösenordet måste vara minst {2} tecken långt.", MinimumLength = 6)]
+        public string Losenord { get; set; }
+
+        [DisplayName("Bekräfta lösenord")]
+        [DataType(DataType.Password)]
+        [Compare("Losenord", ErrorMessage = "Lösenorden matchar inte.")]
+        public string BekraftaLosenord { get; set; }
+
         public bool PrivatProfil {  get; set; } 
 
 
