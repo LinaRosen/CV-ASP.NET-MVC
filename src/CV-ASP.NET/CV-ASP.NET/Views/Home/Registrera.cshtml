@@ -1,6 +1,54 @@
-﻿
+﻿@* @model CV_ASP.NET.Models.ViewModels.RegisteraViewModel
 @{
 	<div class="text-center">
 		<h1>Registrera ny användare</h1>
 	</div>
+} *@
+
+@model CV_ASP.NET.Models.ViewModels.RegistreraViewModel
+
+<div class="container">
+    <h1>Registrera ny användare</h1>
+    <form asp-action="Register" method="post" enctype="multipart/form-data">
+        <div>
+            <label asp-for="Anvandarnamn"></label>
+            <input asp-for="Anvandarnamn" class="form-control" />
+            <span asp-validation-for="Anvandarnamn" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Fornamn"></label>
+            <input asp-for="Fornamn" class="form-control" />
+            <span asp-validation-for="Fornamn" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Efternamn"></label>
+            <input asp-for="Efternamn" class="form-control" />
+            <span asp-validation-for="Efternamn" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Losenord"></label>
+            <input asp-for="Losenord" class="form-control" type="password" />
+            <span asp-validation-for="Losenord" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="BekraftaLosenord"></label>
+            <input asp-for="BekraftaLosenord" class="form-control" type="password" />
+            <span asp-validation-for="BekraftaLosenord" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Profilbild"></label>
+            <input asp-for="Profilbild" type="file" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Registrera</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
+
