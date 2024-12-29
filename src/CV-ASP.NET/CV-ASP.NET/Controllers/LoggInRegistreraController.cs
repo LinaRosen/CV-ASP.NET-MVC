@@ -1,4 +1,5 @@
 ﻿using CV_ASP.NET.Models;
+using CV_ASP.NET.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,18 +16,24 @@ namespace CV_ASP.NET.Controllers
             this.signInManager = signInMngr;
         }
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Registrera()
         {
             return View();
         }
 
         [HttpPost]
-        /*public async Task<IActionResult> Register(Registrera registerViewModel)
+        public async Task<IActionResult> Registrera(RegistreraViewModel registerViewModel)
         {
             if (ModelState.IsValid)
             {
-                Anvandare anvandare = new Anvandare();
-                anvandare.UserName = registerViewModel.AnvandarNamn;
+                Anvandare anvandare = new Anvandare()
+                {
+                    UserName = registerViewModel.Anvandarnamn, // Viktigt! Sätter UserName
+                    Anvandarnamn = registerViewModel.Anvandarnamn, // Om du vill behålla din anpassade egenskap
+                    Email = registerViewModel.Email,
+                    Efternamn = registerViewModel.Efternamn, 
+                    Fornamn = registerViewModel.Fornamn 
+                };
                 var result =
                 await userManager.CreateAsync(anvandare, registerViewModel.Losenord);
                 if (result.Succeeded)
@@ -43,7 +50,7 @@ namespace CV_ASP.NET.Controllers
                 }
             }
             return View(registerViewModel);
-        } */
+        } 
 
         [HttpGet]
         public IActionResult LogIn()
@@ -79,11 +86,6 @@ namespace CV_ASP.NET.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
-        }
-
-        public IActionResult Registrera()
-        {
-            return View();
         }
     }
 }

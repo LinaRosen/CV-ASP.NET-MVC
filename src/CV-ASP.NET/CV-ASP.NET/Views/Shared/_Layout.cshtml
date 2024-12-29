@@ -26,8 +26,9 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LoggaIn">Logga in</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Registrera">Registrera ny användare</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="LoggInRegistrera" asp-action="Registrera">Registrera ny användare</a>
                         </li>
+
                     </ul>
                     <div class="ms-auto d-flex align-items-center">
                         @if (User.Identity.IsAuthenticated)

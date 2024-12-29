@@ -10,11 +10,13 @@ namespace CV_ASP.NET.Models.ViewModels
             public string Anvandarnamn { get; set; }
 
             [Required(ErrorMessage = "Du måste ange ett förnamn")]
-            [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "Du får endast ange bokstäver!")]
+            [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Du får endast ange bokstäver!")]
+
             public string Fornamn { get; set; }
 
             [Required(ErrorMessage = "Du måste ange ett efternamn")]
-            [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "Du får endast ange bokstäver!")]
+            [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Du får endast ange bokstäver!")]
+
             public string Efternamn { get; set; }
 
             [Required(ErrorMessage = "Du måste ange en e-postadress")]
@@ -25,10 +27,12 @@ namespace CV_ASP.NET.Models.ViewModels
             [DataType(DataType.Password)]
             public string Losenord { get; set; }
 
-            [Required(ErrorMessage = "Du måste bekräfta ditt lösenord")]
-            [Compare("Losenord", ErrorMessage = "Lösenorden matchar inte")]
-            [DataType(DataType.Password)]
-            public string BekraftaLosenord { get; set; }
+            //[Required(ErrorMessage = "Du måste bekräfta ditt lösenord")]
+            //[Compare("Losenord", ErrorMessage = "Lösenorden matchar inte")]
+            //[DataType(DataType.Password)]
+            //public string BekraftaLosenord { get; set; } 
+
+            public bool PrivatProfil { get; set; }
 
             public IFormFile? Profilbild { get; set; }
         }
