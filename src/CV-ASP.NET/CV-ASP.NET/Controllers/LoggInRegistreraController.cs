@@ -53,7 +53,7 @@ namespace CV_ASP.NET.Controllers
         } 
 
         [HttpGet]
-        public IActionResult LogIn()
+        public IActionResult LoggaIn()
         {
             LoggaInViewModel loginViewModel = new LoggaInViewModel();
             return View(loginViewModel);
