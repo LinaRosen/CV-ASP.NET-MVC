@@ -1,5 +1,7 @@
 ﻿using CV_ASP.NET.Models;
 using CV_ASP.NET.Models.ViewModels;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +34,8 @@ namespace CV_ASP.NET.Controllers
                     Anvandarnamn = registerViewModel.Anvandarnamn, // Om du vill behålla din anpassade egenskap
                     Email = registerViewModel.Email,
                     Efternamn = registerViewModel.Efternamn, 
-                    Fornamn = registerViewModel.Fornamn
+                    Fornamn = registerViewModel.Fornamn,
+                    PhoneNumber = registerViewModel.Telefonnummer
                 };
                 var result =
                 await userManager.CreateAsync(anvandare, registerViewModel.Losenord);
@@ -87,6 +90,8 @@ namespace CV_ASP.NET.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        }
     }
-}
+
 
