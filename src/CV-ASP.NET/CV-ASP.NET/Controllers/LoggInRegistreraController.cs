@@ -1,5 +1,7 @@
 ﻿using CV_ASP.NET.Models;
 using CV_ASP.NET.Models.ViewModels;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -87,6 +89,8 @@ namespace CV_ASP.NET.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        }
     }
-}
+
 

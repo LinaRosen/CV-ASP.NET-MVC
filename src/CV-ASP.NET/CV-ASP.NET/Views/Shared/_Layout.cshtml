@@ -35,6 +35,15 @@
                         {
                             <span class="text-dark">Du är inloggad som: <strong>@User.Identity.Name</strong></span>
                         }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                           /* <form asp-action="Logout" method="post">
+                                <button type="submit">Logga ut</button>
+                            </form>*/
+                        }
+                        <form asp-controller="LoggInRegistrera" asp-action="Logout" method="post">
+                            <button type="submit" class="btn btn-outline-dark">Logga ut</button>
+                        </form>
         
                     </div>
                 </div>
