@@ -44,10 +44,34 @@
             <input asp-for="Profilbild" type="file" class="form-control" />
         </div>
 
-        <!-- Privat/offentlig profil -->
+        <div>
+            <label asp-for="Telefonnummer"></label>
+            <input asp-for="Telefonnummer" class="form-control" />
+            <span asp-validation-for="Telefonnummer" class="text-danger"></span>
+        </div>
+
         <div>
             <label asp-for="PrivatProfil">Vill du ha en privat profil?</label>
             <input asp-for="PrivatProfil" type="checkbox" class="form-check-input" />
+        </div>
+
+        <h3>Adressuppgifter</h3>
+        <div>
+            <label asp-for="Adress.Gatunamn"></label>
+            <input asp-for="Adress.Gatunamn" class="form-control" />
+            <span asp-validation-for="Adress.Gatunamn" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="Adress.Stad"></label>
+            <input asp-for="Adress.Stad" class="form-control" />
+            <span asp-validation-for="Adress.Stad" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="Adress.Postnummer"></label>
+            <input asp-for="Adress.Postnummer" class="form-control" />
+            <span asp-validation-for="Adress.Postnummer" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-primary">Registrera</button>
