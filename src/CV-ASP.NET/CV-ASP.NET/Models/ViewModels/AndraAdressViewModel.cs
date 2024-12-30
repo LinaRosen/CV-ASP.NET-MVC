@@ -8,12 +8,12 @@ namespace CV_ASP.NET.Models
     {
 
         [Required(ErrorMessage = "Du måste ange ett gatunamn")]
-        [RegularExpression(@"^[\p{L}\s]+\s\d+$", ErrorMessage = "Ange ett giltigt gatunamn följt av ett nummer!")]
+        [RegularExpression(@"^[A-Za-zåäöÅÄÖ\s\-\.]+ \d+$", ErrorMessage = "Ange ett giltigt gatunamn följt av ett nummer!")]
         [DisplayName("Gatunamn & husnummer")]
         public string Gatunamn { get; set; }
 
         [Required(ErrorMessage = "Du måste ange en stad")]
-        [RegularExpression(@"^[\p{L}\s-]+$", ErrorMessage = "Ange ett giltigt stadsnamn!")]
+        [RegularExpression(@"^[A-Za-zåäöÅÄÖ\s\-\.]+$", ErrorMessage = "Ange ett giltigt stadsnamn!")]
         [DisplayName("Stad")]
         public string Stad { get; set; }
 
