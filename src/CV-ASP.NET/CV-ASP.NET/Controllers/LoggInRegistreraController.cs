@@ -32,7 +32,7 @@ namespace CV_ASP.NET.Controllers
                     Anvandarnamn = registerViewModel.Anvandarnamn, // Om du vill behålla din anpassade egenskap
                     Email = registerViewModel.Email,
                     Efternamn = registerViewModel.Efternamn, 
-                    Fornamn = registerViewModel.Fornamn 
+                    Fornamn = registerViewModel.Fornamn
                 };
                 var result =
                 await userManager.CreateAsync(anvandare, registerViewModel.Losenord);

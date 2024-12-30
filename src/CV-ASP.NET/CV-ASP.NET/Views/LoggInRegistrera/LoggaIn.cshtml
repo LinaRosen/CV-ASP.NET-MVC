@@ -2,11 +2,14 @@
 @{
     ViewBag.Titel = "Login";
 }
+<div class="container">
+    <h1> Logga in </h1>
+
 <div asp-validation-summary="All" class="text-danger"></div>
 <form method="post" asp-action="LogIn">
     <div class="form-group row">
         <div class="col-sm-2">
-            <label>Användarnamn: </label>
+                <label asp-for="Anvandarnamn"> </label>
         </div>
         <div class="col-sm-4">
             <input asp-for="Anvandarnamn" class="form-control" />
@@ -14,16 +17,17 @@
     </div>
     <div class="form-group row">
         <div class="col-sm-2">
-            <label>Lösenord: </label>
+            <label asp-for="Losenord"></label>
         </div>
         <div class="col-sm-4">
             <input type="password" asp-for="Losenord" class="form-control" />
+       <span asp-validation-for="Losenord" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
         <div class="offset-sm-2 col-sm-4">
-            <input type="checkbox" title="Remember me" asp-for="RememberMe" class="form-check" />
-            <label>Kom ihåg mig</label>
+            <input type="checkbox" asp-for="RememberMe" class="form-check"/>
+                <label asp-for="RememberMe"></label>
         </div>
     </div>
     <div class="form-group row">
@@ -33,4 +37,9 @@
     </div>
     <label>Har du inget konto?</label>
     <a asp-action="Registrera" asp-controller="LoggInRegistreraController">Registrera dig</a>
-</form>
+    </form>
+</div>
+
+  @section Scripts {
+      <partial name ="_ValidationScriptsPartial"/>
+  }
