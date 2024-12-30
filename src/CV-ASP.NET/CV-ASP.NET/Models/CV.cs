@@ -24,6 +24,6 @@ namespace CV_ASP.NET.Models
 
         [ForeignKey(nameof(AnvandarNamn))]
         [XmlIgnore]
-        public virtual Anvandare? anvandare { get; set; }
+        public virtual Anvandare anvandare { get; set; }
     }
 }
