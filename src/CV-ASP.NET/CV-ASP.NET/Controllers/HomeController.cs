@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CV_ASP.NET.Controllers
 {
-    public class HomeController  : Controller
+    public class HomeController  : BasController
     {
         private TestDataContext testDb;
 
@@ -49,6 +49,11 @@ namespace CV_ASP.NET.Controllers
         }
 
         public IActionResult Registrera()
+        {
+            return View();
+        }
+
+        public IActionResult AnvSida()
         {
             return View();
         }
