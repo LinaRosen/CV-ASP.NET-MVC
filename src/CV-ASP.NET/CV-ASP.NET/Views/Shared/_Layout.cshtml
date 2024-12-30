@@ -31,21 +31,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Anvsida" asp-action="AnvSida">Profil</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Medelande" asp-action="MedelandeSida">Medelande</a>
+                        </li>
                     </ul>
                     <div class="ms-auto d-flex align-items-center">
                         @if (User.Identity.IsAuthenticated)
                         {
                             <span class="text-dark">Du är inloggad som: <strong>@User.Identity.Name</strong></span>
+                            <form asp-controller="LoggInRegistrera" asp-action="Logout" method="post">
+                                <button type="submit" class="btn btn-outline-dark">Logga ut</button>
+                            </form>
                         }
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                           /* <form asp-action="Logout" method="post">
-                                <button type="submit">Logga ut</button>
-                            </form>*/
-                        }
-                        <form asp-controller="LoggInRegistrera" asp-action="Logout" method="post">
-                            <button type="submit" class="btn btn-outline-dark">Logga ut</button>
-                        </form>
         
                     </div>
                 </div>
