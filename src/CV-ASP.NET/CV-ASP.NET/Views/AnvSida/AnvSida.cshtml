@@ -1,0 +1,31 @@
+﻿@model AnvandarSidaViewModel
+@{
+    ViewData["Title"] = "Profil";
+}
+
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+<div class="text-center">
+    <h1 class="display-4" style="font-family: 'Helvetica', sans-serif;">-Profil-</h1>
+</div>
+
+<pre>
+    CV: @(Model?.CV)
+    Anvandare ID: @(Model?.anvandare?.Id)
+    Inloggad Anvandare: @(Model?.InloggadAnvandare)
+    Inloggad Epost: @(Model?.epost)
+</pre>
+
+@if (Model?.CV == null && Model?.anvandare?.Id != null && Model.anvandare.Id.Equals(Model?.InloggadAnvandare))
+{
+    <a class="btn btn-dark btn-sm" asp-controller="Cv" asp-action="CreateCv">Lägg till ett Cv</a>
+    <br />
+}
+
+
+
