@@ -1,0 +1,53 @@
+﻿@model CV_ASP.NET.Models.ViewModels.SokViewModel
+
+<h2>Sök användare</h2>
+
+<!-- Sökformulär -->
+<form asp-controller="Sok" asp-action="Index" method="get">
+    <div class="form-group">
+        <label for="searchString">Sök på förnamn, efternamn eller användarnamn</label>
+        <input type="text" class="form-control" id="searchString" name="searchString" />
+    </div>
+    <button type="submit" class="btn btn-primary">Sök</button>
+</form>
+
+@if (Model.Anvandare != null && Model.Anvandare.Any())
+{
+    <h3>Sökresultat</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Profilbild</th>
+                <th>Användarnamn</th>
+                <th>Namn</th>
+                <th>Profil</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var anvandare in Model.Anvandare)
+            {
+                <tr>
+                    <td>
+                        <img src="~/Images/@anvandare.Profilbild" alt="Profilbild" width="100" height="100" />
+                    </td>
+                    <td>@anvandare.Anvandarnamn</td>
+                    <td>@anvandare.Fornamn @anvandare.Efternamn</td>
+                    <td>
+                        @if (!anvandare.PrivatProfil || User.Identity.IsAuthenticated)
+                        {
+                            <a asp-controller="Anvandare" asp-action="Profil" asp-route-userId="@anvandare.Id" class="btn btn-primary">Visa profil</a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Privat profil</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Inga användare hittades.</p>
+}

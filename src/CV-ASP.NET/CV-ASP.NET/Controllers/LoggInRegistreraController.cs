@@ -35,7 +35,8 @@ namespace CV_ASP.NET.Controllers
                     Email = registerViewModel.Email,
                     Efternamn = registerViewModel.Efternamn, 
                     Fornamn = registerViewModel.Fornamn,
-                    PhoneNumber = registerViewModel.Telefonnummer
+                    PhoneNumber = registerViewModel.Telefonnummer,
+                    PrivatProfil = registerViewModel.PrivatProfil
                 };
                 var result =
                 await userManager.CreateAsync(anvandare, registerViewModel.Losenord);

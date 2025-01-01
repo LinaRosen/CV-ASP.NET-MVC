@@ -27,10 +27,10 @@ namespace CV_ASP.NET.Models.ViewModels
             [DataType(DataType.Password)]
             public string Losenord { get; set; }
 
-            //[Required(ErrorMessage = "Du måste bekräfta ditt lösenord")]
-            //[Compare("Losenord", ErrorMessage = "Lösenorden matchar inte")]
-            //[DataType(DataType.Password)]
-            //public string BekraftaLosenord { get; set; } 
+            [Required(ErrorMessage = "Du måste bekräfta ditt lösenord")]
+            [Compare("Losenord", ErrorMessage = "Lösenorden matchar inte")]
+            [DataType(DataType.Password)]
+            public string BekraftaLosenord { get; set; } 
 
             public bool PrivatProfil { get; set; }
 
