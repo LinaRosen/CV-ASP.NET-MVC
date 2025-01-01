@@ -9,6 +9,10 @@
     <h1 class="display-4" style="font-family: 'Helvetica', sans-serif;">-CVConnect-</h1>
 </div>
 
+<div class="text-center mt-4">
+    <a class="btn btn-primary" asp-controller="Sok" asp-action="Index">Sök användare</a>
+</div>
+
 @* <div class="container-fluid d-inline-flex gap-5 align-content-center">
     @foreach (var Anvandare in Model.Anvandare)
     {
@@ -30,7 +34,8 @@
 </div>
  *@
 
-<div class="container-fluid d-flex justify-content-center align-items-center">
+@*  VET INTE VARFÖR DETTA BLIR ERROR *@
+@* <div class="container-fluid d-flex justify-content-center align-items-center">
     <div class="row d-flex justify-content-center">
         @foreach (var Anvandare in new[] {
         new { Fornamn = "John", Efternamn = "Doe", Anvandarnamn = "johndoe", Profilbild = "profile1.jpg", Id = 1 },
@@ -38,6 +43,39 @@
         new { Fornamn = "Alice", Efternamn = "Johnson", Anvandarnamn = "alicejohnson", Profilbild = (string)null, Id = 3 },
         new { Fornamn = "Bob", Efternamn = "Brown", Anvandarnamn = "bobbrown", Profilbild = "profile4.jpg", Id = 4 }
         })
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card" style="width: 100%; background-color: #d3d3d3;">
+                    @* Om profilbilden inte är null vill vi visa den i vyn 
+                    @if (Anvandare.Profilbild != null)
+                    {
+                        <img src="~/Images/@Anvandare.Profilbild" class="card-img-top" alt="Profilbild" asp-append-version="true" />
+                    }
+                    <div class="card-body flex-fill">
+                        <h5 class="card-title">@Anvandare.Fornamn @Anvandare.Efternamn</h5>
+                        <p>Anvandarnamn: @Anvandare.Anvandarnamn</p>
+                        <form method="post" asp-controller="Cv" asp-action="ShowCv" asp-route-userId="@Anvandare.Id">
+                            <input type="submit" class="btn btn-dark btn-sm" value="Till profil" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> *@
+
+@{
+    var anvandareList = new[] {
+        new { Fornamn = "John", Efternamn = "Doe", Anvandarnamn = "johndoe", Profilbild = "profile1.jpg", Id = 1 },
+        new { Fornamn = "Jane", Efternamn = "Smith", Anvandarnamn = "janesmith", Profilbild = "profile2.jpg", Id = 2 },
+        new { Fornamn = "Alice", Efternamn = "Johnson", Anvandarnamn = "alicejohnson", Profilbild = (string)null, Id = 3 },
+        new { Fornamn = "Bob", Efternamn = "Brown", Anvandarnamn = "bobbrown", Profilbild = "profile4.jpg", Id = 4 }
+    };
+}
+
+<div class="container-fluid d-flex justify-content-center align-items-center">
+    <div class="row d-flex justify-content-center">
+        @foreach (var Anvandare in anvandareList)
         {
             <div class="col-md-3 mb-4">
                 <div class="card" style="width: 100%; background-color: #d3d3d3;">
@@ -58,6 +96,7 @@
         }
     </div>
 </div>
+
 
 
 <h1>Senast upplagda projekt</h1>
