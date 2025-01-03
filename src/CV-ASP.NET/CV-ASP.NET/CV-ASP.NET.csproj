@@ -9,9 +9,13 @@
 
   <ItemGroup>
     <Compile Remove="Views\NewFolder\**" />
+    <Compile Remove="wwwroot\Images\05d3586e-c206-4be6-aaef-b76db33b1267-DALL·E 2025-01-03 19.54.16 - A professional portrait of a young blonde woman with long hair, dressed in a business suit, suitable for a CV. The woman is standing confidently with .webp\**" />
     <Content Remove="Views\NewFolder\**" />
+    <Content Remove="wwwroot\Images\05d3586e-c206-4be6-aaef-b76db33b1267-DALL·E 2025-01-03 19.54.16 - A professional portrait of a young blonde woman with long hair, dressed in a business suit, suitable for a CV. The woman is standing confidently with .webp\**" />
     <EmbeddedResource Remove="Views\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\Images\05d3586e-c206-4be6-aaef-b76db33b1267-DALL·E 2025-01-03 19.54.16 - A professional portrait of a young blonde woman with long hair, dressed in a business suit, suitable for a CV. The woman is standing confidently with .webp\**" />
     <None Remove="Views\NewFolder\**" />
+    <None Remove="wwwroot\Images\05d3586e-c206-4be6-aaef-b76db33b1267-DALL·E 2025-01-03 19.54.16 - A professional portrait of a young blonde woman with long hair, dressed in a business suit, suitable for a CV. The woman is standing confidently with .webp\**" />
   </ItemGroup>
 
   <ItemGroup>

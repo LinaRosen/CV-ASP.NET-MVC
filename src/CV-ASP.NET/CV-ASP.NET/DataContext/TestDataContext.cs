@@ -19,6 +19,8 @@ namespace CV_ASP.NET.DataContext
         public DbSet<Meddelande> Meddelande { get; set; }
         public DbSet<Utbildning> Utbildning { get; set; }
         public DbSet<Projekt> Projekt { get; set; }
+        public DbSet<AnvProjekt> AnvProjekt { get; set; }
+
 
 
 

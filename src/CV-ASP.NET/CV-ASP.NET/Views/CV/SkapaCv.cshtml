@@ -1,0 +1,45 @@
+﻿@model CV
+@{
+    ViewData["Title"] = "Ladda upp cv";
+}
+
+<h1>Skapa nytt Cv</h1>
+<h2>Fyll i Beskrivning och lägg till en bild</h2>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+<form method="post" asp-action="skapaCv" enctype="multipart/form-data">
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label>Beskriving: </label>
+        </div>
+        <div class="col-sm-4">
+            <input asp-for="Beskrivning" class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label> Bild: </label>
+        </div>
+        <div class="col-sm-4">
+            <input type="File" asp-for="Bildfil" class="custom-file-input" />
+            <label class="custom-file-label" for="customFile">Välj fil</label>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <div class="offset-2 col-sm-4">
+            <button type="submit" class="btn btn-primary">Skapa Cv</button>
+        </div>
+    </div>
+
+</form>
+
+
+
+
+
+
+
+
+

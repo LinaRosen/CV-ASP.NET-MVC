@@ -23,9 +23,22 @@
 
 @if (Model?.CV == null && Model?.anvandare?.Id != null && Model.anvandare.Id.Equals(Model?.InloggadAnvandare))
 {
-    <a class="btn btn-dark btn-sm" asp-controller="Cv" asp-action="CreateCv">Lägg till ett Cv</a>
+    <a class="btn btn-dark btn-sm" asp-controller="Cv" asp-action="SkapaCv">Lägg till ett Cv</a>
+    <br />
+
+  
+}
+
+@if (Model.CV != null)
+{
+    <form method="post" asp-controller="Cv" asp-action="VisaCv" asp-route-userId="@Model.anvandare.Id">
+        <input type="submit" class="btn btn-dark btn-sm" value="Visa CV" />
+    </form>
     <br />
 }
+
+   
+
 
 
 

@@ -1,0 +1,14 @@
+﻿@model AnvandarSidaViewModel
+
+@{
+    ViewData["Title"] = "Add Profile-pic";
+}
+
+
+<h1> Hantera profilbild</h1>
+
+<form method="post" asp-controller="Anvsida" asp-action="UppdateraBild" enctype="multipart/form-data">
+    
+    <input type="file" name="Bildfil" />
+    <button type="submit">Uppdatera</button>
+</form>

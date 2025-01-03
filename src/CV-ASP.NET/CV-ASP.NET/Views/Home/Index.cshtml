@@ -87,7 +87,7 @@
                     <div class="card-body flex-fill">
                         <h5 class="card-title">@Anvandare.Fornamn @Anvandare.Efternamn</h5>
                         <p>Anvandarnamn: @Anvandare.Anvandarnamn</p>
-                        <form method="post" asp-controller="Cv" asp-action="ShowCv" asp-route-userId="@Anvandare.Id">
+                        <form method="post" asp-controller="Cv" asp-action="VisaCv" asp-route-userId="@Anvandare.Id">
                             <input type="submit" class="btn btn-dark btn-sm" value="Till profil" />
                         </form>
                     </div>

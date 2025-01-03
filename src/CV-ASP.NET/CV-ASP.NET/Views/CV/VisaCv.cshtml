@@ -1,0 +1,75 @@
+﻿@using CV_ASP.NET.Models.ViewModels
+@model VisaCvViewModel
+
+
+@{
+    ViewData["Title"] = "Visa CV";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="cv-container">
+    <div class="cv-header">
+        <h3>@Model.anvandare.Anvandarnamn</h3>
+       
+    </div>
+
+    <div class="cv-profile-image">
+        @if (!string.IsNullOrEmpty(Model.Cv.Profilbild))
+        {
+            <img src="@Url.Content("~/images/" + Model.Cv.Profilbild)" alt="Profilbild" class="profile-image" />
+        }
+        else
+        {
+            <p>Ingen profilbild uppladdad.</p>
+        }
+    </div>
+
+    <h1>Rensa alla CV:n</h1>
+
+    <form method="post" asp-action="TaBortAllaCvn">
+        <div class="form-group">
+            <button type="submit" class="btn btn-danger">Rensa alla CV:n</button>
+        </div>
+    </form>
+
+@*     <div class="cv-projects">
+        <h4>Projekt</h4>
+        <ul>
+            @foreach (var projekt in Model.projekt)
+            {
+                <li>@projekt.Namn</li>
+            }
+        </ul>
+    </div> *@
+
+    <div class="cv-competences">
+        <h4>Kompetenser</h4>
+        <ul>
+            @foreach (var competence in Model.kompetenser)
+            {
+                <li>@competence.KompetensNamn</li>
+            }
+        </ul>
+    </div>
+
+    <div class="cv-experiences">
+        <h4>Erfarenheter</h4>
+        <ul>
+            @foreach (var experience in Model.erfarenhet)
+            {
+                <li>@experience.Titel - @experience.Arbetsgivare</li>
+            }
+        </ul>
+    </div>
+
+    <div class="cv-educations">
+        <h4>Utbildningar</h4>
+        <ul>
+            @foreach (var education in Model.utbildning)
+            {
+                <li>@education.Beskrivning - @education.Instutition</li>
+            }
+        </ul>
+    </div>
+</div>

@@ -13,7 +13,7 @@ namespace CV_ASP.NET.Models
 
         [Required(ErrorMessage = "Var god ange en beskrivning!")]
         [DisplayName("Beskrivning")]
-        public string Beskrivning { get; set; }
+        public string? Beskrivning { get; set; }
 
         [NotMapped]
         [DisplayName("Bild")]
@@ -24,6 +24,12 @@ namespace CV_ASP.NET.Models
 
         [ForeignKey(nameof(AnvandarNamn))]
         [XmlIgnore]
-        public virtual Anvandare anvandare { get; set; }
+        public virtual Anvandare? anvandare { get; set; }
+        [XmlIgnore]
+        public virtual IEnumerable<CV_Utbildning> CvUtbildning { get; set; } = new List<CV_Utbildning>();
+        [XmlIgnore]
+        public virtual IEnumerable<CV_Erfarenhet> CvErfarenhet { get; set; } = new List<CV_Erfarenhet>();
+        [XmlIgnore]
+        public virtual IEnumerable<CV_kompetenser> CvKompetenser { get; set; } = new List<CV_kompetenser>();
     }
 }
