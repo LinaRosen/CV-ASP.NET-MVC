@@ -1,9 +1,14 @@
 ﻿using CV_ASP.NET.DataContext;
 using CV_ASP.NET.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Data.SqlTypes;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CV_ASP.NET.Controllers
 {
@@ -11,20 +16,25 @@ namespace CV_ASP.NET.Controllers
     {
         private TestDataContext testDb;
         private readonly UserManager<Anvandare> _hanteraAnv;
-        public AnvsidaController(TestDataContext _context, UserManager<Anvandare> hanteraAnv) 
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public AnvsidaController(TestDataContext _context, UserManager<Anvandare> hanteraAnv, IWebHostEnvironment webHostEnviroment) 
         {
             testDb = _context;
             _hanteraAnv= hanteraAnv;
+            _webHostEnvironment = webHostEnviroment;
         }
-        public async Task<IActionResult> AnvSidaAsync(String Anvid)
-        {
-            String inloggadAnv = base.HamtaAnv();
-            String anonymAnv =Anvid ?? inloggadAnv;
 
-            var anv = testDb.Users.SingleOrDefault(u => u.Id == anonymAnv);
-            var adress = testDb.Adresser.SingleOrDefault(a => a.Anvid == anonymAnv);
-            var cv = testDb.CV.SingleOrDefault(c => c.AnvandarNamn == anonymAnv);
-            
+        
+        public async Task<IActionResult> AnvSidaAsync(string Anvid)
+        {
+            string inloggadAnv = base.HamtaAnv();
+            //String anonymAnv = Anvid ?? inloggadAnv;
+
+            var anv = testDb.Users.SingleOrDefault(u => u.Id == inloggadAnv);
+            var adress = testDb.Adresser.SingleOrDefault(a => a.Anvid == inloggadAnv);
+            var cv = testDb.CV.SingleOrDefault(c => c.AnvandarNamn == inloggadAnv);
+
 
             if (anv == null)
             {
