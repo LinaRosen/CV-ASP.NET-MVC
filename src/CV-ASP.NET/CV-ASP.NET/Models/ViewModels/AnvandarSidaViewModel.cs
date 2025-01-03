@@ -10,6 +10,10 @@ namespace CV_ASP.NET.Models
 
         public Adress adress { get; set; }
 
+        public string epost { get; set; }
+       
+
+
         [NotMapped]
         public IFormFile? Bildfil { get; set; }
     }
