@@ -14,11 +14,12 @@ namespace CV_ASP.NET.Controllers
         private TestDataContext testDb;
 
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger, TestDataContext dbcontext)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public HomeController(ILogger<HomeController> logger, TestDataContext dbcontext, IWebHostEnvironment webHostEnvironment)
         {
             _logger = logger;
             testDb = dbcontext;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -38,11 +39,7 @@ namespace CV_ASP.NET.Controllers
             return View(model);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
+        
         public IActionResult LoggaIn()
         {
             return View();
