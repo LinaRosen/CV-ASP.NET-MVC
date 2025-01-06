@@ -20,3 +20,79 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+.anvandar-sida {
+    display: flex; /* Gör barnen flexibla */
+    justify-content: space-between; /* Lämnar utrymme mellan boxarna */
+    align-items: flex-start; /* Justerar dem högst upp */
+    align-items: stretch;
+    gap: 20px; /* Avstånd mellan boxarna */
+    margin: 20px; /* Yttre marginal */
+}
+
+/* User-info box */
+.anvandar-info {
+    width: 50%; /* Halva bredden av containern */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.cv-box {
+    width: 40%;
+    background-color: #eef7ff;
+    border: 1px solid #cce7ff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.visa-cv,
+.skapa-cv {
+    margin-bottom: 20px;
+}
+
+    .visa-cv form,
+    .skapa-cv a {
+        display: inline-block;
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    /* Styling för varje rad */
+    .anvandar-info p {
+    margin: 10px 0; /* Mellanrum mellan rader */
+    line-height: 1.5; /* Bättre radavstånd */
+    color: #333; /* Mörkare textfärg */
+    }
+
+    /* Styling för etiketter (t.ex. Förnamn:) */
+    .anvandar-info .label {
+    font-weight: bold; /* Fet text */
+    color: #555; /* Lite mörkare etikettfärg */
+    }
+
+    /* Styling för textens utseende */
+    .anvandar-info {
+        display: inline-block;
+        min-width: 120px; /* Samma bredd för etiketter */
+    }
+
+    .anvandar-info i {
+      color: #007bff; /* Blå färg för ikoner */
+      margin-right: 8px; /* Lite mellanrum mellan ikoner och text */
+     }
+
+
+.cv-sida {
+    width: 50%; /* Halva bredden av containern */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

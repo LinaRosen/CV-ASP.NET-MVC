@@ -23,7 +23,14 @@ namespace CV_ASP.NET.Models
         [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "Du får endast ange bokstäver!")]
         public string Efternamn { get; set; }
 
-        public string? Profilbild { get; set; }
+        public string? Profilbild
+        {
+            get => CV?.Profilbild ?? _profilbild;
+            set => _profilbild = value;
+        }
+
+        private string? _profilbild; // Backing field för direkt angiven profilbild.
+        //public string? Profilbild { get; set; }
         public bool PrivatProfil {  get; set; } = false;
 
         public bool Aktiverad { get; set; } = false;
@@ -43,5 +50,7 @@ namespace CV_ASP.NET.Models
 
         [XmlIgnore]
         public virtual ICollection<Meddelande> TagitEmotMeddelande { get; set; } = new List<Meddelande>();
+       
     }
+
 }

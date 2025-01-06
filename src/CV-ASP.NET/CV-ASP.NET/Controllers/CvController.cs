@@ -10,7 +10,7 @@ namespace CV_ASP.NET.Controllers
     public class CvController : BasController
     {
         private TestDataContext testDb;
-        private readonly string _bildsökväg = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+        
         private readonly IWebHostEnvironment _webHostEnvironment;
         public CvController(TestDataContext testDb, IWebHostEnvironment webHostEnvironment)
         {
@@ -45,18 +45,29 @@ namespace CV_ASP.NET.Controllers
         {
             VisaCvViewModel vm = new VisaCvViewModel { };
             string? inloggadAnv = base.HamtaAnv();
-          
 
-            // Hämta användare och CV
-            vm.anvandare = testDb.Anvandare.Where(u => u.Id.Equals(inloggadAnv)).Single();
-            vm.Cv = testDb.CV.Where(c => c.AnvandarNamn.Equals(inloggadAnv)).Single();
+            
 
-            // Om det inte är inloggad användare, uppdatera besökarantalet
-            if (anvId != null && !anvId.Equals(inloggadAnv))
+            if 
+                (anvId == null || anvId.Equals(inloggadAnv))
             {
-                vm.Cv.AntalBesokare++;
-                testDb.Update(vm.Cv);
+
+                vm.anvandare = testDb.Users.Where(a => a.Id.Equals(inloggadAnv)).FirstOrDefault();
+                vm.Cv = testDb.CV.Where(c => c.AnvandarNamn.Equals(inloggadAnv)).FirstOrDefault();
+            }
+            // Om det inte är inloggad användare, uppdatera besökarantalet
+            else
+                
+            {
+                vm.anvandare = testDb.Users.Where(a => a.Id == anvId).FirstOrDefault();
+                vm.Cv = testDb.CV.Where(c => c.AnvandarNamn == anvId).FirstOrDefault();
+
+                var totalaBesokare = testDb.CV.Where(c => c.Cvid == vm.Cv.Cvid).FirstOrDefault().AntalBesokare;
+                CV cv = vm.Cv;
+                cv.AntalBesokare = totalaBesokare + 1;
+                testDb.Update(cv);
                 await testDb.SaveChangesAsync();
+                
             }
 
             //vm.projekt = testDb.AnvProjekt
@@ -64,20 +75,22 @@ namespace CV_ASP.NET.Controllers
             //.Select(ap => testDb.Projekt.Single(p => p.Pid == ap.Pid))
             //.ToList();
 
-            vm.erfarenhet = (IEnumerable<Models.Erfarenhet>)testDb.CV_Erfarenhet
-                .Where(ce => ce.Cvid == vm.Cv.Cvid)
-                .Select(ce => testDb.Erfarenhet.Single(e => e.Eid == ce.Eid))
-                .ToList();
 
-            vm.kompetenser = (IEnumerable<Models.Kompetenser>)testDb.CV_Kompetenser
-                .Where(ck => ck.Cvid == vm.Cv.Cvid)
-                .Select(ck => testDb.Kompetenser.Single(k => k.Kid == ck.Kid))
-                .ToList();
 
-            vm.utbildning = (IEnumerable<Models.Utbildning>)testDb.CV_Utbildning
-                .Where(cu => cu.CVid == vm.Cv.Cvid)
-                .Select(cu => testDb.Utbildning.Single(U => U.Uid == cu.Uid))
-                .ToList();
+            //vm.erfarenhet = (IEnumerable<Models.Erfarenhet>)testDb.CV_Erfarenhet
+            //    .Where(ce => ce.Cvid == vm.Cv.Cvid)
+            //    .Select(ce => testDb.Erfarenhet.Single(e => e.Eid == ce.Eid))
+            //    .ToList();
+
+            //vm.kompetenser = (IEnumerable<Models.Kompetenser>)testDb.CV_Kompetenser
+            //    .Where(ck => ck.Cvid == vm.Cv.Cvid)
+            //    .Select(ck => testDb.Kompetenser.Single(k => k.Kid == ck.Kid))
+            //    .ToList();
+
+            //vm.utbildning = (IEnumerable<Models.Utbildning>)testDb.CV_Utbildning
+            //    .Where(cu => cu.CVid == vm.Cv.Cvid)
+            //    .Select(cu => testDb.Utbildning.Single(U => U.Uid == cu.Uid))
+            //    .ToList();
             return View(vm);
         }
 
@@ -134,6 +147,18 @@ namespace CV_ASP.NET.Controllers
             return fileName;
         }
 
+        [Authorize]
+        [HttpGet]
+        public IActionResult RedigeraCv()
+        {
+            return View();
+        }
 
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> RedigeraCv(CV cv)
+        {
+            return View(cv);
+        }
     }
 }

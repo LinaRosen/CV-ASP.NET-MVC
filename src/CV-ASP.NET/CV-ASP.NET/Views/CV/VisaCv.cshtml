@@ -1,6 +1,7 @@
 ﻿@using CV_ASP.NET.Models.ViewModels
 @model VisaCvViewModel
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="sites.css">
 
 @{
     ViewData["Title"] = "Visa CV";
@@ -8,23 +9,23 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<div class="cv-container">
-    <div class="cv-header">
-        <h3>@Model.anvandare.Anvandarnamn</h3>
-       
+<div class="anvandar-sida">
+    <div class="anvandar-info" style="padding-bottom:60px">
+        <h3>Profilbild:</h3>
+        <img src="~/Images/@Html.ValueFor(p => p.Cv.Profilbild)" class="img-fluid" alt="Responsive image" asp-append-version="true" height="200px" width="200px" />
+        <p><i class="fas fa-user"></i> <span class="label">Anvandarnamn:</span> @Html.DisplayFor(p => p.anvandare.UserName)</p>
+        <p><i class="fas fa-user"></i> <span class="label">Förnamn:</span> @Html.DisplayFor(p => p.anvandare.Fornamn)</p>
+        <p><i class="fas fa-user"></i> <span class="label">Efternamn:</span> @Html.DisplayFor(p => p.anvandare.Efternamn)</p>
+        <p><i class="fas fa-envelope"></i> <span class="label">Epost:</span> @Html.DisplayFor(p => p.anvandare.Email)</p>
+        <p><i class="fas fa-city"></i> <span class="label">Stad:</span> @Html.DisplayFor(p => p.anvandare.Adress.Stad)</p>
+        <p><i class="fas fa-phone"></i> <span class="label">Telefonnummer:</span> @Html.DisplayFor(p => p.anvandare.PhoneNumber)</p>
     </div>
 
-    <div class="cv-profile-image">
-        @if (!string.IsNullOrEmpty(Model.Cv.Profilbild))
-        {
-            <img src="@Url.Content("~/images/" + Model.Cv.Profilbild)" alt="Profilbild" class="profile-image" />
-        }
-        else
-        {
-            <p>Ingen profilbild uppladdad.</p>
-        }
-    </div>
+</div>
 
+
+<a class="btn btn-dark btn-sm" asp-controller="Meddelande" asp-action="Kontakta">Kontakta mig</a>
+<br />
     <h1>Rensa alla CV:n</h1>
 
     <form method="post" asp-action="TaBortAllaCvn">
@@ -33,43 +34,39 @@
         </div>
     </form>
 
-@*     <div class="cv-projects">
-        <h4>Projekt</h4>
-        <ul>
-            @foreach (var projekt in Model.projekt)
-            {
-                <li>@projekt.Namn</li>
-            }
-        </ul>
-    </div> *@
-
-    <div class="cv-competences">
+<div class="cv-sida">
+ <div class="cv-competences">
         <h4>Kompetenser</h4>
         <ul>
-            @foreach (var competence in Model.kompetenser)
-            {
-                <li>@competence.KompetensNamn</li>
-            }
+        <li>Kassavana</li>
         </ul>
     </div>
 
     <div class="cv-experiences">
         <h4>Erfarenheter</h4>
         <ul>
-            @foreach (var experience in Model.erfarenhet)
-            {
-                <li>@experience.Titel - @experience.Arbetsgivare</li>
-            }
+        <li>Ica</li>
         </ul>
     </div>
 
     <div class="cv-educations">
         <h4>Utbildningar</h4>
         <ul>
-            @foreach (var education in Model.utbildning)
-            {
-                <li>@education.Beskrivning - @education.Instutition</li>
-            }
+            <li>Systemvetenskap</li>
         </ul>
     </div>
 </div>
+
+@if (Model.anvandare.Anvandarnamn.Equals(User?.Identity?.Name))
+{
+    <a class="btn btn-dark" asp-action="RedigeraCv" asp-controller="Cv" asp-route-id="@Model.Cv.Cvid">Redigera Cv</a>
+    <br />
+    <a class="btn btn-dark" asp-action="LaggTillKomp" asp-controller="Kompetens">Lägg till kompetens</a>
+    <br />
+    <a class="btn btn-dark" asp-action="LaggTillErf" asp-controller="Erfarenhet">Lägg till erfarenhet</a>
+    <br />
+    <a class="btn btn-dark" asp-action="LaggTillUtb" asp-controller="Utbildning">Lägg till utbildning</a>
+    <br />
+    <p>Totalt antal besökare: @Model.Cv.AntalBesokare</p>
+    <br />
+}
