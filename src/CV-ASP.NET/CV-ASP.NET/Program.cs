@@ -40,8 +40,10 @@
 
 //app.Run();
 
+using CV_ASP.NET.Controllers;
 using CV_ASP.NET.DataContext;
 using CV_ASP.NET.Models;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -69,8 +71,12 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireLowercase = false;
 });
 
+builder.Services.AddScoped<MeddelandeController>();
+
+
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -91,8 +97,8 @@ app.UseAuthorization();   // Den här raden gör auktorisering
 
 // Definiera rutten för controller och action
 app.MapControllerRoute(
-   name: "default",
-   pattern: "{controller=Home}/{action=Index}/{id?}");
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 app.Run();
