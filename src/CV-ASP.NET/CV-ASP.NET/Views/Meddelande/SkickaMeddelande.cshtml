@@ -1,0 +1,29 @@
+﻿@model CV_ASP.NET.Models.ViewModels.SkickaMeddelandeViewModel
+
+<h1>Skicka Meddelande</h1>
+
+<form asp-controller="Meddelande" asp-action="SkickaMeddelande" method="post">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>
+            <strong>Ditt namn:</strong> @User.Identity.Name
+        </p>
+        <input type="hidden" name="FranAnvandareId" value="@User.Identity.Name" />
+    }
+    else
+    {
+        <div>
+            <label for="AnonymAnvandare">Ditt namn (obligatoriskt):</label>
+            <input type="text" id="AnonymAnvandare" name="AnonymAnvandare" required pattern="[\p{L}\s]+" title="Du får endast ange bokstäver!" />
+        </div>
+    }
+
+    <div>
+        <label for="Innehall">Meddelande:</label>
+        <textarea id="Innehall" name="Innehall" required></textarea>
+    </div>
+
+    <input type="hidden" name="TillAnvandareId" value="@Model.TillAnvandareId" />
+
+    <button type="submit">Skicka</button>
+</form>

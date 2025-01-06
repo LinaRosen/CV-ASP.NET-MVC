@@ -118,4 +118,38 @@ public class MeddelandeController : BasController
 
         return View("MeddelandeSida", viewModel); // Skicka tillbaka till vyn med uppdaterade meddelanden
     }
+    [HttpGet]
+    public IActionResult SkickaMeddelande(string tillAnvandareId)
+    {
+        var meddelande = new Meddelande
+        {
+            TillAnvandareId = tillAnvandareId
+        };
+
+        return View(meddelande);
+    }
+
+    [HttpPost]
+    public IActionResult SkickaMeddelande(Meddelande meddelande)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(meddelande);
+        }
+
+        // Om användaren är inloggad, fyll i deras namn
+        if (User.Identity.IsAuthenticated)
+        {
+            meddelande.FranAnvandareId = User.Identity.Name;
+            meddelande.AnonymAnvandare = null; // Rensa anonym om det är en inloggad användare
+        }
+
+        meddelande.Last = false; // Nya meddelanden är alltid olästa
+
+        testDb.Meddelande.Add(meddelande);
+        testDb.SaveChanges();
+
+        TempData["SuccessMessage"] = "Ditt meddelande har skickats!";
+        return RedirectToAction("MeddelandeSida");
+    }
 }
