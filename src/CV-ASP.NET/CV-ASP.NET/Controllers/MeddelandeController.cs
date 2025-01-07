@@ -1,6 +1,7 @@
 ﻿using CV_ASP.NET.Controllers;
 using CV_ASP.NET.DataContext;
 using CV_ASP.NET.Models;
+using CV_ASP.NET.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -121,13 +122,39 @@ public class MeddelandeController : BasController
     [HttpGet]
     public IActionResult SkickaMeddelande(string tillAnvandareId)
     {
-        var meddelande = new Meddelande
+        // Skapa ViewModel och skicka den till vyn
+        var viewModel = new SkickaMeddelandeViewModel
         {
             TillAnvandareId = tillAnvandareId
         };
 
-        return View(meddelande);
+        return View(viewModel);
     }
+    [HttpGet]
+    [HttpGet]
+    public IActionResult Kontakta(string tillAnvandareId)
+    {
+        // Skapa ViewModel och skicka TillAnvandareId till vyn
+        var viewModel = new SkickaMeddelandeViewModel
+        {
+            TillAnvandareId = tillAnvandareId
+        };
+
+        // Returnera vyn med ViewModel
+        return View("SkickaMeddelande", viewModel);  // Detta borde vara din befintliga vy
+    }
+    [HttpPost]
+    public IActionResult SkickaMeddelande(SkickaMeddelandeViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            // Hantera meddelandet här, exempelvis spara i databasen
+            return RedirectToAction("Index", "Home");
+        }
+
+        return View(model);  // Om ogiltig, återvänd till samma vy
+    }
+
 
     [HttpPost]
     public IActionResult SkickaMeddelande(Meddelande meddelande)
@@ -151,5 +178,16 @@ public class MeddelandeController : BasController
 
         TempData["SuccessMessage"] = "Ditt meddelande har skickats!";
         return RedirectToAction("MeddelandeSida");
+
+        /*[HttpGet]
+        public IActionResult Kontakta(string tillAnvandareId)
+        {
+            var viewModel = new SkickaMeddelandeViewModel
+            {
+                TillAnvandareId = tillAnvandareId
+            };
+
+            return View(viewModel);
+        }*/
     }
 }
