@@ -24,7 +24,9 @@
 </div>
 
 
-<a class="btn btn-dark btn-sm" asp-controller="Meddelande" asp-action="Kontakta">Kontakta mig</a>
+<a class="btn btn-dark btn-sm" asp-controller="Meddelande" asp-action="SkickaMeddelande" asp-route-tillAnvandareId="@Model.anvandare.Id">
+    Kontakta mig
+</a>
 <br />
     <h1>Rensa alla CV:n</h1>
 
