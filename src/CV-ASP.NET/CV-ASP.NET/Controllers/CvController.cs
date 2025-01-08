@@ -4,6 +4,7 @@ using CV_ASP.NET.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CV_ASP.NET.Controllers
 {
@@ -32,7 +33,7 @@ namespace CV_ASP.NET.Controllers
             // Återgå till en annan vy eller huvudvyn
             return RedirectToAction("Anvsida", "AnvSida");
         }
-
+        
 
         public async Task<IActionResult> VisaCv(string anvId)
         {
@@ -77,20 +78,51 @@ namespace CV_ASP.NET.Controllers
 
 
 
-            //vm.erfarenhet = (IEnumerable<Models.Erfarenhet>)testDb.CV_Erfarenhet
-            //    .Where(ce => ce.Cvid == vm.Cv.Cvid)
-            //    .Select(ce => testDb.Erfarenhet.Single(e => e.Eid == ce.Eid))
-            //    .ToList();
+            vm.erfarenheter = testDb.CV_Erfarenhet
+             .Where(ce => ce.Cvid == vm.Cv.Cvid)
+            .Join(testDb.Erfarenhet,
+             ce => ce.Eid,
+            e => e.Eid,
+             (ce, e) => new ErfarenhetViewModel
+             {
+             Titel = e.Titel,
+             Arbetsgivare = e.Arbetsgivare,
+             Beskrivning = e.Beskrivning,
+             StartDatum = ce.Startdatum,
+             Slutdatum = ce.Slutdatum
+            })
+            .ToList();
 
-            //vm.kompetenser = (IEnumerable<Models.Kompetenser>)testDb.CV_Kompetenser
-            //    .Where(ck => ck.Cvid == vm.Cv.Cvid)
-            //    .Select(ck => testDb.Kompetenser.Single(k => k.Kid == ck.Kid))
-            //    .ToList();
+            vm.kompetenser = testDb.CV_Kompetenser
+             .Where(ce => ce.Cvid == vm.Cv.Cvid)
+            .Join(testDb.Kompetenser,
+             ce => ce.Kid,
+            k => k.Kid,
+             (ce, k) => new KompetensViewModel
+             {
+                 KompetensNamn = ce.KompetensNamn,
+                 Beskrivning = k.Beskrivning
+                 
+             })
+            .ToList();
 
-            //vm.utbildning = (IEnumerable<Models.Utbildning>)testDb.CV_Utbildning
-            //    .Where(cu => cu.CVid == vm.Cv.Cvid)
-            //    .Select(cu => testDb.Utbildning.Single(U => U.Uid == cu.Uid))
-            //    .ToList();
+            vm.utbildningar = testDb.CV_Utbildning
+             .Where(cu => cu.CVid == vm.Cv.Cvid)
+            .Join(testDb.Utbildning,
+             cu => cu.Uid,
+            u => u.Uid,
+             (cu, u) => new UtbildningViewModel
+             {
+                 Instutition = u.Instutition,
+                 Kurs_program = u.Kurs_program,
+                 Beskrivning= u.Beskrivning,
+                 StartDatum = cu.Startdatum,
+                 SlutDatum = cu.Slutdatum
+             })
+            .ToList();
+
+
+           
             return View(vm);
         }
 
@@ -104,20 +136,93 @@ namespace CV_ASP.NET.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> skapaCv(CV scv)
+        public async Task<IActionResult> skapaCv(SkapaCvViewModel scv)
         {
+            
             if (ModelState.IsValid)
             {
+                string fil = LaddaUppProfilbild(scv);
+                scv.cv.Profilbild = fil;
 
                 string? inloggadAnv = base.HamtaAnv();
-                string fil = LaddaUppProfilbild(scv);
-                scv.Profilbild= fil;
-                scv.AnvandarNamn = inloggadAnv;
+                scv.cv.AnvandarNamn = inloggadAnv;
 
                 
-                
-                await testDb.AddAsync(scv);
+                var cv = new CV();
+
+                cv.Profilbild = fil;
+                cv.Beskrivning = scv.cv.Beskrivning;
+                cv.AnvandarNamn = base.HamtaAnv();
+
+                await testDb.AddAsync(cv);
                 await testDb.SaveChangesAsync();
+
+
+                var erfarenhet = new Erfarenhet();
+
+                erfarenhet.Arbetsgivare = scv.erfarenhet.Arbetsgivare;
+                erfarenhet.Titel = scv.erfarenhet.Titel;
+                erfarenhet.Beskrivning = scv.erfarenhet.Beskrivning;
+
+                await testDb.Erfarenhet.AddAsync(erfarenhet);
+                await testDb.SaveChangesAsync();
+
+                int dettaCv = testDb.CV.Where(c => c.AnvandarNamn == inloggadAnv).Single().Cvid;
+
+                var cvErfarenhet = new CV_Erfarenhet();
+
+                cvErfarenhet.Cvid = dettaCv;
+                cvErfarenhet.Startdatum = scv.cvErfarenhet.Startdatum;
+                cvErfarenhet.Slutdatum = scv.cvErfarenhet.Slutdatum;
+                cvErfarenhet.Eid = erfarenhet.Eid;
+                
+                await testDb.CV_Erfarenhet.AddAsync(cvErfarenhet);
+                await testDb.SaveChangesAsync();
+
+
+                var utbildning = new Utbildning();
+
+                utbildning.Instutition = scv.utbildning.Instutition;
+                utbildning.Beskrivning = scv.utbildning.Beskrivning;
+                utbildning.Kurs_program = scv.utbildning.Kurs_program;
+
+                await testDb.Utbildning.AddAsync(utbildning);
+                await testDb.SaveChangesAsync();
+
+                var cvUtbildning = new CV_Utbildning();
+                cvUtbildning.CVid = dettaCv;
+                cvUtbildning.Startdatum = scv.cvUtbildning.Startdatum;
+                cvUtbildning.Slutdatum = scv.cvUtbildning.Slutdatum;
+                cvUtbildning.Uid = utbildning.Uid;
+                
+                await testDb.CV_Utbildning.AddAsync(cvUtbildning);
+                await testDb.SaveChangesAsync();
+
+
+                var kompetenser = new Kompetenser();
+
+                kompetenser.Beskrivning = scv.kompetenser.Beskrivning;
+                
+
+                await testDb.Kompetenser.AddAsync(kompetenser);
+                await testDb.SaveChangesAsync();
+               
+
+                var cvKompetens = new CV_kompetenser();
+                cvKompetens.Cvid = dettaCv;
+                cvKompetens.Kid = kompetenser.Kid;
+                cvKompetens.KompetensNamn = scv.cvKompetenser.KompetensNamn;
+
+
+
+
+                await testDb.CV_Kompetenser.AddAsync(cvKompetens);
+                await testDb.SaveChangesAsync();
+
+                //cv.CvKompetenser = new List<CV_kompetenser> { cvKompetens };
+                //cv.CvErfarenhet = new List<CV_Erfarenhet> { cvErfarenhet };
+                //cv.CvUtbildning = new List<CV_Utbildning> { cvUtbildning };
+
 
                 return RedirectToAction("Anvsida", "AnvSida");
             }
@@ -125,10 +230,10 @@ namespace CV_ASP.NET.Controllers
         }
 
         [Authorize]
-        private string LaddaUppProfilbild(CV cvm)
+        private string LaddaUppProfilbild(SkapaCvViewModel cvm)
         {
             string fileName = null;
-            if (cvm.Bildfil != null)
+            if (cvm.cv.Bildfil != null)
             {
                 string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
 
@@ -137,11 +242,11 @@ namespace CV_ASP.NET.Controllers
                     Directory.CreateDirectory(uploadDir);
                 }
 
-                fileName = Guid.NewGuid().ToString() + "-" + cvm.Bildfil.FileName;
+                fileName = Guid.NewGuid().ToString() + "-" + cvm.cv.Bildfil.FileName;
                 string filePath = Path.Combine(uploadDir, fileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    cvm.Bildfil.CopyTo(fileStream);
+                    cvm.cv.Bildfil.CopyTo(fileStream);
                 }
             }
             return fileName;

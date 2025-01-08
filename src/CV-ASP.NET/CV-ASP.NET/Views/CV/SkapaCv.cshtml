@@ -1,4 +1,5 @@
-﻿@model CV
+﻿@model CV_ASP.NET.Models.ViewModels.SkapaCvViewModel
+
 @{
     ViewData["Title"] = "Ladda upp cv";
 }
@@ -7,39 +8,125 @@
 <h2>Fyll i Beskrivning och lägg till en bild</h2>
 
 <div asp-validation-summary="All" class="text-danger"></div>
-<form method="post" asp-action="skapaCv" enctype="multipart/form-data">
-    <div class="form-group row">
-        <div class="col-sm-2">
-            <label>Beskriving: </label>
-        </div>
+
+<form method="post" asp-action="SkapaCv" enctype="multipart/form-data">
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Beskrivning:</label>
         <div class="col-sm-4">
-            <input asp-for="Beskrivning" class="form-control" />
+            <textarea asp-for="cv.Beskrivning" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="cv.Beskrivning" class="text-danger"></span>
         </div>
     </div>
-    <br />
-    <div class="form-group row">
-        <div class="col-sm-2">
-            <label> Bild: </label>
-        </div>
+
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Bild:</label>
         <div class="col-sm-4">
-            <input type="File" asp-for="Bildfil" class="custom-file-input" />
-            <label class="custom-file-label" for="customFile">Välj fil</label>
+            <input type="file" asp-for="cv.Bildfil" />
         </div>
     </div>
-    <br />
+
+    <h3>Erfarenhet</h3>
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Arbetsgivare:</label>
+        <div class="col-sm-4">
+            <input asp-for ="erfarenhet.Arbetsgivare" class="form-control"/>
+            <span asp-validation-for="erfarenhet.Arbetsgivare" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Titel:</label>
+        <div class="col-sm-4">
+            <input asp-for="erfarenhet.Titel" class="form-control" />
+            <span asp-validation-for="erfarenhet.Titel" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Beskrivning:</label>
+        <div class="col-sm-4">
+            <textarea asp-for="erfarenhet.Beskrivning" class="form-control" rows="5"></textarea> 
+            <span asp-validation-for="erfarenhet.Beskrivning" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Startdatum:</label>
+        <div class="col-sm-4">
+            <input asp-for="cvErfarenhet.Startdatum" type="date" class="form-control" />
+            <span asp-validation-for="cvErfarenhet.Startdatum" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Slutdatum:</label>
+        <div class="col-sm-4">
+            <input asp-for="cvErfarenhet.Slutdatum" type="date" class="form-control" />
+            <span asp-validation-for="cvErfarenhet.Slutdatum" class="text-danger"></span>
+        </div>
+    </div>
+
+    <h3>Utbildning</h3>
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Institution:</label>
+        <div class="col-sm-4">
+            <input asp-for="utbildning.Instutition" class="form-control" />
+            <span asp-validation-for="utbildning.Instutition" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Kurs/Program:</label>
+        <div class="col-sm-4">
+            <input asp-for="utbildning.Kurs_program" class="form-control" />
+            <span asp-validation-for="utbildning.Kurs_program" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Beskrivning:</label>
+        <div class="col-sm-4">
+            <textarea asp-for="utbildning.Beskrivning" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="utbildning.Beskrivning" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Startdatum:</label>
+        <div class="col-sm-4">
+            <input asp-for="cvUtbildning.Startdatum" type="date" class="form-control" />
+            <span asp-validation-for="cvUtbildning.Startdatum" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-4">
+		<label class="col-sm-2">Slutdatum:</label>
+        <div class="col-sm-4">
+            <input asp-for="cvUtbildning.Slutdatum" type="date" class="form-control" />
+            <span asp-validation-for="cvUtbildning.Slutdatum" class="text-danger"></span>
+        </div>
+    </div>
+
+    <h3>Kompetens</h3>
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Kompetens:</label>
+        <div class="col-sm-4">
+            <input asp-for="cvKompetenser.KompetensNamn" class="form-control" />
+            <span asp-validation-for="cvKompetenser.KompetensNamn" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Beskrivning:</label>
+        <div class="col-sm-4">
+            <textarea asp-for="kompetenser.Beskrivning" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="kompetenser.Beskrivning" class="text-danger"></span>
+        </div>
+    </div>
+
     <div class="form-group row">
-        <div class="offset-2 col-sm-4">
+        <div class="offset-sm-2 col-sm-4">
             <button type="submit" class="btn btn-primary">Skapa Cv</button>
         </div>
     </div>
-
 </form>
-
-
-
-
-
-
-
-
-

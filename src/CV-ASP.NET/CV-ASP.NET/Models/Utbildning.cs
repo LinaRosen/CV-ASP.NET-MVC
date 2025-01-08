@@ -11,19 +11,19 @@ namespace CV_ASP.NET.Models
 
         [Required(ErrorMessage = "Du måste ange ett namn")]
         [DisplayName("Namn på instutition")]
-        [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "Du får endast ange bokstäver!")]
+        [RegularExpression(@"^[\p{L}\s.,]+$", ErrorMessage = "Du får endast ange bokstäver!")]
         public string Instutition { get; set; }
 
         [Required(ErrorMessage = "Du måste ange kurs/program")]
         [DisplayName("Kurs/program")]
-        [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "Du får endast ange bokstäver!")]
+        [RegularExpression(@"^[\p{L}\s.,]+$", ErrorMessage = "Du får endast ange bokstäver!")]
         public string Kurs_program { get; set; }
 
-      
-        
+
+
         [Required(ErrorMessage = "Du måste ange en beskrivning")]
-        [DisplayName("Beskrivning av kurs/program")]
-        [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "Du får endast ange bokstäver!")]
+        [DisplayName("Beskrivning av utbildning")]
+        [RegularExpression(@"^[\p{L}\s.,]+$", ErrorMessage = "Du får endast ange bokstäver!")]
         public string Beskrivning { get; set; }
 
         [XmlIgnore]
