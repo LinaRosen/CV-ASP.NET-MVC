@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using CV_ASP.NET.DataContext;
 
 namespace CV_ASP.NET.Controllers
 {
@@ -11,11 +13,13 @@ namespace CV_ASP.NET.Controllers
     {
         private UserManager<Anvandare> userManager;
         private SignInManager<Anvandare> signInManager;
+        private readonly TestDataContext _context;
         public LoggInRegistreraController(UserManager<Anvandare> userMngr,
-        SignInManager<Anvandare> signInMngr)
+        SignInManager<Anvandare> signInMngr, TestDataContext context)
         {
             this.userManager = userMngr;
             this.signInManager = signInMngr;
+            this._context = context;
         }
         [HttpGet]
         public IActionResult Registrera()
@@ -30,18 +34,30 @@ namespace CV_ASP.NET.Controllers
             {
                 Anvandare anvandare = new Anvandare()
                 {
-                    UserName = registerViewModel.Anvandarnamn, // Viktigt! Sätter UserName
-                    Anvandarnamn = registerViewModel.Anvandarnamn, // Om du vill behålla din anpassade egenskap
+                    UserName = registerViewModel.Anvandarnamn,
+                    Anvandarnamn = registerViewModel.Anvandarnamn,
                     Email = registerViewModel.Email,
-                    Efternamn = registerViewModel.Efternamn, 
+                    Efternamn = registerViewModel.Efternamn,
                     Fornamn = registerViewModel.Fornamn,
                     PhoneNumber = registerViewModel.Telefonnummer,
                     PrivatProfil = registerViewModel.PrivatProfil
                 };
-                var result =
-                await userManager.CreateAsync(anvandare, registerViewModel.Losenord);
+
+                Adress adress = new Adress()
+                {
+                    Gatunamn = registerViewModel.Adress.Gatunamn,
+                    Stad = registerViewModel.Adress.Stad,
+                    Postnummer = registerViewModel.Adress.Postnummer,
+                    Anvid = anvandare.Id // Länkar adressen till användaren
+                };
+
+                var result = await userManager.CreateAsync(anvandare, registerViewModel.Losenord);
+
                 if (result.Succeeded)
                 {
+                    _context.Adresser.Add(adress); // Spara adressen
+                    await _context.SaveChangesAsync();
+
                     await signInManager.SignInAsync(anvandare, isPersistent: true);
                     return RedirectToAction("Index", "Home");
                 }
@@ -54,7 +70,9 @@ namespace CV_ASP.NET.Controllers
                 }
             }
             return View(registerViewModel);
-        } 
+        }
+
+
 
         [HttpGet]
         public IActionResult LoggaIn()
