@@ -10,18 +10,18 @@ namespace CV_ASP.NET.Models
         public int Eid { get; set; }
 
         [Required(ErrorMessage = "Du måste ange en titel")]
-        [DisplayName("Titel")]
-        [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "Du får endast ange bokstäver!")]
+        [DisplayName("Titel av erfarenhet")]
+        [RegularExpression(@"^[\p{L}\s.,]+$", ErrorMessage = "Du får endast ange bokstäver!")]
         public string Titel { get; set; }
 
         [Required(ErrorMessage = "Du måste ange en beskrivning")]
         [DisplayName("Beskrivning av erfarenhet")]
-        [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "Du får endast ange bokstäver!")]
+        [RegularExpression(@"^[\p{L}\s.,]+$", ErrorMessage = "Du får endast ange bokstäver!")]
         public string Beskrivning { get; set; }
 
         [Required(ErrorMessage = "Du måste ange en arbetsgivare")]
-        [DisplayName("Arbetsgivare")]
-        [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "Du får endast ange bokstäver!")]
+        [DisplayName("Beskrivning av erfarenhet")]
+        [RegularExpression(@"^[\p{L}\s.,]+$", ErrorMessage = "Du får endast ange bokstäver!")]
         public string Arbetsgivare { get; set; }
 
         [XmlIgnore]

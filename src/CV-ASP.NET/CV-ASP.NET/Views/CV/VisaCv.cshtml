@@ -7,57 +7,107 @@
     ViewData["Title"] = "Visa CV";
 }
 
-<h2>@ViewData["Title"]</h2>
+
 
 <div class="anvandar-sida">
     <div class="anvandar-info" style="padding-bottom:60px">
-        <h3>Profilbild:</h3>
-        <img src="~/Images/@Html.ValueFor(p => p.Cv.Profilbild)" class="img-fluid" alt="Responsive image" asp-append-version="true" height="200px" width="200px" />
         <p><i class="fas fa-user"></i> <span class="label">Anvandarnamn:</span> @Html.DisplayFor(p => p.anvandare.UserName)</p>
         <p><i class="fas fa-user"></i> <span class="label">Förnamn:</span> @Html.DisplayFor(p => p.anvandare.Fornamn)</p>
         <p><i class="fas fa-user"></i> <span class="label">Efternamn:</span> @Html.DisplayFor(p => p.anvandare.Efternamn)</p>
         <p><i class="fas fa-envelope"></i> <span class="label">Epost:</span> @Html.DisplayFor(p => p.anvandare.Email)</p>
         <p><i class="fas fa-city"></i> <span class="label">Stad:</span> @Html.DisplayFor(p => p.anvandare.Adress.Stad)</p>
         <p><i class="fas fa-phone"></i> <span class="label">Telefonnummer:</span> @Html.DisplayFor(p => p.anvandare.PhoneNumber)</p>
+        <a class="btn btn-dark btn-sm" asp-controller="Meddelande" asp-action="SkickaMeddelande" asp-route-tillAnvandareId="@Model.anvandare.Id">
+            Kontakta mig
+        </a>
     </div>
-
+    <div class="bild">
+        
+        <img src="~/Images/@Html.ValueFor(p => p.Cv.Profilbild)" class="img-fluid" alt="Responsive image" asp-append-version="true" height="200px" width="200px" />
+        <p>@Model.Cv.Beskrivning</p>
+    </div>
 </div>
 
 
-<a class="btn btn-dark btn-sm" asp-controller="Meddelande" asp-action="SkickaMeddelande" asp-route-tillAnvandareId="@Model.anvandare.Id">
-    Kontakta mig
-</a>
-<br />
-    <h1>Rensa alla CV:n</h1>
-
-    <form method="post" asp-action="TaBortAllaCvn">
-        <div class="form-group">
-            <button type="submit" class="btn btn-danger">Rensa alla CV:n</button>
-        </div>
-    </form>
-
+<div class="cv-container">
 <div class="cv-sida">
- <div class="cv-competences">
-        <h4>Kompetenser</h4>
-        <ul>
-        <li>Kassavana</li>
-        </ul>
-    </div>
 
-    <div class="cv-experiences">
-        <h4>Erfarenheter</h4>
-        <ul>
-        <li>Ica</li>
-        </ul>
-    </div>
 
-    <div class="cv-educations">
-        <h4>Utbildningar</h4>
-        <ul>
-            <li>Systemvetenskap</li>
-        </ul>
-    </div>
+<h1>Erfarenheter, Kompetenser och Utbildningar</h1>
+
+<h2>Erfarenheter</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Arbetsgivare</th>
+            <th>Titel</th>
+            <th>Beskrivning</th>
+            <th>Startdatum</th>
+            <th>Slutdatum</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var erfarenhet in Model.erfarenheter)
+        {
+            <tr>
+                <td>@erfarenhet.Arbetsgivare</td>
+                <td>@erfarenhet.Titel</td>
+                <td>@erfarenhet.Beskrivning</td>
+                <td>@erfarenhet.StartDatum</td>
+                <td>@erfarenhet.Slutdatum?.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Kompetenser</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Kompetensnamn</th>
+            <th>Beskrivning</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var kompetens in Model.kompetenser)
+        {
+            <tr>
+                <td>@kompetens.KompetensNamn</td>
+                <td>@kompetens.Beskrivning</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Utbildningar</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Institution</th>
+            <th>Kurs/Program</th>
+            <th>Beskrivning</th>
+            <th>Startdatum</th>
+            <th>Slutdatum</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var utbildning in Model.utbildningar)
+        {
+            <tr>
+                <td>@utbildning.Instutition</td>
+                <td>@utbildning.Kurs_program</td>
+                <td>@utbildning.Beskrivning</td>
+                <td>@utbildning.StartDatum?.ToString("yyyy-MM-dd")</td>
+                <td>@utbildning.SlutDatum?.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>
 </div>
+</div>
+
+
+
 
 @if (Model.anvandare.Anvandarnamn.Equals(User?.Identity?.Name))
 {
@@ -72,3 +122,11 @@
     <p>Totalt antal besökare: @Model.Cv.AntalBesokare</p>
     <br />
 }
+
+<h1>Rensa alla CV:n</h1>
+
+<form method="post" asp-action="TaBortAllaCvn">
+    <div class="form-group">
+        <button type="submit" class="btn btn-danger">Rensa alla CV:n</button>
+    </div>
+</form>

@@ -31,10 +31,10 @@ namespace CV_ASP.NET.Controllers
             model.Anvandare = testDb.Anvandare.Where(u => !u.PrivatProfil).Where(u => u.CV != null).Where(u => !u.Aktiverad).Take(4).ToList();
 
             //Hämtar det senaste projektet och sorterar genom datum de skapades (fallande) samt konverterar resultatet till lista
-            model.Projekt = testDb.Projekt
-                .OrderByDescending(p => p.DatumSkapad)
-                .Take(1)
-                .ToList();
+            //model.Projekt = testDb.Projekt
+            //    .OrderByDescending(p => p.DatumSkapad)
+            //    .Take(1)
+            //    .ToList();
 
             return View(model);
         }

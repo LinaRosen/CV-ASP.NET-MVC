@@ -18,7 +18,8 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    color: #3b404f;
 }
 
 
@@ -34,17 +35,29 @@ body {
 /* User-info box */
 .anvandar-info {
     width: 50%; /* Halva bredden av containern */
-    background-color: #f9f9f9;
+    background-color: #ced4da;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.bild {
+    width: 40%;
+    background-color: #ced4da;
+    border: 1px solid #cce7ff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+textarea.form-control {
+    max-height: 200px; /* Justera höjden efter behov */
+    overflow-y: auto; /* Gör att användaren kan scrolla om texten är längre än rutan */
+}
 
 .cv-box {
     width: 40%;
-    background-color: #eef7ff;
+    background-color: #ced4da;
     border: 1px solid #cce7ff;
     border-radius: 8px;
     padding: 20px;
@@ -82,17 +95,23 @@ body {
         min-width: 120px; /* Samma bredd för etiketter */
     }
 
-    .anvandar-info i {
-      color: #007bff; /* Blå färg för ikoner */
-      margin-right: 8px; /* Lite mellanrum mellan ikoner och text */
-     }
+        .anvandar-info i {
+            color: #41464b; /* Blå färg för ikoner */
+            margin-right: 8px; /* Lite mellanrum mellan ikoner och text */
+        }
 
+.cv-container {
+    display: flex;
+    justify-content: center; /* Horisontell centrering */
+    align-items: center; /* Vertikal centrering */
+    height: 100vh; /* Fyll hela höjden på viewporten */
+}
 
 .cv-sida {
-    width: 50%; /* Halva bredden av containern */
-    background-color: #f9f9f9;
+    width: 98%;
+    background-color: #ced4da;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 3px 3px rgba(0, 0, 0, 0.1);
 }

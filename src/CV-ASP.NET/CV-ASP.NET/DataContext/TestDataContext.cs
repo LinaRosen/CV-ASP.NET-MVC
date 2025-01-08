@@ -19,7 +19,12 @@ namespace CV_ASP.NET.DataContext
         public DbSet<Meddelande> Meddelande { get; set; }
         public DbSet<Utbildning> Utbildning { get; set; }
         public DbSet<Projekt> Projekt { get; set; }
-        public DbSet<AnvProjekt> AnvProjekt { get; set; }
+        public DbSet<AnvProjekt> AnvProjekt { get; set; } 
+
+        public DbSet<Erfarenhet> erfarenhets { get; set; }  
+        public DbSet<Utbildning> utbildnings { get; set; }
+        public DbSet<Kompetenser> kompetensers { get; set; }
+
 
 
 
@@ -39,12 +44,50 @@ namespace CV_ASP.NET.DataContext
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);
+
+
+            // CV_kompetenser konfiguration
             modelBuilder.Entity<CV_kompetenser>()
-                .HasKey(cc => new { cc.Cvid, cc.Kid });
+            .HasKey(ck => new { ck.Cvid, ck.Kid });
+
+            modelBuilder.Entity<CV_kompetenser>()
+                .HasOne(ck => ck.CV)
+                .WithMany(cv => cv.CvKompetenser)
+                .HasForeignKey(ck => ck.Cvid);
+
+            modelBuilder.Entity<CV_kompetenser>()
+                .HasOne(ck => ck.Kompetenser)
+                .WithMany(k => k.CV_kompetenser)
+                .HasForeignKey(ck => ck.Kid);
+
+            // CV_Utbildning konfiguration
             modelBuilder.Entity<CV_Utbildning>()
                 .HasKey(ce => new { ce.CVid, ce.Uid });
+
+            modelBuilder.Entity<CV_Utbildning>()
+                .HasOne(ce => ce.cv)
+                .WithMany(cv => cv.CvUtbildning)
+                .HasForeignKey(ce => ce.CVid);
+
+            modelBuilder.Entity<CV_Utbildning>()
+                .HasOne(ce => ce.utbildning)
+                .WithMany(u => u.cv_Utbildning)
+                .HasForeignKey(ce => ce.Uid);
+
+            // CV_Erfarenhet konfiguration
             modelBuilder.Entity<CV_Erfarenhet>()
                 .HasKey(cex => new { cex.Cvid, cex.Eid });
+
+            modelBuilder.Entity<CV_Erfarenhet>()
+                .HasOne(cex => cex.cv)
+                .WithMany(cv => cv.CvErfarenhet)
+                .HasForeignKey(cex => cex.Cvid);
+
+            modelBuilder.Entity<CV_Erfarenhet>()
+                .HasOne(cex => cex.erfarenhet)
+                .WithMany(e => e.cv_Erfarenhet)
+                .HasForeignKey(cex => cex.Eid);
+
             modelBuilder.Entity<AnvProjekt>()
                 .HasKey(up => new { up.Anvid, up.Pid });
 

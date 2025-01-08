@@ -237,6 +237,10 @@ namespace CV_ASP.NET.Migrations
                     b.Property<int>("Kid")
                         .HasColumnType("int");
 
+                    b.Property<string>("KompetensNamn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Cvid", "Kid");
 
                     b.HasIndex("Kid");
@@ -278,10 +282,6 @@ namespace CV_ASP.NET.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Kid"));
 
                     b.Property<string>("Beskrivning")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KompetensNamn")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -551,7 +551,7 @@ namespace CV_ASP.NET.Migrations
             modelBuilder.Entity("CV_ASP.NET.Models.CV_Erfarenhet", b =>
                 {
                     b.HasOne("CV_ASP.NET.Models.CV", "cv")
-                        .WithMany()
+                        .WithMany("CvErfarenhet")
                         .HasForeignKey("Cvid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -570,7 +570,7 @@ namespace CV_ASP.NET.Migrations
             modelBuilder.Entity("CV_ASP.NET.Models.CV_Utbildning", b =>
                 {
                     b.HasOne("CV_ASP.NET.Models.CV", "cv")
-                        .WithMany()
+                        .WithMany("CvUtbildning")
                         .HasForeignKey("CVid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -589,7 +589,7 @@ namespace CV_ASP.NET.Migrations
             modelBuilder.Entity("CV_ASP.NET.Models.CV_kompetenser", b =>
                 {
                     b.HasOne("CV_ASP.NET.Models.CV", "CV")
-                        .WithMany()
+                        .WithMany("CvKompetenser")
                         .HasForeignKey("Cvid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -691,6 +691,15 @@ namespace CV_ASP.NET.Migrations
                     b.Navigation("TagitEmotMeddelande");
 
                     b.Navigation("skickatMeddelande");
+                });
+
+            modelBuilder.Entity("CV_ASP.NET.Models.CV", b =>
+                {
+                    b.Navigation("CvErfarenhet");
+
+                    b.Navigation("CvKompetenser");
+
+                    b.Navigation("CvUtbildning");
                 });
 
             modelBuilder.Entity("CV_ASP.NET.Models.Erfarenhet", b =>
