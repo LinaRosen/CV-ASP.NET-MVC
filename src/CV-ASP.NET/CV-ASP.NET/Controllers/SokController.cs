@@ -58,6 +58,41 @@ namespace CV_ASP.NET.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AnvSida(string userId)
+        {
+            // Kontrollera att parametern inte är null eller tom
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest("User ID is required.");
+            }
+
+            // Hämta användaren från databasen
+            var anvandare = await _context.Anvandare
+                .Include(a => a.CV) // Ladda CV för användaren om det finns
+                .Include(a => a.Adress) // Ladda Adress om det finns
+                .FirstOrDefaultAsync(a => a.Id == userId);
+
+            // Kontrollera om användaren hittades
+            if (anvandare == null)
+            {
+                return NotFound("Användaren hittades inte.");
+            }
+
+            // Skapa ViewModel för användarsidan
+            var viewModel = new AnvandarSidaViewModel
+            {
+                anvandare = anvandare,
+                CV = anvandare.CV,
+                adress = anvandare.Adress,
+                epost = anvandare.Email
+            };
+
+            // Returnera vyn med ViewModel
+            return View(viewModel);
+        }
+
+
 
 
 

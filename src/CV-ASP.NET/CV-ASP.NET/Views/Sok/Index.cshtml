@@ -35,7 +35,13 @@
                     <td>
                         @if (!anvandare.PrivatProfil || User.Identity.IsAuthenticated)
                         {
-                            <a asp-controller="Anvandare" asp-action="Profil" asp-route-userId="@anvandare.Id" class="btn btn-primary">Visa profil</a>
+                           /* <a asp-controller="Sok" asp-action="AnvSida" asp-route-userId="@anvandare.Id">Visa profil</a>*/
+                           // <a asp-controller="Anvsida" asp-action="VisaProfil" asp-route-id="@anvandare.Id">Visa Profil</a>
+                            <a asp-controller="Anvsida" asp-action="AnvSida" asp-route-id="@anvandare.Id">Visa Profil</a>
+
+                            
+
+
                         }
                         else
                         {
