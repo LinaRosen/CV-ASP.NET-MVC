@@ -5,6 +5,7 @@ namespace CV_ASP.NET.Models.ViewModels
 
         public class RegistreraViewModel
         {
+
             [Required(ErrorMessage = "Du måste ange ett användarnamn")]
             [RegularExpression(@"^[a-zA-Z0-9._-]{3,20}$", ErrorMessage = "Fel format på användarnamnet")]
             public string Anvandarnamn { get; set; }
@@ -41,7 +42,7 @@ namespace CV_ASP.NET.Models.ViewModels
             [RegularExpression(@"^\d{10}$", ErrorMessage = "Telefonnummer måste vara 10 siffror")]
             public string Telefonnummer { get; set; }
         
-            public AndraAdressViewModel Adress { get; set; } = new AndraAdressViewModel();
+            public Adress Adress { get; set; } = new Adress();
     }
 }
 

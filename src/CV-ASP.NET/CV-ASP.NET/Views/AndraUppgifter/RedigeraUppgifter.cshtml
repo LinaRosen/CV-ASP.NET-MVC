@@ -1,0 +1,58 @@
+﻿@model CV_ASP.NET.Models.ViewModels.RedigeraUppgifterViewModel
+
+<h2>Redigera Uppgifter</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<form method="post">
+    <h4>Kontaktinformation</h4>
+    <div>
+        <label asp-for="anvandare.Anvandarnamn"></label>
+        <input asp-for="anvandare.Anvandarnamn" />
+        <span asp-validation-for="anvandare.Anvandarnamn"></span>
+    </div>
+    <div>
+        <label asp-for="anvandare.Fornamn"></label>
+        <input asp-for="anvandare.Fornamn" />
+        <span asp-validation-for="anvandare.Fornamn"></span>
+    </div>
+    <div>
+        <label asp-for="anvandare.Efternamn"></label>
+        <input asp-for="anvandare.Efternamn" />
+        <span asp-validation-for="anvandare.Efternamn"></span>
+    </div>
+    <div>
+        <label asp-for="anvandare.Email"></label>
+        <input asp-for="anvandare.Email" />
+        <span asp-validation-for="anvandare.Email"></span>
+    </div>
+    <div>
+        <label asp-for="anvandare.PhoneNumber"></label>
+        <input asp-for="anvandare.PhoneNumber" />
+        <span asp-validation-for="anvandare.PhoneNumber"></span>
+    </div>
+
+    <h4>Adress</h4>
+    <div>
+        <label asp-for="adress.Gatunamn"></label>
+        <input asp-for="adress.Gatunamn" />
+        <span asp-validation-for="adress.Gatunamn"></span>
+    </div>
+    <div>
+        <label asp-for="adress.Stad"></label>
+        <input asp-for="adress.Stad" />
+        <span asp-validation-for="adress.Stad"></span>
+    </div>
+    <div>
+        <label asp-for="adress.Postnummer"></label>
+        <input asp-for="adress.Postnummer" />
+        <span asp-validation-for="adress.Postnummer"></span>
+    </div>
+
+    <button type="submit">Spara ändringar</button>
+</form>
