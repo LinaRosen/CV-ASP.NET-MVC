@@ -9,6 +9,8 @@ namespace CV_ASP.NET.Models.ViewModels
         public Adress adress { get; set; }
         public Anvandare anvandare { get; set; }
 
+        public string? inloggadAnvandare { get; set; }
+
     }
 
    

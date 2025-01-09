@@ -19,49 +19,73 @@ namespace CV_ASP.NET.Controllers
             _context = context;
         }
 
-        // Redigera användaruppgifter (GET)
-        public async Task<IActionResult> RedigeraUppgifter(string anvId)
+        [HttpGet]
+        public async Task <IActionResult> RedigeraUppgifter()
         {
             string? inloggadAnv = base.HamtaAnv();
-
-            RedigeraUppgifterViewModel model = new RedigeraUppgifterViewModel();
-
-            if (anvId.Equals(inloggadAnv))
+            if (string.IsNullOrEmpty(inloggadAnv))
             {
-                model.anvandare = _context.Users.FirstOrDefault(u => u.Id == anvId);
-                model.adress = _context.Adresser.Where(a => a.Anvid.Equals(inloggadAnv)).FirstOrDefault();
-                var adressen = new Adress();
-
-                adressen.Gatunamn = model.adress.Gatunamn;
-                adressen.Stad = model.adress.Stad;
-                adressen.Postnummer = model.adress.Postnummer;
-
-                var anv = new Anvandare();
-
-                anv.Anvandarnamn = model.anvandare.Anvandarnamn;
-                anv.Fornamn = model.anvandare.Fornamn;
-                anv.Efternamn = model.anvandare.Efternamn;
-                anv.Email = model.anvandare.Email;
-                anv.PhoneNumber = model.anvandare.PhoneNumber;
-                anv.PrivatProfil = model.anvandare.PrivatProfil;
-            }
-
-
-            else
-            {
-                ModelState.AddModelError("", "Användaren är inte inloggad.");
                 return RedirectToAction("Login", "Account");
             }
 
-            var user = await _userManager.FindByIdAsync(anvId);
-            if (user == null)
+            var anvandare = _context.Users.FirstOrDefault(u => u.Id == inloggadAnv);
+            var adress = _context.Adresser.FirstOrDefault(a => a.Anvid == inloggadAnv);
+
+            if (anvandare == null || adress == null)
             {
-                ModelState.AddModelError("", "Användaren hittades inte.");
+                ModelState.AddModelError("", "Användar- eller adressinformation kunde inte hämtas.");
                 return View();
             }
 
+            var model = new RedigeraUppgifterViewModel
+            {
+                anvandare = anvandare,
+                adress = adress
+            };
+
             return View(model);
         }
- 
+
+        [HttpPost]
+        [ActionName("RedigeraUppgifter")]
+        // Redigera användaruppgifter (GET)
+        public async Task<IActionResult> RedigeraUpg(RedigeraUppgifterViewModel model)
+        {
+            string? inloggadAnv = base.HamtaAnv();
+            if (string.IsNullOrEmpty(inloggadAnv))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var anvandare = _context.Users.FirstOrDefault(u => u.Id == inloggadAnv);
+            var adress = _context.Adresser.FirstOrDefault(a => a.Anvid == inloggadAnv);
+
+            if (anvandare == null || adress == null)
+            {
+                ModelState.AddModelError("", "Användar- eller adressinformation kunde inte hittas.");
+                return View(model);
+            }
+
+            // Uppdatera användarens information
+            anvandare.Anvandarnamn = model.anvandare.Anvandarnamn;
+            anvandare.Fornamn = model.anvandare.Fornamn;
+            anvandare.Efternamn = model.anvandare.Efternamn;
+            anvandare.Email = model.anvandare.Email;
+            anvandare.PhoneNumber = model.anvandare.PhoneNumber;
+            anvandare.PrivatProfil = model.anvandare.PrivatProfil;
+
+            // Uppdatera adressinformationen
+            adress.Gatunamn = model.adress.Gatunamn;
+            adress.Stad = model.adress.Stad;
+            adress.Postnummer = model.adress.Postnummer;
+
+            // Spara ändringar i databasen
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Dina uppgifter har uppdaterats.";
+            return RedirectToAction("Anvsida", "AnvSida"); // Ändra "Profil" och "Anvandare" till rätt vy/kontroller
+        }
+
+
     }
 }

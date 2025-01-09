@@ -2,57 +2,59 @@
 
 <h2>Redigera Uppgifter</h2>
 
-@if (TempData["SuccessMessage"] != null)
+@* @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success">
         @TempData["SuccessMessage"]
     </div>
-}
+} *@
 
-<form method="post">
+@* <h1>@Model.anvandare.Id</h1> *@
+<div asp-validation-summary="All" class="text-danger"></div>
+<form method="post" asp-action="RedigeraUppgifter" enctype="multipart/form-data">
     <h4>Kontaktinformation</h4>
     <div>
         <label asp-for="anvandare.Anvandarnamn"></label>
         <input asp-for="anvandare.Anvandarnamn" />
-        <span asp-validation-for="anvandare.Anvandarnamn"></span>
+        <span asp-validation-for="anvandare.Anvandarnamn" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="anvandare.Fornamn"></label>
         <input asp-for="anvandare.Fornamn" />
-        <span asp-validation-for="anvandare.Fornamn"></span>
+        <span asp-validation-for="anvandare.Fornamn" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="anvandare.Efternamn"></label>
         <input asp-for="anvandare.Efternamn" />
-        <span asp-validation-for="anvandare.Efternamn"></span>
+        <span asp-validation-for="anvandare.Efternamn" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="anvandare.Email"></label>
         <input asp-for="anvandare.Email" />
-        <span asp-validation-for="anvandare.Email"></span>
+        <span asp-validation-for="anvandare.Email" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="anvandare.PhoneNumber"></label>
         <input asp-for="anvandare.PhoneNumber" />
-        <span asp-validation-for="anvandare.PhoneNumber"></span>
+        <span asp-validation-for="anvandare.PhoneNumber" class="text-danger"></span>
     </div>
 
     <h4>Adress</h4>
     <div>
         <label asp-for="adress.Gatunamn"></label>
         <input asp-for="adress.Gatunamn" />
-        <span asp-validation-for="adress.Gatunamn"></span>
+        <span asp-validation-for="adress.Gatunamn" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="adress.Stad"></label>
         <input asp-for="adress.Stad" />
-        <span asp-validation-for="adress.Stad"></span>
+        <span asp-validation-for="adress.Stad" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="adress.Postnummer"></label>
         <input asp-for="adress.Postnummer" />
-        <span asp-validation-for="adress.Postnummer"></span>
+        <span asp-validation-for="adress.Postnummer" class="text-danger"></span>
     </div>
 
-    <button type="submit">Spara ändringar</button>
+    <button type="submit" class="btn btn-primary">Spara ändringar</button>
 </form>
