@@ -1,4 +1,110 @@
-﻿using CV_ASP.NET.Controllers;
+﻿using System.Security.Claims;
+using CV_ASP.NET.Controllers;
+using CV_ASP.NET.DataContext;
+using CV_ASP.NET.Models;
+using CV_ASP.NET.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+public class MeddelandeController : BasController
+{
+    private readonly TestDataContext _testDb;
+    private readonly UserManager<Anvandare> _hanteraAnv;
+
+    public MeddelandeController(TestDataContext context, UserManager<Anvandare> hanteraAnv)
+    {
+        _testDb = context;
+        _hanteraAnv = hanteraAnv;
+    }
+
+    [HttpGet]
+    public IActionResult SkickaMeddelande(string tillAnvandareId)
+    {
+        var viewModel = new SkickaMeddelandeViewModel
+        {
+            TillAnvandareId = tillAnvandareId
+        };
+
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    public IActionResult SkickaMeddelande(SkickaMeddelandeViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model); // Returnera med felmeddelanden om modellen är ogiltig
+        }
+
+        // Kontrollera om mottagar-ID är angivet
+        if (string.IsNullOrEmpty(model.TillAnvandareId))
+        {
+            ModelState.AddModelError("TillAnvandareId", "Mottagare saknas.");
+            return View(model);
+        }
+
+        var meddelande = new Meddelande
+        {
+            TillAnvandareId = model.TillAnvandareId,
+            Innehall = model.Innehall,
+            Last = false,
+        };
+
+        if (User.Identity.IsAuthenticated)
+        {
+            meddelande.FranAnvandareId = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+            meddelande.AnonymAnvandare = null; // Nollställ anonymt namn för inloggad användare
+        }
+        else
+        {
+            meddelande.AnonymAnvandare = model.AnonymAnvandare;
+        }
+
+        _testDb.Meddelande.Add(meddelande);
+        _testDb.SaveChanges();
+
+        TempData["SuccessMessage"] = "Ditt meddelande har skickats!";
+        return RedirectToAction("MeddelandeSida");
+    }
+
+    public async Task<IActionResult> MeddelandeSida()
+    {
+        var anvString = base.HamtaAnv();
+        if (string.IsNullOrEmpty(anvString))
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var anv = _testDb.Users.SingleOrDefault(u => u.Id == anvString);
+        if (anv == null)
+        {
+            return NotFound();
+        }
+
+        var meddelanden = _testDb.Meddelande.Where(m => m.TillAnvandareId == anv.Id).ToList();
+
+        var viewModel = new MeddelandeViewModel
+        {
+            Meddelanden = meddelanden
+        };
+
+        return View(viewModel);
+    }
+    [HttpGet]
+    public IActionResult Kontakta(string tillAnvandareId)
+    {
+        // Skapa ViewModel och skicka TillAnvandareId till vyn
+        var viewModel = new SkickaMeddelandeViewModel
+        {
+            TillAnvandareId = tillAnvandareId
+        };
+
+        // Returnera vyn med ViewModel
+        return View("SkickaMeddelande", viewModel);  // Detta borde vara din befintliga vy
+    }
+}
+/*using CV_ASP.NET.Controllers;
 using CV_ASP.NET.DataContext;
 using CV_ASP.NET.Models;
 using CV_ASP.NET.Models.ViewModels;
@@ -131,7 +237,6 @@ public class MeddelandeController : BasController
         return View(viewModel);
     }
     [HttpGet]
-    [HttpGet]
     public IActionResult Kontakta(string tillAnvandareId)
     {
         // Skapa ViewModel och skicka TillAnvandareId till vyn
@@ -145,6 +250,51 @@ public class MeddelandeController : BasController
     }
     [HttpPost]
     public IActionResult SkickaMeddelande(SkickaMeddelandeViewModel model)
+    {
+        // Validera modellen
+        if (!ModelState.IsValid)
+        {
+            return View(model); // Om ogiltig, återvänd till samma vy med felmeddelanden
+        }
+
+        // Skapa ett nytt Meddelande från ViewModel
+        var meddelande = new Meddelande
+        {
+            TillAnvandareId = model.TillAnvandareId,
+            Innehall = model.Innehall,
+            Last = false // Nya meddelanden är alltid olästa
+        };
+
+        // Om användaren är inloggad, fyll i deras namn
+        if (User.Identity.IsAuthenticated)
+        {
+            meddelande.FranAnvandareId = User.Identity.Name;
+            meddelande.AnonymAnvandare = null; // Rensa anonym om det är en inloggad användare
+        }
+        else
+        {
+            // Om användaren inte är inloggad, använd det anonyma namnet från formuläret
+            meddelande.AnonymAnvandare = model.AnonymAnvandare;
+        }
+
+        // Kontrollera om en mottagare är angiven
+        if (string.IsNullOrEmpty(meddelande.TillAnvandareId))
+        {
+            ModelState.AddModelError("TillAnvandareId", "Mottagare saknas.");
+            return View(model); // Om ingen mottagare angavs, visa felmeddelande
+        }
+
+        // Spara meddelandet i databasen
+        testDb.Meddelande.Add(meddelande);
+        testDb.SaveChanges();
+
+        // Skicka framgångsmeddelande och omdirigera till meddelandesidan
+        TempData["SuccessMessage"] = "Ditt meddelande har skickats!";
+        return RedirectToAction("MeddelandeSida");
+    }
+
+    /*[HttpPost]
+    public IActionResult SkickaMeddelandeForm(SkickaMeddelandeViewModel model)
     {
         if (ModelState.IsValid)
         {
@@ -171,6 +321,12 @@ public class MeddelandeController : BasController
             meddelande.AnonymAnvandare = null; // Rensa anonym om det är en inloggad användare
         }
 
+        if (string.IsNullOrEmpty(meddelande.TillAnvandareId))
+        {
+            ModelState.AddModelError("TillAnvandareId", "Mottagare saknas.");
+            return View(meddelande); // Om ingen mottagare angavs, visa felmeddelande
+        }
+
         meddelande.Last = false; // Nya meddelanden är alltid olästa
 
         testDb.Meddelande.Add(meddelande);
@@ -189,5 +345,5 @@ public class MeddelandeController : BasController
 
             return View(viewModel);
         }*/
-    }
-}
+
+
