@@ -82,7 +82,7 @@ namespace CV_ASP.NET.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LogIn(LoggaInViewModel loginViewModel)
+        public async Task<IActionResult> LoggaIn(LoggaInViewModel loginViewModel)
         {
             if (ModelState.IsValid)
             {
