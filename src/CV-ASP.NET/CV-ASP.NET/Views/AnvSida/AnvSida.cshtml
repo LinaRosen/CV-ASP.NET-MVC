@@ -28,6 +28,13 @@
     <p><i class="fas fa-envelope"></i> <span class="label">Epost:</span> @Html.DisplayFor(p => p.anvandare.Email)</p>
     <p><i class="fas fa-city"></i> <span class="label">Stad:</span> @Html.DisplayFor(p => p.anvandare.Adress.Stad)</p>
     <p><i class="fas fa-phone"></i> <span class="label">Telefonnummer:</span> @Html.DisplayFor(p => p.anvandare.PhoneNumber)</p>
+
+
+        <a asp-controller="AndraUppgifter" asp-action="RedigeraUppgifter" asp-route-anvId="@Model.anvandare.Id" class="btn btn-primary">
+                Redigera användare
+            </a>
+        
+
 </div>
 
     <div class="cv-box">
