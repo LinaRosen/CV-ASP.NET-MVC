@@ -21,13 +21,13 @@
         {
             <div class="col-md-3 mb-4">
                 <div class="card" style="width: 100%; background-color: #d3d3d3;">
-                    @if (Anvandare.Profilbild != null)
+                    @if (Anvandare?.CV?.Profilbild != null)
                     {
-                        <img src="~/Images/@Anvandare.Profilbild" class="card-img-top" alt="Profilbild" asp-append-version="true" />
+                        <img src="~/Images/@Anvandare.CV.Profilbild" class="card-img-top" alt="Profilbild" asp-append-version="true" />
                     }
                     <div class="card-body">
                         <h5 class="card-title">@Anvandare.Fornamn @Anvandare.Efternamn</h5>
-                        <p>Användarnamn: @Anvandare.Anvandarnamn</p>
+                        <p>Om mig: @Anvandare.CV.Beskrivning</p>
                         <form method="post" asp-controller="Cv" asp-action="VisaCv" asp-route-anvid="@Anvandare.Id">
                             <input type="submit" class="btn btn-dark btn-sm" value="Till profil" />
                         </form>
@@ -43,6 +43,3 @@
 
 <h1>Senast upplagda projekt</h1>
 
-@foreach (var Anvandare in Model.Anvandare){
-    <img src="~/Images/@Anvandare.Profilbild"  alt="Profilbild" asp-append-version="true" />
-}
