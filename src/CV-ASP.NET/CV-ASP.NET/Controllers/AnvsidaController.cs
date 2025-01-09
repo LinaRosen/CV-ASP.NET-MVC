@@ -32,7 +32,11 @@ namespace CV_ASP.NET.Controllers
             string inloggadAnv = base.HamtaAnv();
             //String anonymAnv = Anvid ?? inloggadAnv;
 
-            var anv = testDb.Users.SingleOrDefault(u => u.Id == inloggadAnv);
+            var anv = await testDb.Users
+              .Include(u => u.CV) // Lägger till CV-information
+              .SingleOrDefaultAsync(u => u.Id == inloggadAnv);
+            /*= testDb.Users.SingleOrDefault(u => u.Id == inloggadAnv);*/
+
             var adress = testDb.Adresser.SingleOrDefault(a => a.Anvid == inloggadAnv);
             var cv = testDb.CV.SingleOrDefault(c => c.AnvandarNamn == inloggadAnv);
 
@@ -53,11 +57,14 @@ namespace CV_ASP.NET.Controllers
 
             var AnvandarSida = new AnvandarSidaViewModel
             {
-                anvandare = anv,
-                CV = cv,
+                anvandare = anv, // Skicka hela listan av användare till vyn
                 InloggadAnvandare = inloggadAnv,
-                adress= adress,
-                epost= AnvEmail
+                CV = anv.CV,
+                //anvandare = anv,
+                //CV = anv.CV,
+                //InloggadAnvandare = inloggadAnv,
+                //adress= adress,
+                //epost= AnvEmail
 
             };
             return View(AnvandarSida);

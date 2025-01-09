@@ -28,8 +28,13 @@ namespace CV_ASP.NET.Controllers
             StartsidaViewModel model = new StartsidaViewModel { };
 
             //Hämtar 4 CVn från databasen
-            model.Anvandare = testDb.Anvandare.Where(u => !u.PrivatProfil).Where(u => u.CV != null).Where(u => !u.Aktiverad).Take(4).ToList();
-
+            model.Anvandare = testDb.Anvandare
+                .Where(u => !u.PrivatProfil)
+                .Where(u => u.CV != null)  // Se till att användare har ett CV
+                .Where(u => !u.Aktiverad)
+                .Include(u => u.CV)  // Inkludera CV-data
+                .Take(4)
+                .ToList();
             //Hämtar det senaste projektet och sorterar genom datum de skapades (fallande) samt konverterar resultatet till lista
             //model.Projekt = testDb.Projekt
             //    .OrderByDescending(p => p.DatumSkapad)
