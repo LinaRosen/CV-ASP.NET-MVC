@@ -1,7 +1,6 @@
-﻿<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="sites.css">
-
+﻿@using CV_ASP.NET.Models.ViewModels
 @model AnvandarSidaViewModel
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 @{
     ViewData["Title"] = "Profil";
 }
@@ -17,52 +16,44 @@
     <h1 class="display-4" style="font-family: 'Helvetica', sans-serif;">-Profil-</h1>
 </div>
 
-
-<div class="anvandar-sida">
-<div class="anvandar-info" style="padding-bottom:60px">
-    <h3>Profilbild:</h3>
-    <img src="~/Images/@Html.ValueFor(p => p.CV.Profilbild)" class="img-fluid" alt="Responsive image" asp-append-version="true" height="200px" width="200px" />
-    <p><i class="fas fa-user"></i> <span class="label">Anvandarnamn:</span> @Html.DisplayFor(p => p.anvandare.UserName)</p>
-    <p><i class="fas fa-user"></i> <span class="label">Förnamn:</span> @Html.DisplayFor(p => p.anvandare.Fornamn)</p>
-    <p><i class="fas fa-user"></i> <span class="label">Efternamn:</span> @Html.DisplayFor(p => p.anvandare.Efternamn)</p>
-    <p><i class="fas fa-envelope"></i> <span class="label">Epost:</span> @Html.DisplayFor(p => p.anvandare.Email)</p>
-    <p><i class="fas fa-city"></i> <span class="label">Stad:</span> @Html.DisplayFor(p => p.anvandare.Adress.Stad)</p>
-    <p><i class="fas fa-phone"></i> <span class="label">Telefonnummer:</span> @Html.DisplayFor(p => p.anvandare.PhoneNumber)</p>
-
-
-        <a asp-controller="AndraUppgifter" asp-action="RedigeraUppgifter" asp-route-anvId="@Model.anvandare.Id" class="btn btn-primary">
-                Redigera användare
-            </a>
-        
-
-</div>
-
-    <div class="cv-box">
-@if (Model?.CV == null && Model?.anvandare?.Id != null && Model.anvandare.Id.Equals(Model?.InloggadAnvandare))
-{
-    <div class="Skapa-cv">
-    <a class="btn btn-dark btn-sm" asp-controller="Cv" asp-action="SkapaCv">Lägg till ett Cv</a>
-    <br />
+<!-- Använd en annan klassnamn för denna sektion -->
+<div class="profil-container">
+    <div class="profil-info" style="padding-bottom:60px">
+        <h3>Profilbild:</h3>
+        <img src="~/Images/@Html.ValueFor(p => p.CV.Profilbild)" class="img-fluid" alt="Profilbild" asp-append-version="true" height="200px" width="200px" />
+        <p><i class="fas fa-user"></i> <span class="label">Användarnamn:</span> @Html.DisplayFor(p => p.anvandare.UserName)</p>
+        <p><i class="fas fa-user"></i> <span class="label">Förnamn:</span> @Html.DisplayFor(p => p.anvandare.Fornamn)</p>
+        <p><i class="fas fa-user"></i> <span class="label">Efternamn:</span> @Html.DisplayFor(p => p.anvandare.Efternamn)</p>
+        <p><i class="fas fa-envelope"></i> <span class="label">E-post:</span> @Html.DisplayFor(p => p.anvandare.Email)</p>
+        <p><i class="fas fa-city"></i> <span class="label">Stad:</span> @Html.DisplayFor(p => p.anvandare.Adress.Stad)</p>
+        <p><i class="fas fa-phone"></i> <span class="label">Telefonnummer:</span> @Html.DisplayFor(p => p.anvandare.PhoneNumber)</p>
+        <a asp-controller="AndraUppgifter" asp-action="RedigeraUppgifter" asp-route-anvId="@Model.anvandare.Id" class="btn btn-dark btn-sm">
+            Redigera användare
+        </a>
     </div>
-}
 
-@if (Model.CV != null)
-{
-    <div class="Visa-cv" >
-    
-     <form method="post" asp-controller="Cv" asp-action="VisaCv" asp-route-anvid="@Model.anvandare.Id">
-                          
-        <input type="submit" class="btn btn-dark btn-sm" value="Visa CV" />
-    </form>
-    <br />
+    <!-- Ändrat namn på CV-sektionen -->
+    <div class="cv-section">
+        @if (Model?.CV == null && Model?.anvandare?.Id != null && Model.anvandare.Id.Equals(Model?.InloggadAnvandare))
+        {
+            <div class="create-cv">
+                <a class="btn btn-dark btn-sm" asp-controller="Cv" asp-action="SkapaCv">Lägg till ett CV</a>
+                <br />
+            </div>
+        }
+
+        @if (Model.CV != null)
+        {
+            <div class="view-cv">
+                <form method="post" asp-controller="Cv" asp-action="VisaCv" asp-route-anvid="@Model.anvandare.Id">
+                    <input type="submit" class="btn btn-dark btn-sm" value="Visa CV" />
+                </form>
+                <br />
+            </div>
+        }
     </div>
-}
-</div>
 </div>
 
+<!-- Kontaktknapp -->
 <a class="btn btn-dark btn-sm" asp-controller="Meddelande" asp-action="Kontakta">Kontakta mig</a>
 <br />
-
-
-
-

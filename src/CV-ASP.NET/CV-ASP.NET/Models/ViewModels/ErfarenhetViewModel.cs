@@ -2,8 +2,8 @@
 {
     public class ErfarenhetViewModel
     {
-        Erfarenhet erfarenhet {  get; set; }    
-        CV_Erfarenhet cV_Erfarenhet { get; set;}
+          Erfarenhet erfarenhet {  get; set; }    
+         CV_Erfarenhet cV_Erfarenhet { get; set;}
 
         public string Titel { get; set; }
         public string Beskrivning { get; set; }
@@ -11,6 +11,8 @@
         public DateOnly? StartDatum { get; set; }
 
         public DateOnly? Slutdatum { get; set; }
+        public int Eid { get; set; }
+        
 
     }
 }

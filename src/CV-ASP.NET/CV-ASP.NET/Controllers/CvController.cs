@@ -1,4 +1,5 @@
-﻿using CV_ASP.NET.DataContext;
+﻿using AspNetCoreGeneratedDocument;
+using CV_ASP.NET.DataContext;
 using CV_ASP.NET.Models;
 using CV_ASP.NET.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -85,11 +86,12 @@ namespace CV_ASP.NET.Controllers
             e => e.Eid,
              (ce, e) => new ErfarenhetViewModel
              {
-             Titel = e.Titel,
-             Arbetsgivare = e.Arbetsgivare,
-             Beskrivning = e.Beskrivning,
-             StartDatum = ce.Startdatum,
-             Slutdatum = ce.Slutdatum
+                 Eid = e.Eid, // Mappa Eid från Erfarenhet till ViewModel
+                 Titel = e.Titel,
+                 Arbetsgivare = e.Arbetsgivare,
+                 Beskrivning = e.Beskrivning,
+                 StartDatum = ce.Startdatum,
+                 Slutdatum = ce.Slutdatum
             })
             .ToList();
 
@@ -256,14 +258,118 @@ namespace CV_ASP.NET.Controllers
         [HttpGet]
         public IActionResult RedigeraCv()
         {
+            try
+            {
+                string inloggadAnv = base.HamtaAnv();
+
+                // Hämta användarens CV från databasen
+                var dettaCv = testDb.CV.SingleOrDefault(c => c.AnvandarNamn == inloggadAnv);
+
+                // Skapa ViewModel med data från användarens CV
+                var model = new RedigeraCvViewModel
+                {
+                    Beskrivning = dettaCv.Beskrivning,
+                    Profilbild = dettaCv.Profilbild
+                };
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                // Logga felet och visa ett felmeddelande
+                
+                TempData["ErrorMessage"] = "Ett fel uppstod. Försök igen.";
+                return RedirectToAction("Anvsida", "AnvSida");
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> RedigeraCv(RedigeraCvViewModel model)
+        {
+                string inloggadAnv = base.HamtaAnv();
+            try
+            {
+                var dettaCv = testDb.CV.SingleOrDefault(c => c.AnvandarNamn == inloggadAnv);
+
+                string nyBild = LaddaUppProfilbild(new SkapaCvViewModel
+                {
+                    cv = new CV
+                    {
+                        Bildfil = model.BildFil
+                    }
+
+                });
+                if (!string.IsNullOrEmpty(nyBild))
+                {
+                    dettaCv.Profilbild = nyBild; // Uppdatera profilbilden
+                }
+                
+                dettaCv.Beskrivning = model.Beskrivning;
+                
+                testDb.Update(dettaCv);
+                await testDb.SaveChangesAsync();
+
+                //Om allt går bra omdirigeras användaren till VisaCv
+                TempData["SuccessMessage"] = "CV har uppdaterats!";
+                return RedirectToAction("VisaCv", new { anvId = inloggadAnv }); // Omdirigera till VisaCv
+            }
+            catch (Exception ex)
+            {
+                //Vid fel returneras vyn med samma data för att låta användaren försöka igen
+                return View(model);
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult LaggTillErf()
+        {
+
             return View();
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> RedigeraCv(CV cv)
+        public async Task<IActionResult> LaggTillErf(ErfarenhetViewModel model)
         {
-            return View(cv);
+            string inloggadAnv = base.HamtaAnv();
+            var erfarenhet = new Erfarenhet();
+
+            erfarenhet.Eid= model.Eid;
+            erfarenhet.Arbetsgivare = model.Arbetsgivare;
+            erfarenhet.Titel = model.Titel;
+            erfarenhet.Beskrivning = model.Beskrivning;
+           
+
+            await testDb.Erfarenhet.AddAsync(erfarenhet);
+            await testDb.SaveChangesAsync();
+            
+
+            int dettaCv = testDb.CV.Where(c => c.AnvandarNamn == inloggadAnv).Single().Cvid;
+
+            var cvErfarenhet = new CV_Erfarenhet();
+
+            cvErfarenhet.Cvid = dettaCv;
+            cvErfarenhet.Startdatum = (DateOnly)model.StartDatum;
+            cvErfarenhet.Slutdatum = model.Slutdatum;
+            cvErfarenhet.Eid = erfarenhet.Eid;
+
+            await testDb.CV_Erfarenhet.AddAsync(cvErfarenhet);
+            await testDb.SaveChangesAsync();
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> TaBortErf(int id)
+        {
+            Models.Erfarenhet erf = testDb.Erfarenhet.Find(id);
+            //Tar bort erfarentets-sobjektet från databasen och sparar ändringarna i databasen
+            testDb.Erfarenhet.Remove(erf);
+            await testDb.SaveChangesAsync();
+            return RedirectToAction("VisaCv", "Cv");
+
         }
     }
 }
