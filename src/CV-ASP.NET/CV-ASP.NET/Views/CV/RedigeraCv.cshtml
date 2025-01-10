@@ -1,0 +1,47 @@
+﻿@using CV_ASP.NET.Models.ViewModels
+@model RedigeraCvViewModel
+<h1>Uppdatera ditt Cv</h1>
+<h2>Fyll i Beskrivning och lägg till en bild</h2>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post" asp-action="RedigeraCv" enctype="multipart/form-data">
+    @* Visa nuvarande beskrivning om den finns *@
+    @if (!string.IsNullOrEmpty(Model.Beskrivning))
+    {
+        <div class="form-group row mb-4">
+            <label class="col-sm-2">Nuvarande Beskrivning:</label>
+            <div class="col-sm-4">
+                <p>@Model.Beskrivning</p>
+            </div>
+        </div>
+    }
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Ny beskrivning:</label>
+        <div class="col-sm-4">
+            <textarea asp-for="Beskrivning" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Beskrivning" class="text-danger"></span>
+        </div>
+    </div>
+    @if (!string.IsNullOrEmpty(Model.Profilbild))
+    {
+        <div class="form-group row mb-4">
+            <label class="col-sm-2">Nuvarande Bild:</label>
+            <div class="col-sm-4">
+                <img src="~/Images/@Model.Profilbild" alt="Profilbild" class="img-thumbnail" style="max-width: 150px;" />
+            </div>
+        </div>
+    }
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Ladda upp ny bild:</label>
+        <div class="col-sm-4">
+            <input type="file" asp-for="BildFil" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="offset-sm-2 col-sm-4">
+            <button type="submit" class="btn btn-primary">Uppdatera Cv</button>
+        </div>
+    </div>
+</form>

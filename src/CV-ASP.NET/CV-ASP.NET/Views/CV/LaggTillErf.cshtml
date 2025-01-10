@@ -1,0 +1,56 @@
+﻿@using CV_ASP.NET.Models.ViewModels
+@model ErfarenhetViewModel
+
+@{
+    ViewData["Title"] = "Lägg till erfarenheter";
+}
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post" asp-action="LaggTillErf" enctype="multipart/form-data">
+<h3>Erfarenhet</h3>
+<div class="form-group row mb-4">
+    <label class="col-sm-2">Arbetsgivare:</label>
+    <div class="col-sm-4">
+        <input asp-for="Arbetsgivare" class="form-control" />
+        <span asp-validation-for="Arbetsgivare" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group row mb-4">
+    <label class="col-sm-2">Titel:</label>
+    <div class="col-sm-4">
+        <input asp-for="Titel" class="form-control" />
+        <span asp-validation-for="Titel" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group row mb-4">
+    <label class="col-sm-2">Beskrivning:</label>
+    <div class="col-sm-4">
+        <textarea asp-for="Beskrivning" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Beskrivning" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group row mb-4">
+    <label class="col-sm-2">Startdatum:</label>
+    <div class="col-sm-4">
+            <input asp-for="StartDatum" type="date" class="form-control" />
+            <span asp-validation-for="StartDatum" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group row mb-4">
+    <label class="col-sm-2">Slutdatum:</label>
+    <div class="col-sm-4">
+        <input asp-for="Slutdatum" type="date" class="form-control" />
+        <span asp-validation-for="Slutdatum" class="text-danger"></span>
+    </div>
+</div>
+    <div class="form-group row">
+        <div class="offset-sm-2 col-sm-4">
+            <button type="submit" class="btn btn-primary">Lägg till erfarenhet</button>
+        </div>
+    </div>
+</form>

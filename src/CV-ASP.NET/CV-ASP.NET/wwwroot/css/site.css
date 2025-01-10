@@ -24,13 +24,14 @@ body {
 
 
 .anvandar-sida {
-    display: flex; /* Gör barnen flexibla */
-    justify-content: space-between; /* Lämnar utrymme mellan boxarna */
-    align-items: flex-start; /* Justerar dem högst upp */
-    align-items: stretch;
-    gap: 20px; /* Avstånd mellan boxarna */
-    margin: 20px; /* Yttre marginal */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Så att boxarna inte tvingas centreras, utan växer vertikalt */
+    gap: 20px;
+    margin: 20px;
+    flex-wrap: wrap; /* Gör att boxarna kan brytas till nästa rad om det behövs */
 }
+
 
 /* User-info box */
 .anvandar-info {
@@ -50,18 +51,33 @@ body {
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+.anvandar-info,
+.bild {
+    width: 48%; /* Se till att båda boxarna har tillräckligt med utrymme */
+    background-color: #ced4da;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex-grow: 1; /* Gör så att de växer i höjd för att hålla balans */
+    min-height: 300px; /* Minsta höjd, kan justeras efter behov */
+}
+
 textarea.form-control {
     max-height: 200px; /* Justera höjden efter behov */
     overflow-y: auto; /* Gör att användaren kan scrolla om texten är längre än rutan */
 }
 
 .cv-box {
-    width: 40%;
+    width: 100%;
     background-color: #ced4da;
     border: 1px solid #cce7ff;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-height: 300px;
+    overflow: auto; /* Lägg till scrollning om innehållet är för stort */
 }
 
 .visa-cv,
@@ -96,15 +112,16 @@ textarea.form-control {
     }
 
         .anvandar-info i {
-            color: #41464b; /* Blå färg för ikoner */
+            color: #555; 
             margin-right: 8px; /* Lite mellanrum mellan ikoner och text */
         }
 
 .cv-container {
     display: flex;
-    justify-content: center; /* Horisontell centrering */
-    align-items: center; /* Vertikal centrering */
-    height: 100vh; /* Fyll hela höjden på viewporten */
+    justify-content: center;
+    align-items: flex-start; /* Justera så att innehållet inte tvingas att centreras vertikalt */
+    flex-wrap: wrap; /* Gör att det kan brytas till ny rad om det behövs */
+    min-height: 100vh; /* Se till att hela sidan fylls vertikalt */
 }
 
 .cv-sida {
@@ -114,4 +131,47 @@ textarea.form-control {
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 3px 3px rgba(0, 0, 0, 0.1);
+}
+
+
+.profil-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin: 20px;
+    flex-wrap: wrap; /* Gör att boxarna kan brytas om innehållet är för brett */
+}
+
+.profil-info, .cv-section {
+    width: 48%; /* Ge varje sektion en bredd på 48% */
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-height: 300px; /* Lägg till minsta höjd så att det finns lite utrymme */
+}
+
+    /* Styling för etiketter */
+    .profil-info .label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .profil-info i {
+        color: #41464b;
+        margin-right: 8px;
+    }
+
+
+    .profil-info p {
+        margin: 10px 0;
+        line-height: 1.5;
+    }
+
+/* Ny design för knappar */
+.btn {
+    padding: 10px 15px;
+    font-size: 14px;
+    margin-top: 10px;
 }

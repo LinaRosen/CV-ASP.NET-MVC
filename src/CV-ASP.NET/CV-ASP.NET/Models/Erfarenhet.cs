@@ -23,6 +23,7 @@ namespace CV_ASP.NET.Models
         [DisplayName("Beskrivning av erfarenhet")]
         [RegularExpression(@"^[\p{L}\s.,]+$", ErrorMessage = "Du får endast ange bokstäver!")]
         public string Arbetsgivare { get; set; }
+        
 
         [XmlIgnore]
         public virtual IEnumerable<CV_Erfarenhet> cv_Erfarenhet { get; set; } = new List<CV_Erfarenhet>();
