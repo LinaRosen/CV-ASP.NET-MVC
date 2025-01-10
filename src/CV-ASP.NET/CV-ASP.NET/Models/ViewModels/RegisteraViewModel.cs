@@ -35,14 +35,19 @@ namespace CV_ASP.NET.Models.ViewModels
 
             public bool PrivatProfil { get; set; }
 
-            public IFormFile? Profilbild { get; set; }
-
         
             [Required(ErrorMessage = "Telefonnummer är obligatoriskt")]
             [RegularExpression(@"^\d{10}$", ErrorMessage = "Telefonnummer måste vara 10 siffror")]
             public string Telefonnummer { get; set; }
-        
-            public Adress Adress { get; set; } = new Adress();
+
+            [Required(ErrorMessage = "Du måste ange ett gatunamn")]
+            public string Gatunamn { get; set; }
+
+            [Required(ErrorMessage = "Du måste ange en stad")]
+            public string Stad { get; set; }
+
+            [Required(ErrorMessage = "Du måste ange ett postnummer")]
+            public string Postnummer { get; set; }
     }
 }
 

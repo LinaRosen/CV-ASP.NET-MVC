@@ -3,6 +3,7 @@
 <div class="container">
     <h1>Registrera ny användare</h1>
     <form asp-action="Registrera" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
         <div>
             <label asp-for="Anvandarnamn"></label>
             <input asp-for="Anvandarnamn" class="form-control" />
@@ -27,10 +28,6 @@
             <span asp-validation-for="Email" class="text-danger"></span>
         </div> 
 
-        <div>
-            <label asp-for="Profilbild"></label>
-            <input asp-for="Profilbild" type="file" class="form-control" />
-        </div>
 
         <div>
             <label asp-for="Telefonnummer"></label>
@@ -57,21 +54,21 @@
 
         <h3>Adressuppgifter</h3>
         <div>
-            <label asp-for="Adress.Gatunamn"></label>
-            <input asp-for="Adress.Gatunamn" class="form-control" />
-            <span asp-validation-for="Adress.Gatunamn" class="text-danger"></span>
+            <label asp-for="Gatunamn"></label>
+            <input asp-for="Gatunamn" class="form-control" />
+            <span asp-validation-for="Gatunamn" class="text-danger"></span>
         </div>
 
         <div>
-            <label asp-for="Adress.Stad"></label>
-            <input asp-for="Adress.Stad" class="form-control" />
-            <span asp-validation-for="Adress.Stad" class="text-danger"></span>
+            <label asp-for="Stad"></label>
+            <input asp-for="Stad" class="form-control" />
+            <span asp-validation-for="Stad" class="text-danger"></span>
         </div>
 
         <div>
-            <label asp-for="Adress.Postnummer"></label>
-            <input asp-for="Adress.Postnummer" class="form-control" />
-            <span asp-validation-for="Adress.Postnummer" class="text-danger"></span>
+            <label asp-for="Postnummer"></label>
+            <input asp-for="Postnummer" class="form-control" />
+            <span asp-validation-for="Postnummer" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-primary">Registrera</button>

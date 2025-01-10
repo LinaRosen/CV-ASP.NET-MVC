@@ -91,13 +91,18 @@ namespace CV_ASP.NET.DataContext
             modelBuilder.Entity<AnvProjekt>()
                 .HasKey(up => new { up.Anvid, up.Pid });
 
-            //// Relation mellan Anvandare och Adress
-            //modelBuilder.Entity<Adress>()
-            //    .HasOne(a => a.anvandare)           // En adress tillhör en användare
-            //    .WithOne(u => u.Adress)             // En användare har en adress
-            //    .HasForeignKey<Adress>(a => a.Anvid); // Anvid används som foreign key
+    
+            base.OnModelCreating(modelBuilder);
 
-        }
+            //modelBuilder.Entity<Adress>()
+            //    .HasOne(a => a.Anvandare)
+            //    .WithOne(u => u.Adress)
+            //    .HasForeignKey<Adress>(a => a.Anvid)
+            //    .OnDelete(DeleteBehavior.Cascade);
+        
+
 
     }
+
+}
 }
