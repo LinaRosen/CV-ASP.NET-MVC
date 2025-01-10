@@ -17,7 +17,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Profilbild</th>
                 <th>Användarnamn</th>
                 <th>Namn</th>
                 <th>Profil</th>
@@ -27,21 +26,14 @@
             @foreach (var anvandare in Model.Anvandare)
             {
                 <tr>
-                    <td>
-                        <img src="~/Images/@anvandare.CV.Profilbild" alt="Profilbild" width="100" height="100" />
-                    </td>
                     <td>@anvandare.Anvandarnamn</td>
                     <td>@anvandare.Fornamn @anvandare.Efternamn</td>
                     <td>
                         @if (!anvandare.PrivatProfil || User.Identity.IsAuthenticated)
                         {
-                           /* <a asp-controller="Sok" asp-action="AnvSida" asp-route-userId="@anvandare.Id">Visa profil</a>*/
-                           // <a asp-controller="Anvsida" asp-action="VisaProfil" asp-route-id="@anvandare.Id">Visa Profil</a>
-                            <a asp-controller="Anvsida" asp-action="AnvSida" asp-route-id="@anvandare.Id">Visa Profil</a>
-
-                            
-
-
+                            <form method="post" asp-controller="Cv" asp-action="VisaCv" asp-route-anvid="@anvandare.Id">
+                                <input type="submit" class="btn btn-dark btn-sm" value="Till profil" />
+                            </form>
                         }
                         else
                         {

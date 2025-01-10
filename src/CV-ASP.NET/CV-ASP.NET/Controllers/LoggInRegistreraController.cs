@@ -21,6 +21,7 @@ namespace CV_ASP.NET.Controllers
             this.signInManager = signInMngr;
             this._context = context;
         }
+
         [HttpGet]
         public IActionResult Registrera()
         {
@@ -32,6 +33,7 @@ namespace CV_ASP.NET.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Skapa användaren med adressfält
                 Anvandare anvandare = new Anvandare()
                 {
                     UserName = registerViewModel.Anvandarnamn,
@@ -40,24 +42,16 @@ namespace CV_ASP.NET.Controllers
                     Efternamn = registerViewModel.Efternamn,
                     Fornamn = registerViewModel.Fornamn,
                     PhoneNumber = registerViewModel.Telefonnummer,
-                    PrivatProfil = registerViewModel.PrivatProfil
-                };
-
-                Adress adress = new Adress()
-                {
-                    Gatunamn = registerViewModel.Adress.Gatunamn,
-                    Stad = registerViewModel.Adress.Stad,
-                    Postnummer = registerViewModel.Adress.Postnummer,
-                    Anvid = anvandare.Id // Länkar adressen till användaren
+                    PrivatProfil = registerViewModel.PrivatProfil,
+                    Gatunamn = registerViewModel.Gatunamn,
+                    Stad = registerViewModel.Stad,
+                    Postnummer = registerViewModel.Postnummer
                 };
 
                 var result = await userManager.CreateAsync(anvandare, registerViewModel.Losenord);
 
                 if (result.Succeeded)
                 {
-                    _context.Adresser.Add(adress); // Spara adressen
-                    await _context.SaveChangesAsync();
-
                     await signInManager.SignInAsync(anvandare, isPersistent: true);
                     return RedirectToAction("Index", "Home");
                 }
@@ -69,8 +63,15 @@ namespace CV_ASP.NET.Controllers
                     }
                 }
             }
+
             return View(registerViewModel);
         }
+
+
+
+
+
+
 
 
 
