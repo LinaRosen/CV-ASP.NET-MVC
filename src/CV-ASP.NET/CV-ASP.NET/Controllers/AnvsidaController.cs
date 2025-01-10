@@ -37,7 +37,7 @@ namespace CV_ASP.NET.Controllers
               .SingleOrDefaultAsync(u => u.Id == inloggadAnv);
             /*= testDb.Users.SingleOrDefault(u => u.Id == inloggadAnv);*/
 
-            var adress = testDb.Adresser.SingleOrDefault(a => a.Anvid == inloggadAnv);
+            //var adress = testDb.Adresser.SingleOrDefault(a => a.Anvid == inloggadAnv);
             var cv = testDb.CV.SingleOrDefault(c => c.AnvandarNamn == inloggadAnv);
 
 

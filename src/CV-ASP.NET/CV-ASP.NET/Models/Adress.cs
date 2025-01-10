@@ -23,11 +23,11 @@ namespace CV_ASP.NET.Models
         //[DisplayName("Postnummer")]
         public string Postnummer { get; set; }
 
-        [Required]
-        public string Anvid { get; set; }
+        //[Required]
+        //public string Anvid { get; set; }
 
-        [ForeignKey(nameof(Anvid))]
-        public virtual Anvandare Anvandare { get; set; }
+        //[ForeignKey(nameof(Anvid))]
+        //public virtual Anvandare Anvandare { get; set; }
 
     }
 }
