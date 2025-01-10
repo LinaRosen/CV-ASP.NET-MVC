@@ -29,9 +29,8 @@ namespace CV_ASP.NET.Controllers
             }
 
             var anvandare = _context.Users.FirstOrDefault(u => u.Id == inloggadAnv);
-            var adress = _context.Adresser.FirstOrDefault(a => a.Anvid == inloggadAnv);
 
-            if (anvandare == null || adress == null)
+            if (anvandare == null)
             {
                 ModelState.AddModelError("", "Användar- eller adressinformation kunde inte hämtas.");
                 return View();
@@ -39,8 +38,7 @@ namespace CV_ASP.NET.Controllers
 
             var model = new RedigeraUppgifterViewModel
             {
-                anvandare = anvandare,
-                adress = adress
+                anvandare = anvandare
             };
 
             return View(model);
@@ -58,9 +56,8 @@ namespace CV_ASP.NET.Controllers
             }
 
             var anvandare = _context.Users.FirstOrDefault(u => u.Id == inloggadAnv);
-            var adress = _context.Adresser.FirstOrDefault(a => a.Anvid == inloggadAnv);
 
-            if (anvandare == null || adress == null)
+            if (anvandare == null)
             {
                 ModelState.AddModelError("", "Användar- eller adressinformation kunde inte hittas.");
                 return View(model);
@@ -75,9 +72,9 @@ namespace CV_ASP.NET.Controllers
             anvandare.PrivatProfil = model.anvandare.PrivatProfil;
 
             // Uppdatera adressinformationen
-            adress.Gatunamn = model.adress.Gatunamn;
-            adress.Stad = model.adress.Stad;
-            adress.Postnummer = model.adress.Postnummer;
+            anvandare.Gatunamn = model.anvandare.Gatunamn;
+            anvandare.Stad = model.anvandare.Stad;
+            anvandare.Postnummer = model.anvandare.Postnummer;
 
             // Spara ändringar i databasen
             await _context.SaveChangesAsync();

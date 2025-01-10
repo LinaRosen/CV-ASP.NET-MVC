@@ -70,7 +70,6 @@ namespace CV_ASP.NET.Controllers
             // Hämta användaren från databasen
             var anvandare = await _context.Anvandare
                 .Include(a => a.CV) // Ladda CV för användaren om det finns
-                .Include(a => a.Adress) // Ladda Adress om det finns
                 .FirstOrDefaultAsync(a => a.Id == userId);
 
             // Kontrollera om användaren hittades
@@ -84,13 +83,17 @@ namespace CV_ASP.NET.Controllers
             {
                 anvandare = anvandare,
                 CV = anvandare.CV,
-                adress = anvandare.Adress,
-                epost = anvandare.Email
+                epost = anvandare.Email,
+                // Adressfält från Anvandare, använd de individuella fälten istället för en 'adress' egenskap
+                Gatunamn = anvandare.Gatunamn,
+                Stad = anvandare.Stad,
+                Postnummer = anvandare.Postnummer
             };
 
             // Returnera vyn med ViewModel
             return View(viewModel);
         }
+
 
 
 
