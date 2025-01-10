@@ -11,7 +11,7 @@
 
 <div class="anvandar-sida">
     <div class="anvandar-info" style="padding-bottom:60px">
-        <p><i class="fas fa-user"></i> <span class="label">Anvandarnamn:</span> @Html.DisplayFor(p => p.anvandare.UserName)</p>
+        <p><i class="fas fa-user"></i> <span class="label">Anvandarnamn:</span> @Html.DisplayFor(p => p.anvandare.Anvandarnamn)</p>
         <p><i class="fas fa-user"></i> <span class="label">Förnamn:</span> @Html.DisplayFor(p => p.anvandare.Fornamn)</p>
         <p><i class="fas fa-user"></i> <span class="label">Efternamn:</span> @Html.DisplayFor(p => p.anvandare.Efternamn)</p>
         <p><i class="fas fa-envelope"></i> <span class="label">Epost:</span> @Html.DisplayFor(p => p.anvandare.Email)</p>
@@ -22,7 +22,7 @@
         </a>
     </div>
     <div class="bild">
-        
+
         <img src="~/Images/@Html.ValueFor(p => p.Cv.Profilbild)" class="img-fluid" alt="Responsive image" asp-append-version="true" height="200px" width="200px" />
         <p>@Model.Cv.Beskrivning</p>
     </div>
@@ -30,80 +30,92 @@
 
 
 <div class="cv-container">
-<div class="cv-sida">
+    <div class="cv-sida">
 
 
-<h1>Erfarenheter, Kompetenser och Utbildningar</h1>
+        <h1>Erfarenheter, Kompetenser och Utbildningar</h1>
 
-<h2>Erfarenheter</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Arbetsgivare</th>
-            <th>Titel</th>
-            <th>Beskrivning</th>
-            <th>Startdatum</th>
-            <th>Slutdatum</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var erfarenhet in Model.erfarenheter)
-        {
-            <tr>
-                <td>@erfarenhet.Arbetsgivare</td>
-                <td>@erfarenhet.Titel</td>
-                <td>@erfarenhet.Beskrivning</td>
-                <td>@erfarenhet.StartDatum</td>
-                <td>@erfarenhet.Slutdatum?.ToString("yyyy-MM-dd")</td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <h2>Erfarenheter</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Arbetsgivare</th>
+                    <th>Titel</th>
+                    <th>Beskrivning</th>
+                    <th>Startdatum</th>
+                    <th>Slutdatum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var erfarenheter in Model.erfarenheter)
+                {
+                    <tr>
+                        <td>@erfarenheter.Arbetsgivare</td>
+                        <td>@erfarenheter.Titel</td>
+                        <td>@erfarenheter.Beskrivning</td>
+                        <td>@erfarenheter.StartDatum</td>
+                        <td>@erfarenheter.Slutdatum?.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            @if (Model.anvandare.Anvandarnamn.Equals(User?.Identity?.Name))
+                            {
 
-<h2>Kompetenser</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Kompetensnamn</th>
-            <th>Beskrivning</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var kompetens in Model.kompetenser)
-        {
-            <tr>
-                <td>@kompetens.KompetensNamn</td>
-                <td>@kompetens.Beskrivning</td>
-            </tr>
-        }
-    </tbody>
-</table>
+                                <form method="post" asp-controller="Cv" asp-action="TaBortErf" asp-route-id="@erfarenheter.Eid">
+                                    <input class="btn btn-dark" type="submit" value="Ta bort" />
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
 
-<h2>Utbildningar</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Institution</th>
-            <th>Kurs/Program</th>
-            <th>Beskrivning</th>
-            <th>Startdatum</th>
-            <th>Slutdatum</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var utbildning in Model.utbildningar)
-        {
-            <tr>
-                <td>@utbildning.Instutition</td>
-                <td>@utbildning.Kurs_program</td>
-                <td>@utbildning.Beskrivning</td>
-                <td>@utbildning.StartDatum?.ToString("yyyy-MM-dd")</td>
-                <td>@utbildning.SlutDatum?.ToString("yyyy-MM-dd")</td>
-            </tr>
-        }
-    </tbody>
-</table>
-</div>
+        </table>
+        @* <form method="post" asp-controller="Cv" asp-action="TaBortErf" asp-route-id="@erfarenhet.erfarenhet.Eid">
+            <input class="btn btn-dark" type="submit" value="Ta bort" />
+        </form> *@
+        <h2>Kompetenser</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Kompetensnamn</th>
+                    <th>Beskrivning</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var kompetens in Model.kompetenser)
+                {
+                    <tr>
+                        <td>@kompetens.KompetensNamn</td>
+                        <td>@kompetens.Beskrivning</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h2>Utbildningar</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Institution</th>
+                    <th>Kurs/Program</th>
+                    <th>Beskrivning</th>
+                    <th>Startdatum</th>
+                    <th>Slutdatum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var utbildning in Model.utbildningar)
+                {
+                    <tr>
+                        <td>@utbildning.Instutition</td>
+                        <td>@utbildning.Kurs_program</td>
+                        <td>@utbildning.Beskrivning</td>
+                        <td>@utbildning.StartDatum?.ToString("yyyy-MM-dd")</td>
+                        <td>@utbildning.SlutDatum?.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
 
@@ -111,17 +123,15 @@
 
 @if (Model.anvandare.Anvandarnamn.Equals(User?.Identity?.Name))
 {
-    <a class="btn btn-dark" asp-action="RedigeraCv" asp-controller="Cv" asp-route-id="@Model.Cv.Cvid">Redigera Cv</a>
-    <br />
-    <a class="btn btn-dark" asp-action="LaggTillKomp" asp-controller="Kompetens">Lägg till kompetens</a>
-    <br />
-    <a class="btn btn-dark" asp-action="LaggTillErf" asp-controller="Erfarenhet">Lägg till erfarenhet</a>
-    <br />
-    <a class="btn btn-dark" asp-action="LaggTillUtb" asp-controller="Utbildning">Lägg till utbildning</a>
-    <br />
+    <div class="d-flex">
+        <a class="btn btn-dark me-2" asp-action="RedigeraCv" asp-controller="Cv">Redigera Cv</a>
+        <a class="btn btn-dark me-2" asp-action="LaggTillKomp" asp-controller="Kompetens">Lägg till kompetens</a>
+        <a class="btn btn-dark me-2" asp-action="LaggTillErf" asp-controller="Cv">Lägg till erfarenhet</a>
+        <a class="btn btn-dark me-2" asp-action="LaggTillUtb" asp-controller="Utbildning">Lägg till utbildning</a>
+    </div>
     <p>Totalt antal besökare: @Model.Cv.AntalBesokare</p>
-    <br />
 }
+
 
 <h1>Rensa alla CV:n</h1>
 
@@ -130,3 +140,10 @@
         <button type="submit" class="btn btn-danger">Rensa alla CV:n</button>
     </div>
 </form>
+
+
+
+
+
+
+
