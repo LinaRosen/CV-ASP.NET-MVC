@@ -86,6 +86,15 @@
                     <tr>
                         <td>@kompetens.KompetensNamn</td>
                         <td>@kompetens.Beskrivning</td>
+                        <td>
+                            @if (Model.anvandare.Anvandarnamn.Equals(User?.Identity?.Name))
+                            {
+
+                                <form method="post" asp-controller="Cv" asp-action="TaBortKomp" asp-route-id="@kompetens.kid">
+                                    <input class="btn btn-dark" type="submit" value="Ta bort" />
+                                </form>
+                            }
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -111,6 +120,15 @@
                         <td>@utbildning.Beskrivning</td>
                         <td>@utbildning.StartDatum?.ToString("yyyy-MM-dd")</td>
                         <td>@utbildning.SlutDatum?.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            @if (Model.anvandare.Anvandarnamn.Equals(User?.Identity?.Name))
+                            {
+
+                                <form method="post" asp-controller="Cv" asp-action="TaBortUtb" asp-route-id="@utbildning.uid">
+                                    <input class="btn btn-dark" type="submit" value="Ta bort" />
+                                </form>
+                            }
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -125,9 +143,9 @@
 {
     <div class="d-flex">
         <a class="btn btn-dark me-2" asp-action="RedigeraCv" asp-controller="Cv">Redigera Cv</a>
-        <a class="btn btn-dark me-2" asp-action="LaggTillKomp" asp-controller="Kompetens">Lägg till kompetens</a>
+        <a class="btn btn-dark me-2" asp-action="LaggTillKomp" asp-controller="Cv">Lägg till kompetens</a>
         <a class="btn btn-dark me-2" asp-action="LaggTillErf" asp-controller="Cv">Lägg till erfarenhet</a>
-        <a class="btn btn-dark me-2" asp-action="LaggTillUtb" asp-controller="Utbildning">Lägg till utbildning</a>
+        <a class="btn btn-dark me-2" asp-action="LaggTillUtb" asp-controller="Cv">Lägg till utbildning</a>
     </div>
     <p>Totalt antal besökare: @Model.Cv.AntalBesokare</p>
 }

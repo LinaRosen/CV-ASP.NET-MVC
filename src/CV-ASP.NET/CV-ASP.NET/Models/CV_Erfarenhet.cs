@@ -18,7 +18,7 @@ namespace CV_ASP.NET.Models
         [RegularExpression(@"^\d{4}-\d{2}-\d{2}$", ErrorMessage = "Fel format. Datum ska vara i formatet yyyy-MM-dd.")]
         public DateOnly Startdatum { get; set; }
 
-        [Required(ErrorMessage = "Du måste ange slutdatum")]
+       
         [DisplayName("Slutdatum")]
         [RegularExpression(@"^\d{4}-\d{2}-\d{2}$", ErrorMessage = "Fel format. Datum ska vara i formatet yyyy-MM-dd.")]
         public DateOnly? Slutdatum { get; set; }

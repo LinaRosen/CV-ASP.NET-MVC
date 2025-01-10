@@ -7,6 +7,7 @@
         public CV_kompetenser cV_Kompetenser { get; set; }
 
         public string KompetensNamn { get; set; }
+        public int kid {  get; set; }   
 
     }
 }

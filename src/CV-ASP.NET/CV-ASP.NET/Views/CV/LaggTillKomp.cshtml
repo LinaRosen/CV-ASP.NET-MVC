@@ -1,0 +1,33 @@
+﻿@using CV_ASP.NET.Models.ViewModels
+@model KompetensViewModel
+
+@{
+    ViewData["Title"] = "Lägg till kompetens";
+}
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post" asp-action="LaggTillKomp" enctype="multipart/form-data">
+    <h3>Kompetens</h3>
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Titel:</label>
+        <div class="col-sm-4">
+            <input asp-for="KompetensNamn" class="form-control" />
+            <span asp-validation-for="KompetensNamn" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-4">
+        <label class="col-sm-2">Beskrivning:</label>
+        <div class="col-sm-4">
+            <textarea asp-for="Beskrivning" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Beskrivning" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="offset-sm-2 col-sm-4">
+            <button type="submit" class="btn btn-primary">Lägg till kompetens</button>
+        </div>
+    </div>
+</form>
