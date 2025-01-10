@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace CV_ASP.NET.Controllers
 {
@@ -102,6 +103,7 @@ namespace CV_ASP.NET.Controllers
             k => k.Kid,
              (ce, k) => new KompetensViewModel
              {
+                 kid = k.Kid,
                  KompetensNamn = ce.KompetensNamn,
                  Beskrivning = k.Beskrivning
                  
@@ -115,6 +117,7 @@ namespace CV_ASP.NET.Controllers
             u => u.Uid,
              (cu, u) => new UtbildningViewModel
              {
+                 uid = u.Uid,
                  Instutition = u.Instutition,
                  Kurs_program = u.Kurs_program,
                  Beskrivning= u.Beskrivning,
@@ -184,6 +187,7 @@ namespace CV_ASP.NET.Controllers
 
                 var utbildning = new Utbildning();
 
+             
                 utbildning.Instutition = scv.utbildning.Instutition;
                 utbildning.Beskrivning = scv.utbildning.Beskrivning;
                 utbildning.Kurs_program = scv.utbildning.Kurs_program;
@@ -371,5 +375,106 @@ namespace CV_ASP.NET.Controllers
             return RedirectToAction("VisaCv", "Cv");
 
         }
+
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult LaggTillUtb()
+        {
+
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> LaggTillUtb(UtbildningViewModel model)
+        {
+            string inloggadAnv = base.HamtaAnv();
+            var utbildning = new Utbildning();
+
+            utbildning.Uid = model.uid;
+            utbildning.Kurs_program = model.Kurs_program;
+            utbildning.Instutition = model.Instutition;
+            utbildning.Beskrivning = model.Beskrivning;
+
+
+            await testDb.Utbildning.AddAsync(utbildning);
+            await testDb.SaveChangesAsync();
+
+
+            int dettaCv = testDb.CV.Where(c => c.AnvandarNamn == inloggadAnv).Single().Cvid;
+
+            var cvUtbildning = new CV_Utbildning();
+
+            cvUtbildning.CVid = dettaCv;
+            cvUtbildning.Startdatum = (DateOnly)model.StartDatum;
+            cvUtbildning.Slutdatum = model.SlutDatum;
+            cvUtbildning.Uid = utbildning.Uid;
+
+            await testDb.CV_Utbildning.AddAsync(cvUtbildning);
+            await testDb.SaveChangesAsync();
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> TaBortUtb(int id)
+        {
+            Models.Utbildning utb = testDb.Utbildning.Find(id);
+            //Tar bort erfarentets-sobjektet från databasen och sparar ändringarna i databasen
+            testDb.Utbildning.Remove(utb);
+            await testDb.SaveChangesAsync();
+            return RedirectToAction("VisaCv", "Cv");
+
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult LaggTillKomp()
+        {
+
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> LaggTillKomp(KompetensViewModel model)
+        {
+            string inloggadAnv = base.HamtaAnv();
+            var kompetens = new Kompetenser();
+
+            kompetens.Kid = model.kid;
+            kompetens.Beskrivning = model.Beskrivning;
+           
+            await testDb.Kompetenser.AddAsync(kompetens);
+            await testDb.SaveChangesAsync();
+
+            int dettaCv = testDb.CV.Where(c => c.AnvandarNamn == inloggadAnv).Single().Cvid;
+
+            var cV_Kompetenser = new CV_kompetenser();
+
+            cV_Kompetenser.Cvid = dettaCv;
+            cV_Kompetenser.KompetensNamn = model.KompetensNamn;
+            cV_Kompetenser.Kid = kompetens.Kid;
+
+            await testDb.CV_Kompetenser.AddAsync(cV_Kompetenser);
+            await testDb.SaveChangesAsync();
+            return RedirectToAction("VisaCv", "Cv");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> TaBortKomp(int id)
+        {
+            Models.Kompetenser komp = testDb.kompetensers.Find(id);
+            //Tar bort erfarentets-sobjektet från databasen och sparar ändringarna i databasen
+            testDb.Kompetenser.Remove(komp);
+            await testDb.SaveChangesAsync();
+            return RedirectToAction("VisaCv", "Cv");
+
+        }
     }
+
+
+
 }
