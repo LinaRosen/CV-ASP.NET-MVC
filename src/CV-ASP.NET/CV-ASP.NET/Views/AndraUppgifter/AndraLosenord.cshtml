@@ -1,0 +1,49 @@
+﻿@model CV_ASP.NET.Models.ViewModels.AndraLosenordViewModel
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Ändra Lösenord</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success text-center">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <form method="post" asp-action="AndraLosenord" class="mx-auto" style="max-width: 400px;">
+        <div class="mb-3">
+            <label asp-for="NuvarandeLosenord" class="form-label">Nuvarande Lösenord</label>
+            <input asp-for="NuvarandeLosenord" type="password" class="form-control" placeholder="Ange ditt nuvarande lösenord" />
+            <span asp-validation-for="NuvarandeLosenord" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NyttLosenord" class="form-label">Nytt Lösenord</label>
+            <input asp-for="NyttLosenord" type="password" class="form-control" placeholder="Ange ditt nya lösenord" />
+            <span asp-validation-for="NyttLosenord" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="BekraftaNyttLosenord" class="form-label">Bekräfta Nytt Lösenord</label>
+            <input asp-for="BekraftaNyttLosenord" type="password" class="form-control" placeholder="Bekräfta ditt nya lösenord" />
+            <span asp-validation-for="BekraftaNyttLosenord" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-dark" style="background-color: black; color: white; width: 100%; padding: 10px; font-size: 14px; margin-bottom: 10px;">Spara</button>
+            <a href="@Url.Action("Anvsida", "AnvSida")" class="btn btn-secondary" style="background-color: black; color: white; width: 100%; padding: 10px; font-size: 14px;">Avbryt</a>
+        </div>
+    </form>
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+

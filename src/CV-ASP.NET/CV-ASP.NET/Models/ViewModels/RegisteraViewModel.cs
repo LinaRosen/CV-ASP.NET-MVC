@@ -25,6 +25,7 @@ namespace CV_ASP.NET.Models.ViewModels
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Du måste ange ett lösenord")]
+            [MinLength(6, ErrorMessage = "Lösenordet måste vara minst 6 tecken långt")]
             [DataType(DataType.Password)]
             public string Losenord { get; set; }
 

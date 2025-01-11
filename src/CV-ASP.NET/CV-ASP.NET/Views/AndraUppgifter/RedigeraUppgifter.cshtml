@@ -63,7 +63,14 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-end mt-4">
-        <button type="submit" class="btn btn-primary" style="background-color: black; color: white;">Spara ändringar</button>
+    <div class="form-group" style="display: flex; justify-content: flex-end;">
+        <button type="submit" class="btn btn-primary"
+            style="background-color: black; color: white; margin-right: 10px; padding: 8px 16px; font-size: 14px;">Spara Ändringar
+        </button>
+
+        <a href="@Url.Action("AndraLosenord", "AndraUppgifter")" class="btn btn-dark" style="background-color: black; color: white; margin-right: 10px; padding: 8px 16px; font-size: 14px;">Ändra Lösenord</a>
+
+        <a href="@Url.Action("Anvsida", "AnvSida")" class="btn btn-secondary" style="background-color: black; color: white; padding: 8px 16px; font-size: 14px;">Avbryt</a>
     </div>
+
 </form>

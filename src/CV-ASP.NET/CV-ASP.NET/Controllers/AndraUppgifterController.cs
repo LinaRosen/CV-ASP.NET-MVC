@@ -83,6 +83,60 @@ namespace CV_ASP.NET.Controllers
             return RedirectToAction("Anvsida", "AnvSida"); // Ändra "Profil" och "Anvandare" till rätt vy/kontroller
         }
 
+        [HttpGet]
+        public IActionResult AndraLosenord()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AndraLosenord(AndraLosenordViewModel model)
+        {
+            string? inloggadAnv = base.HamtaAnv();
+            if (string.IsNullOrEmpty(inloggadAnv))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var anvandare = await _userManager.FindByIdAsync(inloggadAnv);
+
+            if (anvandare == null)
+            {
+                ModelState.AddModelError("", "Användaren kunde inte hittas.");
+                return View(model);
+            }
+
+            if (!await _userManager.CheckPasswordAsync(anvandare, model.NuvarandeLosenord))
+            {
+                TempData["ErrorMessage"] = "Det nuvarande lösenordet är felaktigt.";
+                return View(model); // Visa felmeddelande för felaktigt nuvarande lösenord
+            }
+
+            if (model.NyttLosenord != model.BekraftaNyttLosenord)
+            {
+                TempData["ErrorMessage"] = "De nya lösenorden matchar inte.";
+                return View(model); // Visa felmeddelande om lösenorden inte matchar
+            }
+
+            var result = await _userManager.ChangePasswordAsync(anvandare, model.NuvarandeLosenord, model.NyttLosenord);
+
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "Ditt lösenord har ändrats.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Lösenordet kunde inte ändras. Försök igen.";
+            }
+
+            return View(model); // Behåll användaren på samma sida efter att lösenordet har ändrats
+        }
+
 
     }
+
+
+
 }
+
