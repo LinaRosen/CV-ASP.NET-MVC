@@ -1,60 +1,69 @@
 ﻿@model CV_ASP.NET.Models.ViewModels.RedigeraUppgifterViewModel
 
-<h2>Redigera Uppgifter</h2>
+<h2 class="mb-4">Redigera Uppgifter</h2>
 
-@* @if (TempData["SuccessMessage"] != null)
+@if (!ViewData.ModelState.IsValid)
 {
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-} *@
-
-@* <h1>@Model.anvandare.Id</h1> *@
-<div asp-validation-summary="All" class="text-danger"></div>
+    <div asp-validation-summary="All" class="alert alert-danger"></div>
+}
 <form method="post" asp-action="RedigeraUppgifter" enctype="multipart/form-data">
-    <h4>Kontaktinformation</h4>
-    <div>
-        <label asp-for="anvandare.Anvandarnamn"></label>
-        <input asp-for="anvandare.Anvandarnamn" />
-        <span asp-validation-for="anvandare.Anvandarnamn" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="anvandare.Fornamn"></label>
-        <input asp-for="anvandare.Fornamn" />
-        <span asp-validation-for="anvandare.Fornamn" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="anvandare.Efternamn"></label>
-        <input asp-for="anvandare.Efternamn" />
-        <span asp-validation-for="anvandare.Efternamn" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="anvandare.Email"></label>
-        <input asp-for="anvandare.Email" />
-        <span asp-validation-for="anvandare.Email" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="anvandare.PhoneNumber"></label>
-        <input asp-for="anvandare.PhoneNumber" />
-        <span asp-validation-for="anvandare.PhoneNumber" class="text-danger"></span>
-    </div>
-
-    <h4>Adress</h4>
-    <div>
-        <label asp-for="anvandare.Gatunamn"></label>
-        <input asp-for="anvandare.Gatunamn" />
-        <span asp-validation-for="anvandare.Gatunamn" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="anvandare.Stad"></label>
-        <input asp-for="anvandare.Stad" />
-        <span asp-validation-for="anvandare.Stad" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="anvandare.Postnummer"></label>
-        <input asp-for="anvandare.Postnummer" />
-        <span asp-validation-for="anvandare.Postnummer" class="text-danger"></span>
+    <div class="row">
+        <h4 class="mb-3">Kontaktinformation</h4>
+        <div class="col-md-6 mb-3">
+            <label asp-for="anvandare.Anvandarnamn" class="form-label">Användarnamn</label>
+            <input asp-for="anvandare.Anvandarnamn" class="form-control" />
+            <span asp-validation-for="anvandare.Anvandarnamn" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="anvandare.Fornamn" class="form-label">Förnamn</label>
+            <input asp-for="anvandare.Fornamn" class="form-control" />
+            <span asp-validation-for="anvandare.Fornamn" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="anvandare.Efternamn" class="form-label">Efternamn</label>
+            <input asp-for="anvandare.Efternamn" class="form-control" />
+            <span asp-validation-for="anvandare.Efternamn" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="anvandare.Email" class="form-label">E-post</label>
+            <input asp-for="anvandare.Email" class="form-control" />
+            <span asp-validation-for="anvandare.Email" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="anvandare.PhoneNumber" class="form-label">Telefonnummer</label>
+            <input asp-for="anvandare.PhoneNumber" class="form-control" />
+            <span asp-validation-for="anvandare.PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="anvandare.PrivatProfil" class="form-label">Privat Profil</label>
+            <div class="form-check">
+                <input asp-for="anvandare.PrivatProfil" type="checkbox" class="form-check-input" id="PrivatProfil" />
+                <label class="form-check-label" for="PrivatProfil">Privat</label>
+            </div>
+            <span asp-validation-for="anvandare.PrivatProfil" class="text-danger"></span>
+        </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Spara ändringar</button>
+    <div class="row mt-4">
+        <h4 class="mb-3">Adress</h4>
+        <div class="col-md-6 mb-3">
+            <label asp-for="anvandare.Gatunamn" class="form-label">Gatunamn</label>
+            <input asp-for="anvandare.Gatunamn" class="form-control" />
+            <span asp-validation-for="anvandare.Gatunamn" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="anvandare.Stad" class="form-label">Stad</label>
+            <input asp-for="anvandare.Stad" class="form-control" />
+            <span asp-validation-for="anvandare.Stad" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="anvandare.Postnummer" class="form-label">Postnummer</label>
+            <input asp-for="anvandare.Postnummer" class="form-control" />
+            <span asp-validation-for="anvandare.Postnummer" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end mt-4">
+        <button type="submit" class="btn btn-primary" style="background-color: black; color: white;">Spara ändringar</button>
+    </div>
 </form>

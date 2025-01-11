@@ -5,13 +5,13 @@
     <form asp-action="Registrera" method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
         <div>
-            <label asp-for="Anvandarnamn"></label>
+            <label asp-for="Anvandarnamn">Användarnamn</label>
             <input asp-for="Anvandarnamn" class="form-control" />
             <span asp-validation-for="Anvandarnamn" class="text-danger"></span>
         </div>
 
         <div>
-            <label asp-for="Fornamn"></label>
+            <label asp-for="Fornamn">Förnamn</label>
             <input asp-for="Fornamn" class="form-control" />
             <span asp-validation-for="Fornamn" class="text-danger"></span>
         </div>
@@ -23,7 +23,7 @@
         </div>
 
         <div>
-            <label asp-for="Email"></label>
+            <label asp-for="Email">Epost</label>
             <input asp-for="Email" class="form-control" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div> 
@@ -36,13 +36,13 @@
         </div>
 
         <div>
-            <label asp-for="Losenord"></label>
+            <label asp-for="Losenord">Lösenord</label>
             <input asp-for="Losenord" class="form-control" type="password" />
             <span asp-validation-for="Losenord" class="text-danger"></span>
         </div>
 
         <div>
-            <label asp-for="BekraftaLosenord"></label>
+            <label asp-for="BekraftaLosenord">Bekräfta lösenord</label>
             <input asp-for="BekraftaLosenord" class="form-control" type="password" />
             <span asp-validation-for="BekraftaLosenord" class="text-danger"></span>
         </div>
@@ -71,7 +71,7 @@
             <span asp-validation-for="Postnummer" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary">Registrera</button>
+        <button type="submit" class="btn btn-primary" style="background-color: black; color: white;">Registrera</button>
     </form>
 </div>
 
