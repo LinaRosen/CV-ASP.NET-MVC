@@ -65,12 +65,15 @@ namespace CV_ASP.NET.Controllers
                 vm.anvandare = testDb.Users.Where(a => a.Id == anvId).FirstOrDefault();
                 vm.Cv = testDb.CV.Where(c => c.AnvandarNamn == anvId).FirstOrDefault();
 
-                var totalaBesokare = testDb.CV.Where(c => c.Cvid == vm.Cv.Cvid).FirstOrDefault().AntalBesokare;
-                CV cv = vm.Cv;
-                cv.AntalBesokare = totalaBesokare + 1;
-                testDb.Update(cv);
-                await testDb.SaveChangesAsync();
-                
+                if (vm.Cv != null) // Kontrollera om vm.Cv inte är null
+                {
+                    var totalaBesokare = testDb.CV.Where(c => c.Cvid == vm.Cv.Cvid).FirstOrDefault().AntalBesokare;
+                    CV cv = vm.Cv;
+                    cv.AntalBesokare = totalaBesokare + 1;
+                    testDb.Update(cv);
+                    await testDb.SaveChangesAsync();
+                }
+
             }
 
             //vm.projekt = testDb.AnvProjekt
@@ -78,56 +81,65 @@ namespace CV_ASP.NET.Controllers
             //.Select(ap => testDb.Projekt.Single(p => p.Pid == ap.Pid))
             //.ToList();
 
+            if (vm.Cv != null)
+            {
+                vm.erfarenheter = testDb.CV_Erfarenhet
+                .Where(ce => ce.Cvid == vm.Cv.Cvid)
+                .Join(testDb.Erfarenhet,
+                 ce => ce.Eid,
+                 e => e.Eid,
+                 (ce, e) => new ErfarenhetViewModel
+                {
+                    Eid = e.Eid, // Mappa Eid från Erfarenhet till ViewModel
+                    Titel = e.Titel,
+                    Arbetsgivare = e.Arbetsgivare,
+                    Beskrivning = e.Beskrivning,
+                    StartDatum = ce.Startdatum,
+                    Slutdatum = ce.Slutdatum
+                })
+               .ToList();
+
+                vm.kompetenser = testDb.CV_Kompetenser
+                 .Where(ce => ce.Cvid == vm.Cv.Cvid)
+                .Join(testDb.Kompetenser,
+                 ce => ce.Kid,
+                k => k.Kid,
+                 (ce, k) => new KompetensViewModel
+                 {
+                     kid = k.Kid,
+                     KompetensNamn = ce.KompetensNamn,
+                     Beskrivning = k.Beskrivning
+
+                 })
+                .ToList();
+
+                vm.utbildningar = testDb.CV_Utbildning
+                 .Where(cu => cu.CVid == vm.Cv.Cvid)
+                .Join(testDb.Utbildning,
+                 cu => cu.Uid,
+                u => u.Uid,
+                 (cu, u) => new UtbildningViewModel
+                 {
+                     uid = u.Uid,
+                     Instutition = u.Instutition,
+                     Kurs_program = u.Kurs_program,
+                     Beskrivning = u.Beskrivning,
+                     StartDatum = cu.Startdatum,
+                     SlutDatum = cu.Slutdatum
+                 })
+                .ToList();
+                return View(vm);
+
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Det finns inget CV för denna person.";
+
+                // Omdirigera till startsidan
+                return RedirectToAction("Index", "Sok");
+            }
 
 
-            vm.erfarenheter = testDb.CV_Erfarenhet
-             .Where(ce => ce.Cvid == vm.Cv.Cvid)
-            .Join(testDb.Erfarenhet,
-             ce => ce.Eid,
-            e => e.Eid,
-             (ce, e) => new ErfarenhetViewModel
-             {
-                 Eid = e.Eid, // Mappa Eid från Erfarenhet till ViewModel
-                 Titel = e.Titel,
-                 Arbetsgivare = e.Arbetsgivare,
-                 Beskrivning = e.Beskrivning,
-                 StartDatum = ce.Startdatum,
-                 Slutdatum = ce.Slutdatum
-            })
-            .ToList();
-
-            vm.kompetenser = testDb.CV_Kompetenser
-             .Where(ce => ce.Cvid == vm.Cv.Cvid)
-            .Join(testDb.Kompetenser,
-             ce => ce.Kid,
-            k => k.Kid,
-             (ce, k) => new KompetensViewModel
-             {
-                 kid = k.Kid,
-                 KompetensNamn = ce.KompetensNamn,
-                 Beskrivning = k.Beskrivning
-                 
-             })
-            .ToList();
-
-            vm.utbildningar = testDb.CV_Utbildning
-             .Where(cu => cu.CVid == vm.Cv.Cvid)
-            .Join(testDb.Utbildning,
-             cu => cu.Uid,
-            u => u.Uid,
-             (cu, u) => new UtbildningViewModel
-             {
-                 uid = u.Uid,
-                 Instutition = u.Instutition,
-                 Kurs_program = u.Kurs_program,
-                 Beskrivning= u.Beskrivning,
-                 StartDatum = cu.Startdatum,
-                 SlutDatum = cu.Slutdatum
-             })
-            .ToList();
-
-
-           
             return View(vm);
         }
 

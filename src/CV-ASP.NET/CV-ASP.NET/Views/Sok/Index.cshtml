@@ -1,5 +1,11 @@
 ﻿@model CV_ASP.NET.Models.ViewModels.SokViewModel
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 <h2>Sök användare</h2>
 
 <!-- Sökformulär -->
@@ -45,7 +51,7 @@
         </tbody>
     </table>
 }
-else
+else 
 {
     <p>Inga användare hittades.</p>
 }
