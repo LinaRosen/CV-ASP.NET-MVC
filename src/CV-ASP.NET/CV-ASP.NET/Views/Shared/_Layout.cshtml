@@ -1,10 +1,9 @@
-﻿
-
-@{
+﻿@{
     var olastaMeddelanden = 0;
     if (User.Identity.IsAuthenticated)
     {
-        olastaMeddelanden = 1;// meddelandeController.GetOlastaMeddelanden().Result;
+        // Hämta antalet olästa meddelanden från ViewData
+        olastaMeddelanden = (int)(ViewData["OlastaMeddelanden"] ?? 0); // Standardvärde 0 om inget finns
     }
 }
 
@@ -49,7 +48,8 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Meddelande" asp-action="MeddelandeSida">
-                                    Meddelanden @if (olastaMeddelanden > 0)
+                                    Meddelanden
+                                    @if (olastaMeddelanden > 0)
                                     {
                                         <span class="badge bg-danger">@olastaMeddelanden</span>
                                     }
