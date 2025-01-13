@@ -1,19 +1,47 @@
 ﻿@model MeddelandeViewModel
-<h1>Dina meddelanden (@(Model.Meddelanden.Count))</h1>
 
-@foreach (var meddelande in Model.Meddelanden)
-{
-    <div>
-        <p><strong>@meddelande.Frananvandare</strong>: @meddelande.Innehall</p>
-        @if (meddelande.Last == false) // Om meddelandet inte är läst
-        {
-            <form method="post" asp-controller="Meddelande" asp-action="MarkeraSomLast" asp-route-meddelandeId="@meddelande.Mid">
-                <button type="submit">Markera som läst</button>
-            </form>
-        }
-        else
-        {
-            <span>Detta meddelande är läst</span>
-        }
-    </div>
+@{
+    ViewData["Title"] = "Meddelande Sida";
 }
+
+<!-- Visa rubriken för meddelandena -->
+<h1>Dina Meddelanden</h1>
+
+<!-- Visa antal olästa meddelanden från ViewData -->
+<div>
+    <h2>Olästa Meddelanden: @ViewData["OlastaMeddelanden"]</h2>
+</div>
+
+<!-- Tabell för att visa meddelandena -->
+<table class="message-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Från</th>
+            <th>Meddelande</th>
+            <th>Åtgärd</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var meddelande in Model.Meddelanden)
+        {
+            <tr class="@((meddelande.Last ? "read" : "unread"))">
+                <td>@meddelande.Mid</td>
+                <td><strong>@meddelande.FranAnvandareId</strong></td>
+                <td>@meddelande.Innehall</td>
+                <td>
+                    @if (meddelande.Last == false)
+                    {
+                        <form method="post" asp-controller="Meddelande" asp-action="MarkeraSomLast" asp-route-meddelandeId="@meddelande.Mid">
+                            <button type="submit" class="btn-mark-read">Markera som läst</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="read-status">Detta meddelande är läst</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

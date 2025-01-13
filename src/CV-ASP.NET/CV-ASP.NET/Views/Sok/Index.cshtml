@@ -37,9 +37,7 @@
                     <td>
                         @if (!anvandare.PrivatProfil || User.Identity.IsAuthenticated)
                         {
-                            <form method="post" asp-controller="Cv" asp-action="VisaCv" asp-route-anvid="@anvandare.Id">
-                                <input type="submit" class="btn btn-dark btn-sm" value="Till profil" />
-                            </form>
+                            <a asp-controller="Sok" asp-action="AnvSida" asp-route-userId="@anvandare.Id">Visa profil</a>
                         }
                         else
                         {
