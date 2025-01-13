@@ -17,7 +17,7 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Från</th>
+            <th>Avsändare</th>  <!-- Ändrat här för att visa avsändare -->
             <th>Meddelande</th>
             <th>Åtgärd</th>
         </tr>
@@ -27,7 +27,7 @@
         {
             <tr class="@((meddelande.Last ? "read" : "unread"))">
                 <td>@meddelande.Mid</td>
-                <td><strong>@meddelande.FranAnvandareId</strong></td>
+                <td><strong>@meddelande.Avsandare</strong></td> <!-- Här visar vi avsändaren -->
                 <td>@meddelande.Innehall</td>
                 <td>
                     @if (meddelande.Last == false)

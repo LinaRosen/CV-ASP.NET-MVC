@@ -26,7 +26,7 @@ public class MeddelandeController : BasController
     public IActionResult SkickaMeddelande(string tillAnvandareId)
     {
 
-        var viewModel = new MeddelandeViewModel
+        var viewModel = new SkickaMeddelandeViewModel
         {
             TillAnvandareId = tillAnvandareId
         };
@@ -34,6 +34,7 @@ public class MeddelandeController : BasController
         return View(viewModel);
     }
 
+    [HttpPost]
     [HttpPost]
     public IActionResult SkickaMeddelande(SkickaMeddelandeViewModel model)
     {
@@ -56,6 +57,14 @@ public class MeddelandeController : BasController
         if (string.IsNullOrEmpty(model.TillAnvandareId))
         {
             ModelState.AddModelError("TillAnvandareId", "Mottagare saknas.");
+            return View(model);
+        }
+
+        // Kontrollera om den angivna mottagaren finns i databasen
+        var tillAnvandare = _testDb.Anvandare.FirstOrDefault(a => a.Id == model.TillAnvandareId);
+        if (tillAnvandare == null)
+        {
+            ModelState.AddModelError("TillAnvandareId", "Den angivna mottagaren finns inte.");
             return View(model);
         }
 
@@ -85,7 +94,7 @@ public class MeddelandeController : BasController
             Mid = model.Mid,
             TillAnvandareId = model.TillAnvandareId,
             Innehall = model.Innehall,
-
+            Avsandare = avsandare, // Lägg till avsändare här
             Last = false
         };
 
@@ -103,16 +112,92 @@ public class MeddelandeController : BasController
         }
         else
         {
-            // Om anonym användare, återställ modellen för att tömma formuläret
-            var tomModel = new SkickaMeddelandeViewModel
-            {
-                TillAnvandareId = model.TillAnvandareId,  // Behåll mottagarens ID
-                Innehall = string.Empty,                   // Töm innehållsfältet
-                AnonymAnvandare = string.Empty            // Töm anonymt namn-fältet
-            };
-            return View(tomModel); // Skicka en tom modell till vyn
+
+            return RedirectToAction("Index", "Home");
         }
     }
+    
+
+
+    //[HttpPost]
+    //public IActionResult SkickaMeddelande(SkickaMeddelandeViewModel model)
+    //{
+    //    // Validera att nödvändiga fält är ifyllda
+    //    if (string.IsNullOrWhiteSpace(model.Innehall) ||
+    //        string.IsNullOrWhiteSpace(model.TillAnvandareId))
+    //    {
+    //        ModelState.AddModelError(string.Empty, "Alla obligatoriska fält måste fyllas i.");
+    //        return View(model); // Returnera med felmeddelanden om modellen är ogiltig
+    //    }
+
+    //    // Kontrollera om AnonymAnvandare är tomt för icke-inloggade användare
+    //    if (!User.Identity.IsAuthenticated && string.IsNullOrEmpty(model.AnonymAnvandare))
+    //    {
+    //        ModelState.AddModelError("AnonymAnvandare", "Du måste ange ditt namn som anonym användare.");
+    //        return View(model); // Returnera med felmeddelanden
+    //    }
+
+    //    // Kontrollera om mottagar-ID är angivet
+    //    if (string.IsNullOrEmpty(model.TillAnvandareId))
+    //    {
+    //        ModelState.AddModelError("TillAnvandareId", "Mottagare saknas.");
+    //        return View(model);
+    //    }
+
+    //    // Bestäm avsändaren: Om inloggad användare, använd deras användarnamn, annars använd anonymt namn
+    //    string avsandare;
+    //    if (User.Identity.IsAuthenticated)
+    //    {
+    //        // Om inloggad användare, sätt avsändaren till den inloggades namn
+    //        avsandare = User.Identity.Name;
+    //    }
+    //    else
+    //    {
+    //        // Om inte inloggad, sätt avsändaren till det namn som den anonyma användaren fyllt i
+    //        avsandare = model.AnonymAnvandare;
+    //    }
+
+    //    // Kontrollera att avsändare är satt korrekt
+    //    if (string.IsNullOrWhiteSpace(avsandare))
+    //    {
+    //        ModelState.AddModelError("Avsandare", "Avsändaren kan inte vara tom.");
+    //        return View(model);
+    //    }
+
+    //    // Skapa ett nytt meddelande med avsändaren korrekt satt
+    //    var meddelande = new Meddelande
+    //    {
+    //        Mid = model.Mid,
+    //        TillAnvandareId = model.TillAnvandareId,
+    //        Innehall = model.Innehall,
+
+    //        Last = false
+    //    };
+
+    //    // Lägg till meddelandet i databasen
+    //    _testDb.Meddelande.Add(meddelande);
+    //    _testDb.SaveChanges();
+
+    //    // Skicka tillbaka framgångsmeddelande
+    //    TempData["SuccessMessage"] = "Ditt meddelande har skickats!";
+
+    //    // Efter att meddelandet har skickats, återgå till rätt sida baserat på inloggning
+    //    if (User.Identity.IsAuthenticated)
+    //    {
+    //        return RedirectToAction("MeddelandeSida");
+    //    }
+    //    else
+    //    {
+    //        // Om anonym användare, återställ modellen för att tömma formuläret
+    //        var tomModel = new SkickaMeddelandeViewModel
+    //        {
+    //            TillAnvandareId = model.TillAnvandareId,  // Behåll mottagarens ID
+    //            Innehall = string.Empty,                   // Töm innehållsfältet
+    //            AnonymAnvandare = string.Empty            // Töm anonymt namn-fältet
+    //        };
+    //        return View(tomModel); // Skicka en tom modell till vyn
+    //    }
+    //}
 
     public async Task<IActionResult> MeddelandeSida(string anvid)
     {
@@ -130,7 +215,7 @@ public class MeddelandeController : BasController
                    TillAnvandareId = m.TillAnvandareId,
                    FranAnvandareId = m.FranAnvandareId,
                    Innehall = m.Innehall ?? "Inget innehåll",
-                   //Avsandare = m.Avsandare,
+                   Avsandare = m.Avsandare,
                    OlastaMeddelandenCount = m.OlastaMeddelandenCount,
                    Last = m.Last
                })

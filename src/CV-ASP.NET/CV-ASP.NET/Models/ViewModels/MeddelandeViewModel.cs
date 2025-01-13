@@ -9,7 +9,7 @@ namespace CV_ASP.NET.Models
         public bool Last { get; set; } // Om meddelandet har lästs
         public string? TillAnvandareId { get; set; }
         public string? FranAnvandareId { get; set; }
-        public string AnonymAnvandare { get; set; }
+        public string? AnonymAnvandare { get; set; }
 
         public string Avsandare { get; set; }
         public List<Meddelande> Meddelanden { get; set; }
