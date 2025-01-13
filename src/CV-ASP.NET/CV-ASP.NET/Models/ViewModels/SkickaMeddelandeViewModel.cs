@@ -19,7 +19,7 @@ namespace CV_ASP.NET.Models.ViewModels
                   )]
 
 
-        public string AnonymAnvandare { get; set; }
+        public string? AnonymAnvandare { get; set; }
 
         [Required(ErrorMessage = "Meddelandeinnehåll är obligatoriskt.")]
         public string Innehall { get; set; }

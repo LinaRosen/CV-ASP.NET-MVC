@@ -23,7 +23,8 @@
         <textarea id="Innehall" name="Innehall" required></textarea>
     </div>
 
-    <input type="hidden" name="TillAnvandareId" value="@Model.TillAnvandareId" />
+    <input type="hidden" asp-for="TillAnvandareId" />
+
 
     <button type="submit">Skicka</button>
 </form> 

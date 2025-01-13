@@ -80,5 +80,7 @@ namespace CV_ASP.NET.Controllers
             ViewBag.options = allaAnvandare;
             return View(nyanvandare);
         }
+
+      
     }
 }

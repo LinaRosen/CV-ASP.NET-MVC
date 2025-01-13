@@ -29,6 +29,7 @@ namespace CV_ASP.NET.DataContext
 
 
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Meddelande>()

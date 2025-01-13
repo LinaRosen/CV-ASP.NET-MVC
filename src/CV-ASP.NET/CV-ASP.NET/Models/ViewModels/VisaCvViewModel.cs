@@ -8,7 +8,8 @@
         public IEnumerable<ErfarenhetViewModel> erfarenheter { get; set; }
         public IEnumerable<KompetensViewModel> kompetenser { get; set; }
         public IEnumerable<Projekt> projekt { get; set; }
-        
+        public string TillAnvandareId { get; set; }
+
     }
 
 }
