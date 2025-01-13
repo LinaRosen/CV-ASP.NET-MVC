@@ -48,6 +48,10 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Projekt" asp-action="SkapaProjekt">Skapa nytt projekt</a>
+                            </li>
+
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Meddelande" asp-action="MeddelandeSida">
                                     Meddelanden @if (olastaMeddelanden > 0)
                                     {

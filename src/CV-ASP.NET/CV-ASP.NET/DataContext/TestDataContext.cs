@@ -94,15 +94,32 @@ namespace CV_ASP.NET.DataContext
     
             base.OnModelCreating(modelBuilder);
 
+            // Projekt konfiguration
+
+            modelBuilder.Entity<AnvProjekt>()
+                .HasKey(ap => new { ap.Anvid, ap.Pid });
+
+            modelBuilder.Entity<AnvProjekt>()
+                .HasOne(ap => ap.Anvandare)
+                .WithMany(a => a.AnvProjekt)
+                .HasForeignKey(ap => ap.Anvid);
+
+            modelBuilder.Entity<AnvProjekt>()
+                .HasOne(ap => ap.Projekt)
+                .WithMany(p => p.AnvProjekt)
+                .HasForeignKey(ap => ap.Pid);
+
+
+
             //modelBuilder.Entity<Adress>()
             //    .HasOne(a => a.Anvandare)
             //    .WithOne(u => u.Adress)
             //    .HasForeignKey<Adress>(a => a.Anvid)
             //    .OnDelete(DeleteBehavior.Cascade);
-        
 
+
+
+        }
 
     }
-
-}
 }
