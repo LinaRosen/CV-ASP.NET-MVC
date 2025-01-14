@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// **Tj‰nster mÂste registreras innan `builder.Build()`**
-// L‰gg till Identity och TestDataContext
+// **Tj√§nster m√•ste registreras innan `builder.Build()`**
+// L√§gg till Identity och TestDataContext
 builder.Services.AddDbContext<TestDataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TestDataContext")));
 
@@ -14,7 +14,7 @@ builder.Services.AddIdentity<Anvandare, IdentityRole>()
     .AddEntityFrameworkStores<TestDataContext>()
     .AddDefaultTokenProviders();
 
-// Konfigurera Identity-inst‰llningar (frivilligt)
+// Konfigurera Identity-inst√§llningar (frivilligt)
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequireDigit = false;
@@ -23,8 +23,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
 });
+builder.Services.AddScoped<MeddelandeController>();
 
-// L‰gg till MVC-tj‰nster
+builder.Logging.AddConsole(); // L√§gg till konsollogging (vilket inneb√§r att loggar skrivs till konsolen)
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -41,11 +43,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// **Middleware ordning ‰r viktigt**
+// **Middleware ordning √§r viktigt**
 app.UseAuthentication();  // Hantera autentisering
 app.UseAuthorization();   // Hantera auktorisering
 
-// **Definiera rutten fˆr MVC**
+// **Definiera rutten f√∂r MVC**
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -62,7 +64,7 @@ app.Run();
 
 
 //var builder = WebApplication.CreateBuilder(args);
-//// L‰gg till TestDataContext till tj‰nsteregistreringen
+//// L√§gg till TestDataContext till tj√§nsteregistreringen
 //builder.Services.AddDbContext<TestDataContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -71,11 +73,11 @@ app.Run();
 //// Add services to the container.
 //builder.Services.AddControllersWithViews();
 
-//// L‰gg till DbContext
+//// L√§gg till DbContext
 //builder.Services.AddDbContext<TestDataContext>(opt =>
 //    opt.UseLazyLoadingProxies(false).UseSqlServer(builder.Configuration.GetConnectionString("TestDataContext")));
 
-//// L‰gg till Identity-tj‰nster fˆr autentisering
+//// L√§gg till Identity-tj√§nster f√∂r autentisering
 //builder.Services.AddIdentity<Anvandare, IdentityRole>()
 //    .AddEntityFrameworkStores<TestDataContext>()
 //    .AddDefaultTokenProviders();
@@ -106,11 +108,11 @@ app.Run();
 
 //app.UseRouting();
 
-//// L‰gg till autentisering fˆre auktorisering
-//app.UseAuthentication();  // Den h‰r raden gˆr autentisering
-//app.UseAuthorization();   // Den h‰r raden gˆr auktorisering
+//// L√§gg till autentisering f√∂re auktorisering
+//app.UseAuthentication();  // Den h√§r raden g√∂r autentisering
+//app.UseAuthorization();   // Den h√§r raden g√∂r auktorisering
 
-//// Definiera rutten fˆr controller och action
+//// Definiera rutten f√∂r controller och action
 //app.MapControllerRoute(
 //        name: "default",
 //        pattern: "{controller=Home}/{action=Index}/{id?}");
