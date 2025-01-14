@@ -13,7 +13,7 @@ namespace CV_ASP.NET.Controllers
     {
         private readonly TestDataContext _context;
 
-        public SokController(TestDataContext context) : base(context)
+        public SokController(TestDataContext context) 
         {
             _context = context;
         }

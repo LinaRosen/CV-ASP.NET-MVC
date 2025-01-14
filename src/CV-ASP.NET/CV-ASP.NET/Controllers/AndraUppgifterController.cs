@@ -14,7 +14,7 @@ namespace CV_ASP.NET.Controllers
         private readonly UserManager<Anvandare> _userManager;
         private readonly TestDataContext _context;
 
-        public AndraUppgifterController(UserManager<Anvandare> userManager, TestDataContext context) : base(context)
+        public AndraUppgifterController(UserManager<Anvandare> userManager, TestDataContext context) 
         {
             _userManager = userManager;
             _context = context;
