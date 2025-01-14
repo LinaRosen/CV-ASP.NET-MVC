@@ -4,6 +4,7 @@ using CV_ASP.NET.Models;
 using CV_ASP.NET.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CV_ASP.NET.Controllers
 {
@@ -13,7 +14,7 @@ namespace CV_ASP.NET.Controllers
         private readonly UserManager<Anvandare> _userManager;
         private readonly TestDataContext _context;
 
-        public AndraUppgifterController(UserManager<Anvandare> userManager, TestDataContext context)
+        public AndraUppgifterController(UserManager<Anvandare> userManager, TestDataContext context) : base(context)
         {
             _userManager = userManager;
             _context = context;

@@ -11,12 +11,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
 public class MeddelandeController : BasController
 {
     private readonly TestDataContext _testDb;
     private readonly UserManager<Anvandare> _hanteraAnv;
     private readonly ILogger<MeddelandeController> _logger;
+
 
 
     public MeddelandeController(TestDataContext context, UserManager<Anvandare> hanteraAnv, ILogger<MeddelandeController> logger)
