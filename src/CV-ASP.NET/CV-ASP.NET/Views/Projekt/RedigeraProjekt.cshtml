@@ -1,19 +1,11 @@
 ﻿@model CV_ASP.NET.Models.Projekt
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Titel = "Skapa Projekt";
+    ViewBag.Titel = "Redigera Projekt";
 }
 <h2>@ViewBag.Titel</h2>
 
-
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-
-<form asp-action="Skapa" method="post">
+<form asp-action="SparaÄndringar" method="post">
     <div class="form-group">
         <label asp-for="Namn"></label>
         <input asp-for="Namn" class="form-control" />
@@ -26,5 +18,11 @@
         <span asp-validation-for="Beskrivning" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Skapa Projekt</button>
+    <input type="hidden" asp-for="Pid" />
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Spara Ändringar</button>
+        <a asp-action="ListaProjekt" class="btn btn-secondary">Tillbaka</a>
+    </div>
 </form>
+

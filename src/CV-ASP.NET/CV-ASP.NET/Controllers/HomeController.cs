@@ -35,6 +35,12 @@ namespace CV_ASP.NET.Controllers
                 .Include(u => u.CV)  // Inkludera CV-data
                 .Take(4)
                 .ToList();
+
+            model.Projekt = testDb.Projekt
+                    .Include(p => p.AnvProjekt) // Ladda kopplingar till AnvProjekt
+                        .ThenInclude(ap => ap.Anvandare) // Ladda användarna kopplade till projekten
+                    .OrderByDescending(p => p.DatumSkapad) // Sortera efter skapelsedatum
+                    .ToList();
             //Hämtar det senaste projektet och sorterar genom datum de skapades (fallande) samt konverterar resultatet till lista
             //model.Projekt = testDb.Projekt
             //    .OrderByDescending(p => p.DatumSkapad)

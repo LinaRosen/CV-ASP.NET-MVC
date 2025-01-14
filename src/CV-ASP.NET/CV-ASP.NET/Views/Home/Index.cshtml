@@ -13,33 +13,72 @@
     <a class="btn btn-primary" asp-controller="Sok" asp-action="Index">Sök användare</a>
 </div>
 
+<div class="container mt-5">
+    <h2 class="text-center">Senast upplagda projekt</h2>
 
+    @if (Model.Projekt != null && Model.Projekt.Any())
+    {
+        <div class="row">
+            @foreach (var projekt in Model.Projekt)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100" style="background-color: #f9f9f9;">
+                        <div class="card-body">
+                            <h5 class="card-title">@projekt.Namn</h5>
 
-<div class="container-fluid">
-    <div class="row">
-        @foreach (var Anvandare in Model.Anvandare)
-        {
-            <div class="col-md-3 mb-4">
-                <div class="card" style="width: 100%; background-color: #d3d3d3;">
-                    @if (Anvandare?.CV?.Profilbild != null)
-                    {
-                        <img src="~/Images/@Anvandare.CV.Profilbild" class="card-img-top" alt="Profilbild" asp-append-version="true" />
-                    }
-                    <div class="card-body">
-                        <h5 class="card-title">@Anvandare.Fornamn @Anvandare.Efternamn</h5>
-                        <p>Om mig: @Anvandare.CV.Beskrivning</p>
-                        <form method="post" asp-controller="Cv" asp-action="VisaCv" asp-route-anvid="@Anvandare.Id">
-                            <input type="submit" class="btn btn-dark btn-sm" value="Till profil" />
-                        </form>
+                            <p class="card-text">@projekt.Beskrivning</p>
+
+                            <p>
+                                <small class="text-muted">
+                                    Skapad av:
+                                    @if (projekt.Anvandare != null)
+                                    {
+                                        @($"{projekt.Anvandare.Fornamn} {projekt.Anvandare.Efternamn}")
+                                    }
+                                    else
+                                    {
+                                        <em>Okänd skapare</em>
+                                    }
+                                </small>
+                            </p>
+                            <p>
+                                <small class="text-muted">
+                                    Datum: @projekt.DatumSkapad.ToString("yyyy-MM-dd")
+                                </small>
+                            </p>
+                            <p><strong>Medlemmar:</strong></p>
+                            @if (projekt.AnvProjekt != null && projekt.AnvProjekt.Any())
+                            {
+                                <ul>
+                                    @foreach (var medlem in projekt.AnvProjekt.Where(ap => ap.Anvandare != null))
+                                    {
+                                        <li>@($"{medlem.Anvandare.Fornamn} {medlem.Anvandare.Efternamn}")</li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p><em>Inga medlemmar</em></p>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted">Inga projekt tillgängliga.</p>
+    }
 </div>
 
 
 
 
-<h1>Senast upplagda projekt</h1>
+
+
+
+
+
+
 

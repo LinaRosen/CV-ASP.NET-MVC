@@ -6,6 +6,7 @@ namespace CV_ASP.NET.Models
     {
         public Anvandare? anvandare { get; set; }
         public  CV? CV { get; set; }
+        public ICollection<AnvProjekt> Projekt { get; set; }
         public string? InloggadAnvandare { get; set; }
 
         public string? Gatunamn { get; set; }
