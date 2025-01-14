@@ -35,14 +35,19 @@
                     <td>@anvandare.Anvandarnamn</td>
                     <td>@anvandare.Fornamn @anvandare.Efternamn</td>
                     <td>
-                        @if (!anvandare.PrivatProfil || User.Identity.IsAuthenticated)
-                        {
-                            <a asp-controller="Sok" asp-action="AnvSida" asp-route-userId="@anvandare.Id">Visa profil</a>
-                        }
-                        else
-                        {
+                   
+                            @if (!anvandare.PrivatProfil || User.Identity.IsAuthenticated)
+                            {
+                            <form method="post" asp-controller="Cv" asp-action="VisaCv" asp-route-anvid="@anvandare.Id">
+                                <input type="submit" class="btn btn-dark btn-sm" value="Till profil" />
+                            </form>
+                            }
+                            else
+                            {
                             <span class="text-muted">Privat profil</span>
-                        }
+                            }
+                 
+
                     </td>
                 </tr>
             }
