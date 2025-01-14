@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 
 namespace CV_ASP.NET.Controllers
 {
@@ -128,6 +130,33 @@ namespace CV_ASP.NET.Controllers
                      SlutDatum = cu.Slutdatum
                  })
                 .ToList();
+                try
+                {
+                    var nuvarandeAnvadare = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                    Projekt projekt = testDb.Projekt.Where(p => p.SkapadAv == nuvarandeAnvadare).OrderByDescending(p => p.Pid).First();
+                    ViewBag.Projekt = projekt;
+                }
+                catch (Exception ex)
+                {
+                    Projekt exp = new Projekt();
+                    exp.Namn = "Personen har inte lagt till några projekt";
+                }
+                try
+                {
+                    var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                    List<Projekt> senasteDeltagandeProjekt = testDb.AnvProjekt
+                        .Where(ap => ap.Anvid == currentUserId)
+                        .Select(ap => ap.Projekt)
+                        .ToList();
+                    ViewBag.SenasteDeltagandeProjekt = senasteDeltagandeProjekt;
+                }
+                catch
+                {
+                    Projekt exp = new Projekt();
+                    exp.Namn = "Personen har inte deltagit i några projekt";
+                }
+
                 return View(vm);
 
             }

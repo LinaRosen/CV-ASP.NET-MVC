@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CV_ASP.NET.Models.ViewModels.ProjektVy>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Titel = "Projekt";
+}
+
+<h2>@ViewBag.Titel</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Namn</th>
+            <th>Beskrivning</th>
+            <th>Datum Skapad</th>
+            <th>Medlemmar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var projekt in Model)
+        {
+            <tr>
+                <td>@projekt.Namn</td>
+                <td>@projekt.Beskrivning</td>
+                <td>@projekt.DatumSkapad</td>
+                <td>
+                    @foreach (var medlem in projekt.Medlemmar)
+                    {
+                        <span>@medlem</span>
+
+                        <br />
+                    }
+                </td>
+                <td>
+                    @if (projekt.SkapadAvInloggadAnv)
+                    {
+                        <a asp-action="RedigeraProjekt" asp-route-id="@projekt.Id" class="btn btn-warning btn-sm">Redigera</a>
+                    }
+                    else if (projekt.ArMedlem)
+                    {
+                        <form asp-action="LämnaProjekt" asp-route-id="@projekt.Id" method="post">
+                            <button type="submit" class="btn btn-danger btn-sm">Lämna projekt</button>
+                        </form>
+                    }
+                    else if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-action="GåMed" asp-route-id="@projekt.Id" method="post">
+                            <button type="submit" class="btn btn-success btn-sm">Gå med</button>
+                        </form>
+                    }
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

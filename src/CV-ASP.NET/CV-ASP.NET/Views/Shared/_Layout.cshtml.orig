@@ -43,24 +43,33 @@
                                 <a class="nav-link text-dark" asp-controller="Anvsida" asp-action="AnvSida">Profil</a>
                             </li>
                         }
+<<<<<<< HEAD
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Projekt" asp-action="ListaProjekt">Se Projekt</a>
                         </li>
-
-                        @*             Kontrollerar om användare är inloggad och visar då inkommande meddelanden
- *@                              @if (User.Identity.IsAuthenticated)
+                        
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Projekt" asp-action="SkapaProjekt">Skapa nytt projekt</a>
                             </li>
 
-                           @*  <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Projekt" asp-action="SkapaProjekt">Skapa nytt projekt</a>
-                            </li> *@
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Meddelande" asp-action="MeddelandeSida">
+                                    Meddelanden @if (olastaMeddelanden > 0)
+                                    {
+                                        <span class="badge bg-danger">@olastaMeddelanden</span>
+                                    }
+                                </a>
+=======
 
+                        @*             Kontrollerar om användare är inloggad och visar då inkommande meddelanden
+ *@                              @if (User.Identity.IsAuthenticated)
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Meddelande" asp-action="Inkorg">Inkorg</a>
 
+>>>>>>> main
                             </li>
                         }
                         <li class="nav-item">

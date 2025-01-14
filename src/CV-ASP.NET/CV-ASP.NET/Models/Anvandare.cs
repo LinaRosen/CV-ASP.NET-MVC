@@ -48,7 +48,10 @@ namespace CV_ASP.NET.Models
 
         [XmlIgnore]
         public virtual ICollection<Meddelande> TagitEmotMeddelande { get; set; } = new List<Meddelande>();
-       
+
+        [XmlIgnore]
+        public virtual ICollection<AnvProjekt> AnvProjekt { get; set; } = new List<AnvProjekt>();
+
     }
 
 }

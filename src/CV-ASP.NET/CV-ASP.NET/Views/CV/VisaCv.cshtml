@@ -135,6 +135,35 @@
                 }
             </tbody>
         </table>
+        <h2>Senaste skapade projektet</h2>
+        
+        @if(ViewBag.Projekt != null)
+        {
+            <div>
+            <h3>@ViewBag.Projekt.Namn</h3>
+            <p>@ViewBag.Projekt.Beskrivning</p>
+            </div>
+        }
+        else
+        {
+            <p>Det finns inga projekt</p>
+        }
+
+        <h2>Projekt du är medlem i</h2>
+        @if (ViewBag.SenasteDeltagandeProjekt != null && ((List<Projekt>)ViewBag.SenasteDeltagandeProjekt).Any())
+        {
+            @foreach(var projekt in (List<Projekt>)ViewBag.SenasteDeltagandeProjekt)
+            {
+                <div>
+                        <h3 class="card-title">@projekt.Namn</h3>
+                        <p class="card-text">@projekt.Beskrivning</p>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Du har inte deltagit i några projekt ännu.</p>
+        }
     </div>
 </div>
 
@@ -148,6 +177,7 @@
         <a class="btn btn-dark me-2" asp-action="LaggTillKomp" asp-controller="Cv">Lägg till kompetens</a>
         <a class="btn btn-dark me-2" asp-action="LaggTillErf" asp-controller="Cv">Lägg till erfarenhet</a>
         <a class="btn btn-dark me-2" asp-action="LaggTillUtb" asp-controller="Cv">Lägg till utbildning</a>
+        <a class="btn btn-dark me-2" asp-action="SkapaProjekt" asp-controller="Projekt">Skapa nytt projekt</a>
     </div>
     <p>Totalt antal besökare: @Model.Cv.AntalBesokare</p>
 }

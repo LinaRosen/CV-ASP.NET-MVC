@@ -22,7 +22,7 @@ namespace CV_ASP.NET.Models
 
         [ForeignKey(nameof(SkapadAv))]
         [XmlIgnore]
-        public virtual Anvandare Anvandare { get; set; }
+        public virtual Anvandare? Anvandare { get; set; }
 
         [XmlIgnore]
         public virtual IEnumerable<AnvProjekt> AnvProjekt { get; set; } = new List<AnvProjekt>();

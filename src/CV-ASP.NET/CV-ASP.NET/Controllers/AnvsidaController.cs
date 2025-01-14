@@ -40,6 +40,8 @@ namespace CV_ASP.NET.Controllers
             //var adress = testDb.Adresser.SingleOrDefault(a => a.Anvid == inloggadAnv);
             var cv = testDb.CV.SingleOrDefault(c => c.AnvandarNamn == inloggadAnv);
 
+            //var projekt = testDb.AnvProjekt.Where(c => c.Anvid = inloggadAnv);
+
 
             if (anv == null)
             {
@@ -60,6 +62,7 @@ namespace CV_ASP.NET.Controllers
                 anvandare = anv, // Skicka hela listan av användare till vyn
                 InloggadAnvandare = inloggadAnv,
                 CV = anv.CV,
+                Projekt = anv.AnvProjekt,
                 //anvandare = anv,
                 //CV = anv.CV,
                 //InloggadAnvandare = inloggadAnv,
@@ -67,6 +70,7 @@ namespace CV_ASP.NET.Controllers
                 //epost= AnvEmail
 
             };
+
             return View(AnvandarSida);
 
         }

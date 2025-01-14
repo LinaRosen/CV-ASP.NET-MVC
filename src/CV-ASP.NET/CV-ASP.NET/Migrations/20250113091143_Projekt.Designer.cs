@@ -4,6 +4,7 @@ using CV_ASP.NET.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CV_ASP.NET.Migrations
 {
     [DbContext(typeof(TestDataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250113091143_Projekt")]
+    partial class Projekt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -310,7 +313,7 @@ namespace CV_ASP.NET.Migrations
                     b.Property<string>("Innehall")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Last")
+                    b.Property<bool?>("Last")
                         .HasColumnType("bit");
 
                     b.Property<string>("TillAnvandareId")

@@ -1,0 +1,28 @@
+﻿@model CV_ASP.NET.Models.Projekt
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Titel = "Redigera Projekt";
+}
+<h2>@ViewBag.Titel</h2>
+
+<form asp-action="SparaÄndringar" method="post">
+    <div class="form-group">
+        <label asp-for="Namn"></label>
+        <input asp-for="Namn" class="form-control" />
+        <span asp-validation-for="Namn" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Beskrivning"></label>
+        <textarea asp-for="Beskrivning" class="form-control"></textarea>
+        <span asp-validation-for="Beskrivning" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="Pid" />
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Spara Ändringar</button>
+        <a asp-action="ListaProjekt" class="btn btn-secondary">Tillbaka</a>
+    </div>
+</form>
+
