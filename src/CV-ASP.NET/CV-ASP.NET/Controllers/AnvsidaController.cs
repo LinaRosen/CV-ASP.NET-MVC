@@ -19,7 +19,7 @@ namespace CV_ASP.NET.Controllers
         private readonly UserManager<Anvandare> _hanteraAnv;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AnvsidaController(TestDataContext _context, UserManager<Anvandare> hanteraAnv, IWebHostEnvironment webHostEnviroment) : base(_context)
+        public AnvsidaController(TestDataContext _context, UserManager<Anvandare> hanteraAnv, IWebHostEnvironment webHostEnviroment) 
         {
             testDb = _context;
             _hanteraAnv= hanteraAnv;
