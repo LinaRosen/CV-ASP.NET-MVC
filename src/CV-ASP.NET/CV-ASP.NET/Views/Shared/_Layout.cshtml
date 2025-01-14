@@ -43,19 +43,50 @@
                                 <a class="nav-link text-dark" asp-controller="Anvsida" asp-action="AnvSida">Profil</a>
                             </li>
                         }
+
+                                @*             Kontrollerar om användare är inloggad och visar då inkommande meddelanden
+ *@                              @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Meddelande" asp-action="Inkorg">Inkorg</a>
+                               
+                                    </li>
+                                }
+                                <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Meddelande" asp-action="SkickaMeddelande">Skicka meddelande</a>
+                           
+                                </li>
+                                @*             Om användaren är inloggad vill vi visa hur många olästa meddelanden den har
+ *@                              @if (User.Identity.IsAuthenticated)
+                                   {
+                                     <li class="nav-item">
+                                    <p>Antal olästa meddelanden: <span id="olastaMed">-</span></p>
+                                     </li>
+                                   }
+                           
                         
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Meddelande" asp-action="MeddelandeSida">
-                                    Meddelanden
-                                    @if (olastaMeddelanden > 0)
-                                    {
-                                        <span class="badge bg-danger">@olastaMeddelanden</span>
+
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                            $(document).ready(function () {
+                                $.ajax({
+                                    type: 'GET', //Använder HTTP GET-metoden för att hämta data
+                                    url: '/Meddelande/HamtaLasta', //Anger URL:en för att hämta antalet olästa meddelanden
+                                    success: function (response) {
+                                        $('#olastaMed').text(response.count); //Uppdaterar texten med antalet olästa meddelanden från svaret
+                                    },
+                                    error: function (xhr, status, error) {
+                                        //Felmeddelande om förfrågan misslyckas
+                                        console.error(error);
                                     }
-                                </a>
-                            </li>
-                        }
+                                });
+                            });
+                        </script>
+
+                        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+                        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+                        <script src="~/js/site.js" asp-append-version="true"></script>
+                        
                     </ul>
                     <div class="ms-auto d-flex align-items-center">
                         @if (User.Identity.IsAuthenticated)

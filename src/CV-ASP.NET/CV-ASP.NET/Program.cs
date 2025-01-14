@@ -73,6 +73,9 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.AddScoped<MeddelandeController>();
 
+builder.Logging.AddConsole(); // Lägg till konsollogging (vilket innebär att loggar skrivs till konsolen)
+
+
 
 
 var app = builder.Build();
