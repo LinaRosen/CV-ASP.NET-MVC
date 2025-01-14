@@ -15,7 +15,7 @@ namespace CV_ASP.NET.Controllers
 
         private readonly ILogger<HomeController> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public HomeController(ILogger<HomeController> logger, TestDataContext dbcontext, IWebHostEnvironment webHostEnvironment)
+        public HomeController(ILogger<HomeController> logger, TestDataContext dbcontext, IWebHostEnvironment webHostEnvironment) 
         {
             _logger = logger;
             testDb = dbcontext;
@@ -86,5 +86,7 @@ namespace CV_ASP.NET.Controllers
             ViewBag.options = allaAnvandare;
             return View(nyanvandare);
         }
+
+      
     }
 }

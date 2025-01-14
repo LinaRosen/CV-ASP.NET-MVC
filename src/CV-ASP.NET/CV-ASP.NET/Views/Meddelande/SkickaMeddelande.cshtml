@@ -1,29 +1,62 @@
-﻿ @model CV_ASP.NET.Models.ViewModels.SkickaMeddelandeViewModel
+﻿@model Meddelande
 
-<h1>Skicka Meddelande</h1>
+<h2>Skicka meddelande</h2>
 
-<form asp-controller="Meddelande" asp-action="SkickaMeddelande" method="post">
-    @if (User.Identity.IsAuthenticated)
+<form asp-action="SkickaMeddelande" asp-controller="Meddelande" method="post">
+    <div class="form-group">
+        <label for="TillAnvandareId">Välj mottagare:</label>
+        @Html.DropDownListFor(model => model.TillAnvandareId,
+                 (SelectList)ViewData["TillAnvandareId"],
+                 "Välj mottagare",
+                 new { @class = "form-control" })
+        <span class="text-danger">
+            @Html.ValidationMessage("TillAnvandareId")
+        </span>
+    </div>
+
+    <input type="hidden" name="FranAnvandareId" value="@Model.FranAnvandareId" />
+
+    <input type="hidden" name="Last" value="@Model.Last" />
+
+@*     Om personen inte är inloggad får man skriva in sitt namn i en textruta som visas
+ *@    @if (!User.Identity.IsAuthenticated)
     {
-        <p>
-            <strong>Ditt namn:</strong> @User.Identity.Name
-        </p>
-        <input type="hidden" name="FranAnvandareId" value="@User.Identity.Name" />
-    }
-    else
-    {
-        <div>
-            <label for="AnonymAnvandare">Ditt namn (obligatoriskt):</label>
-            <input type="text" id="AnonymAnvandare" name="AnonymAnvandare" required pattern="[\p{L}\s]+" title="Du får endast ange bokstäver!" />
+        <div class="form-group">
+            <label asp-for="AnonymAnvandare">Ange ditt namn:</label>
+            <input asp-for="AnonymAnvandare" class="form-control" />
+            <span asp-validation-for="AnonymAnvandare" class="text-danger"></span>
         </div>
     }
 
-    <div>
-        <label for="Innehall">Meddelande:</label>
-        <textarea id="Innehall" name="Innehall" required></textarea>
+    else
+    {
+        <div class="form group">
+            <p>Inloggad som: @User.Identity.Name</p>
+        </div>
+    }
+
+
+    <div class="form-group">
+        <label for="Innehall">Meddelande</label>
+        <textarea asp-for="Innehall" class="form-control"></textarea>
     </div>
 
-    <input type="hidden" name="TillAnvandareId" value="@Model.TillAnvandareId" />
+    <button type="submit" class="btn btn-primary">Skicka meddelande</button>
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
 
-    <button type="submit">Skicka</button>
-</form> 
+<script>
+    //Kollar på ändringar i select-dropdown med namnet "valdAnv"
+    document.querySelector('select[name="TillAnvandareId"]').addEventListener('change', function () {
+
+        //Hämtar det valda värdet från dropdownen
+        var selectedValue = this.value;
+
+        //Uppdaterar värdet för ett element med id 'selectedUsername'
+        document.getElementById('TillAnvandareId').value = selectedValue;
+    });
+</script>

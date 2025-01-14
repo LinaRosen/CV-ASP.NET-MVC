@@ -4,6 +4,7 @@ using CV_ASP.NET.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CV_ASP.NET.Migrations
 {
     [DbContext(typeof(TestDataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250114145143_hej")]
+    partial class hej
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -515,7 +518,7 @@ namespace CV_ASP.NET.Migrations
             modelBuilder.Entity("CV_ASP.NET.Models.AnvProjekt", b =>
                 {
                     b.HasOne("CV_ASP.NET.Models.Anvandare", "Anvandare")
-                        .WithMany("AnvProjekt")
+                        .WithMany()
                         .HasForeignKey("Anvid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -676,8 +679,6 @@ namespace CV_ASP.NET.Migrations
 
             modelBuilder.Entity("CV_ASP.NET.Models.Anvandare", b =>
                 {
-                    b.Navigation("AnvProjekt");
-
                     b.Navigation("CV");
 
                     b.Navigation("TagitEmotMeddelande");

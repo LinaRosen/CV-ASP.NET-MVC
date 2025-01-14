@@ -8,12 +8,17 @@ namespace CV_ASP.NET.Models
     {
         [Key]
         public int Mid { get; set; }
+       
+
         public string? Innehall { get; set; }
-        public bool? Last {  get; set; }
+        public bool Last { get; set; }
         public string? FranAnvandareId { get; set; }
         public string? TillAnvandareId { get; set; }
+       
 
-        [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "Du får endast ange bokstäver!")]
+
+       
+        
         public string? AnonymAnvandare { get; set; }
 
         [ForeignKey(nameof(FranAnvandareId))]
@@ -23,5 +28,6 @@ namespace CV_ASP.NET.Models
         [ForeignKey(nameof(TillAnvandareId))]
         [XmlIgnore]
         public virtual Anvandare? Tillanvandare { get; set; }
+        
     }
 }

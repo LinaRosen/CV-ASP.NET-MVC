@@ -1,0 +1,42 @@
+﻿@using CV_ASP.NET.Models.ViewModels
+@model IEnumerable<VisaMeddelande>
+
+<h2>Mottagna meddelanden</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Från</th>
+            <th>Innehåll</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vm in Model)
+        {
+            <tr id="message-@vm.Meddelande.Mid" class="@(vm.Meddelande.Last == false ? "read-message" : "")">
+                
+                @if (vm.FranAnonym == null)
+                {
+                    <td>@vm.FramAnv</td>
+                }
+                else
+                {
+                    <td>@vm.FranAnonym</td>
+                }
+                <td>@vm.Meddelande.Innehall</td>
+                <td>
+                    @if (vm.Meddelande.Last == null || vm.Meddelande.Last == false)
+                    {
+                        <!-- Formulär som skickar en POST-förfrågan när knappen trycks -->
+                        <form method="post" asp-controller="Meddelande" asp-action="MarkeraLast">
+                            <input type="hidden" name="meddelandeId" value="@vm.Meddelande.Mid" />
+                            <button type="submit" class="btn btn-primary">Markera som läst</button>
+                        </form>
+                    }
+                </td>
+               
+            </tr>
+        }
+    </tbody>
+</table>

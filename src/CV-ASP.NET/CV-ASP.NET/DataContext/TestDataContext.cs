@@ -29,8 +29,11 @@ namespace CV_ASP.NET.DataContext
 
 
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Meddelande>()
                 .HasOne(m => m.Frananvandare)
                 .WithMany(u => u.skickatMeddelande)
@@ -43,7 +46,8 @@ namespace CV_ASP.NET.DataContext
                 .HasForeignKey(m => m.TillAnvandareId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            base.OnModelCreating(modelBuilder);
+
+
 
 
             // CV_kompetenser konfiguration

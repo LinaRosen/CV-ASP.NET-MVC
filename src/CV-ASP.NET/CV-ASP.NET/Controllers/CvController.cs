@@ -15,7 +15,7 @@ namespace CV_ASP.NET.Controllers
         private TestDataContext testDb;
         
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public CvController(TestDataContext testDb, IWebHostEnvironment webHostEnvironment)
+        public CvController(TestDataContext testDb, IWebHostEnvironment webHostEnvironment) 
         {
             this.testDb = testDb;
             _webHostEnvironment = webHostEnvironment;
