@@ -10,13 +10,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
 public class MeddelandeController : BasController
 {
     private readonly TestDataContext _testDb;
     private readonly UserManager<Anvandare> _hanteraAnv;
 
-    public MeddelandeController(TestDataContext context, UserManager<Anvandare> hanteraAnv)
+    public MeddelandeController(TestDataContext context, UserManager<Anvandare> hanteraAnv) : base(context)
     {
         _testDb = context;
         _hanteraAnv = hanteraAnv;

@@ -9,11 +9,11 @@ using System.Linq;
 
 namespace CV_ASP.NET.Controllers
 {
-    public class SokController : Controller
+    public class SokController : BasController
     {
         private readonly TestDataContext _context;
 
-        public SokController(TestDataContext context)
+        public SokController(TestDataContext context) : base(context)
         {
             _context = context;
         }
