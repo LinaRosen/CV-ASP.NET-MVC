@@ -172,21 +172,6 @@ public class MeddelandeController : BasController
     }
     return NotFound(); // Om meddelandet inte hittas
     }
-
-    [HttpPost]
-    [Authorize]
-    public IActionResult Radera(int meddelandeId)
-    {
-        Meddelande taBortMed = _testDb.Meddelande.Find(meddelandeId);
-        if (taBortMed != null)
-        {
-            _testDb.Meddelande.Remove(taBortMed);
-            _testDb.SaveChanges();
-        }
-        return RedirectToAction("Inkorg");
-    }
-
-
 }
 
 

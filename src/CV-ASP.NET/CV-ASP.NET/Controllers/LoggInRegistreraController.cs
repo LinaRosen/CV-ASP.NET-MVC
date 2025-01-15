@@ -28,12 +28,12 @@ namespace CV_ASP.NET.Controllers
             return View();
         }
 
+        // Hanterar användarregistrering, skapar användare och loggar in vid framgång, annars visas felmeddelanden.
         [HttpPost]
         public async Task<IActionResult> Registrera(RegistreraViewModel registerViewModel)
         {
             if (ModelState.IsValid)
             {
-                // Skapa användaren med adressfält
                 Anvandare anvandare = new Anvandare()
                 {
                     UserName = registerViewModel.Anvandarnamn,
@@ -68,13 +68,6 @@ namespace CV_ASP.NET.Controllers
         }
 
 
-
-
-
-
-
-
-
         [HttpGet]
         public IActionResult LoggaIn()
         {
@@ -82,6 +75,7 @@ namespace CV_ASP.NET.Controllers
             return View(loginViewModel);
         }
 
+        // Hanterar användarinloggning, autentiserar med användarnamn och lösenord, och om lyckad inloggning, omdirigerar till startsidan.
         [HttpPost]
         public async Task<IActionResult> LoggaIn(LoggaInViewModel loginViewModel)
         {

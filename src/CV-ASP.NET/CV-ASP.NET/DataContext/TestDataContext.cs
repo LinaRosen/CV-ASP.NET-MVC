@@ -8,7 +8,6 @@ namespace CV_ASP.NET.DataContext
     {
         public TestDataContext(DbContextOptions<TestDataContext> options): base(options) { }
 
-        public DbSet<Adress> Adresser { get; set; }
         public DbSet<Anvandare> Anvandare { get; set; }
         public DbSet<CV> CV { get; set; }
         public DbSet<CV_Erfarenhet> CV_Erfarenhet { get; set; }
@@ -27,9 +26,6 @@ namespace CV_ASP.NET.DataContext
 
 
 
-
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -45,9 +41,6 @@ namespace CV_ASP.NET.DataContext
                 .WithMany(u => u.TagitEmotMeddelande)
                 .HasForeignKey(m => m.TillAnvandareId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-
-
 
 
             // CV_kompetenser konfiguration
@@ -112,18 +105,6 @@ namespace CV_ASP.NET.DataContext
                 .HasOne(ap => ap.Projekt)
                 .WithMany(p => p.AnvProjekt)
                 .HasForeignKey(ap => ap.Pid);
-
-
-
-            //modelBuilder.Entity<Adress>()
-            //    .HasOne(a => a.Anvandare)
-            //    .WithOne(u => u.Adress)
-            //    .HasForeignKey<Adress>(a => a.Anvid)
-            //    .OnDelete(DeleteBehavior.Cascade);
-
-
-
         }
-
     }
 }
