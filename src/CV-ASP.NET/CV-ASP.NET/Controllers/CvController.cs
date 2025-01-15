@@ -15,9 +15,9 @@ namespace CV_ASP.NET.Controllers
     public class CvController : BasController
     {
         private TestDataContext testDb;
-        
+
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public CvController(TestDataContext testDb, IWebHostEnvironment webHostEnvironment) 
+        public CvController(TestDataContext testDb, IWebHostEnvironment webHostEnvironment)
         {
             this.testDb = testDb;
             _webHostEnvironment = webHostEnvironment;
@@ -27,23 +27,23 @@ namespace CV_ASP.NET.Controllers
         [Authorize]
         public async Task<IActionResult> TaBortAllaCvn()
         {
-            // Hämta alla CV:n från databasen
             var allaCvn = testDb.CV.ToList();
 
-            // Ta bort alla CV:n
             testDb.CV.RemoveRange(allaCvn);
-            await testDb.SaveChangesAsync(); // Spara ändringarna i databasen
+            await testDb.SaveChangesAsync();
 
-            // Återgå till en annan vy eller huvudvyn
             return RedirectToAction("Anvsida", "AnvSida");
         }
-        
+
 
         public async Task<IActionResult> VisaCv(string anvId)
         {
             return await VisaCvP(anvId);
         }
 
+        // Den här metoden hanterar visning och uppdatering av användarens CV-sida. Om användaren är inloggad, visas den inloggade användarens CV, annars visas den för angiven användare.
+        // För externa användare (icke-inloggade) uppdateras besökarantalet för CV:t och relevant information om erfarenheter, kompetenser och utbildningar hämtas och presenteras.
+        // Om inga CV finns för användaren, omdirigeras användaren med ett felmeddelande.
         [HttpPost]
         [ActionName("VisaCv")]
         public async Task<IActionResult> VisaCvP(string anvId)
@@ -51,23 +51,24 @@ namespace CV_ASP.NET.Controllers
             VisaCvViewModel vm = new VisaCvViewModel { };
             string? inloggadAnv = base.HamtaAnv();
 
-            
 
-            if 
+
+            if
                 (anvId == null || anvId.Equals(inloggadAnv))
             {
 
                 vm.anvandare = testDb.Users.Where(a => a.Id.Equals(inloggadAnv)).FirstOrDefault();
                 vm.Cv = testDb.CV.Where(c => c.AnvandarNamn.Equals(inloggadAnv)).FirstOrDefault();
             }
+
             // Om det inte är inloggad användare, uppdatera besökarantalet
             else
-                
+
             {
                 vm.anvandare = testDb.Users.Where(a => a.Id == anvId).FirstOrDefault();
                 vm.Cv = testDb.CV.Where(c => c.AnvandarNamn == anvId).FirstOrDefault();
 
-                if (vm.Cv != null) // Kontrollera om vm.Cv inte är null
+                if (vm.Cv != null)
                 {
                     var totalaBesokare = testDb.CV.Where(c => c.Cvid == vm.Cv.Cvid).FirstOrDefault().AntalBesokare;
                     CV cv = vm.Cv;
@@ -78,11 +79,6 @@ namespace CV_ASP.NET.Controllers
 
             }
 
-            //vm.projekt = testDb.AnvProjekt
-            //.Where(ap => ap.Anvid == inloggadAnv)
-            //.Select(ap => testDb.Projekt.Single(p => p.Pid == ap.Pid))
-            //.ToList();
-
             if (vm.Cv != null)
             {
                 vm.erfarenheter = testDb.CV_Erfarenhet
@@ -91,14 +87,14 @@ namespace CV_ASP.NET.Controllers
                  ce => ce.Eid,
                  e => e.Eid,
                  (ce, e) => new ErfarenhetViewModel
-                {
-                    Eid = e.Eid, // Mappa Eid från Erfarenhet till ViewModel
-                    Titel = e.Titel,
-                    Arbetsgivare = e.Arbetsgivare,
-                    Beskrivning = e.Beskrivning,
-                    StartDatum = ce.Startdatum,
-                    Slutdatum = ce.Slutdatum
-                })
+                 {
+                     Eid = e.Eid, // Mappa Eid från Erfarenhet till ViewModel
+                     Titel = e.Titel,
+                     Arbetsgivare = e.Arbetsgivare,
+                     Beskrivning = e.Beskrivning,
+                     StartDatum = ce.Startdatum,
+                     Slutdatum = ce.Slutdatum
+                 })
                .ToList();
 
                 vm.kompetenser = testDb.CV_Kompetenser
@@ -164,7 +160,6 @@ namespace CV_ASP.NET.Controllers
             {
                 TempData["ErrorMessage"] = "Det finns inget CV för denna person.";
 
-                // Omdirigera till startsidan
                 return RedirectToAction("Index", "Sok");
             }
 
@@ -180,11 +175,14 @@ namespace CV_ASP.NET.Controllers
             return View();
         }
 
+        // Den här metoden hanterar skapandet av ett nytt CV, inklusive profilbild, erfarenheter, utbildning och kompetenser. 
+        // Data valideras och sparas i databasen, och kopplingar skapas mellan olika objekt. 
+        // Om allt går bra omdirigeras användaren till sin profilsida, annars visas formuläret igen.
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> skapaCv(SkapaCvViewModel scv)
         {
-            
+
             if (ModelState.IsValid)
             {
                 string fil = LaddaUppProfilbild(scv);
@@ -193,7 +191,7 @@ namespace CV_ASP.NET.Controllers
                 string? inloggadAnv = base.HamtaAnv();
                 scv.cv.AnvandarNamn = inloggadAnv;
 
-                
+
                 var cv = new CV();
 
                 cv.Profilbild = fil;
@@ -221,14 +219,14 @@ namespace CV_ASP.NET.Controllers
                 cvErfarenhet.Startdatum = scv.cvErfarenhet.Startdatum;
                 cvErfarenhet.Slutdatum = scv.cvErfarenhet.Slutdatum;
                 cvErfarenhet.Eid = erfarenhet.Eid;
-                
+
                 await testDb.CV_Erfarenhet.AddAsync(cvErfarenhet);
                 await testDb.SaveChangesAsync();
 
 
                 var utbildning = new Utbildning();
 
-             
+
                 utbildning.Instutition = scv.utbildning.Instutition;
                 utbildning.Beskrivning = scv.utbildning.Beskrivning;
                 utbildning.Kurs_program = scv.utbildning.Kurs_program;
@@ -241,7 +239,7 @@ namespace CV_ASP.NET.Controllers
                 cvUtbildning.Startdatum = scv.cvUtbildning.Startdatum;
                 cvUtbildning.Slutdatum = scv.cvUtbildning.Slutdatum;
                 cvUtbildning.Uid = utbildning.Uid;
-                
+
                 await testDb.CV_Utbildning.AddAsync(cvUtbildning);
                 await testDb.SaveChangesAsync();
 
@@ -249,33 +247,27 @@ namespace CV_ASP.NET.Controllers
                 var kompetenser = new Kompetenser();
 
                 kompetenser.Beskrivning = scv.kompetenser.Beskrivning;
-                
+
 
                 await testDb.Kompetenser.AddAsync(kompetenser);
                 await testDb.SaveChangesAsync();
-               
+
 
                 var cvKompetens = new CV_kompetenser();
                 cvKompetens.Cvid = dettaCv;
                 cvKompetens.Kid = kompetenser.Kid;
                 cvKompetens.KompetensNamn = scv.cvKompetenser.KompetensNamn;
 
-
-
-
                 await testDb.CV_Kompetenser.AddAsync(cvKompetens);
                 await testDb.SaveChangesAsync();
-
-                //cv.CvKompetenser = new List<CV_kompetenser> { cvKompetens };
-                //cv.CvErfarenhet = new List<CV_Erfarenhet> { cvErfarenhet };
-                //cv.CvUtbildning = new List<CV_Utbildning> { cvUtbildning };
-
 
                 return RedirectToAction("Anvsida", "AnvSida");
             }
             return View(scv);
         }
 
+        // Den här metoden hanterar uppladdningen av en profilbild för användarens CV. 
+        // Filen sparas i en mapp på servern under "Images" och får ett unikt namn baserat på en GUID för att undvika konflikter.
         [Authorize]
         private string LaddaUppProfilbild(SkapaCvViewModel cvm)
         {
@@ -299,6 +291,7 @@ namespace CV_ASP.NET.Controllers
             return fileName;
         }
 
+        // Hämtar och visar användarens CV för redigering, eller visar ett felmeddelande om något går fel.
         [Authorize]
         [HttpGet]
         public IActionResult RedigeraCv()
@@ -307,10 +300,8 @@ namespace CV_ASP.NET.Controllers
             {
                 string inloggadAnv = base.HamtaAnv();
 
-                // Hämta användarens CV från databasen
                 var dettaCv = testDb.CV.SingleOrDefault(c => c.AnvandarNamn == inloggadAnv);
 
-                // Skapa ViewModel med data från användarens CV
                 var model = new RedigeraCvViewModel
                 {
                     Beskrivning = dettaCv.Beskrivning,
@@ -321,18 +312,19 @@ namespace CV_ASP.NET.Controllers
             }
             catch (Exception ex)
             {
-                // Logga felet och visa ett felmeddelande
-                
+
                 TempData["ErrorMessage"] = "Ett fel uppstod. Försök igen.";
                 return RedirectToAction("Anvsida", "AnvSida");
             }
         }
 
+
+        // Uppdaterar användarens CV med nya uppgifter och bild, och sparar ändringarna i databasen.
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> RedigeraCv(RedigeraCvViewModel model)
         {
-                string inloggadAnv = base.HamtaAnv();
+            string inloggadAnv = base.HamtaAnv();
             try
             {
                 var dettaCv = testDb.CV.SingleOrDefault(c => c.AnvandarNamn == inloggadAnv);
@@ -347,21 +339,19 @@ namespace CV_ASP.NET.Controllers
                 });
                 if (!string.IsNullOrEmpty(nyBild))
                 {
-                    dettaCv.Profilbild = nyBild; // Uppdatera profilbilden
+                    dettaCv.Profilbild = nyBild;
                 }
-                
+
                 dettaCv.Beskrivning = model.Beskrivning;
-                
+
                 testDb.Update(dettaCv);
                 await testDb.SaveChangesAsync();
 
-                //Om allt går bra omdirigeras användaren till VisaCv
                 TempData["SuccessMessage"] = "CV har uppdaterats!";
-                return RedirectToAction("VisaCv", new { anvId = inloggadAnv }); // Omdirigera till VisaCv
+                return RedirectToAction("VisaCv", new { anvId = inloggadAnv });
             }
             catch (Exception ex)
             {
-                //Vid fel returneras vyn med samma data för att låta användaren försöka igen
                 return View(model);
             }
         }
@@ -374,6 +364,7 @@ namespace CV_ASP.NET.Controllers
             return View();
         }
 
+        // Lägger till ny erfarenhet och kopplar den till användarens CV, och sparar ändringarna i databasen.
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> LaggTillErf(ErfarenhetViewModel model)
@@ -381,15 +372,15 @@ namespace CV_ASP.NET.Controllers
             string inloggadAnv = base.HamtaAnv();
             var erfarenhet = new Erfarenhet();
 
-            erfarenhet.Eid= model.Eid;
+            erfarenhet.Eid = model.Eid;
             erfarenhet.Arbetsgivare = model.Arbetsgivare;
             erfarenhet.Titel = model.Titel;
             erfarenhet.Beskrivning = model.Beskrivning;
-           
+
 
             await testDb.Erfarenhet.AddAsync(erfarenhet);
             await testDb.SaveChangesAsync();
-            
+
 
             int dettaCv = testDb.CV.Where(c => c.AnvandarNamn == inloggadAnv).Single().Cvid;
 
@@ -410,7 +401,7 @@ namespace CV_ASP.NET.Controllers
         public async Task<IActionResult> TaBortErf(int id)
         {
             Models.Erfarenhet erf = testDb.Erfarenhet.Find(id);
-            //Tar bort erfarentets-sobjektet från databasen och sparar ändringarna i databasen
+
             testDb.Erfarenhet.Remove(erf);
             await testDb.SaveChangesAsync();
             return RedirectToAction("VisaCv", "Cv");
@@ -426,6 +417,7 @@ namespace CV_ASP.NET.Controllers
             return View();
         }
 
+        // Lägger till ny utbildning och kopplar den till användarens CV, och sparar ändringarna i databasen.
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> LaggTillUtb(UtbildningViewModel model)
@@ -477,6 +469,7 @@ namespace CV_ASP.NET.Controllers
             return View();
         }
 
+        // Lägger till ny kompetens och kopplar den till användarens CV, och sparar ändringarna i databasen.
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> LaggTillKomp(KompetensViewModel model)
@@ -486,7 +479,7 @@ namespace CV_ASP.NET.Controllers
 
             kompetens.Kid = model.kid;
             kompetens.Beskrivning = model.Beskrivning;
-           
+
             await testDb.Kompetenser.AddAsync(kompetens);
             await testDb.SaveChangesAsync();
 
@@ -508,14 +501,11 @@ namespace CV_ASP.NET.Controllers
         public async Task<IActionResult> TaBortKomp(int id)
         {
             Models.Kompetenser komp = testDb.kompetensers.Find(id);
-            //Tar bort erfarentets-sobjektet från databasen och sparar ändringarna i databasen
+
             testDb.Kompetenser.Remove(komp);
             await testDb.SaveChangesAsync();
             return RedirectToAction("VisaCv", "Cv");
 
         }
     }
-
-
-
 }

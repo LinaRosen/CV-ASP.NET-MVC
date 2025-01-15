@@ -22,30 +22,24 @@ namespace CV_ASP.NET.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public IActionResult Index()
-            //Allt detta ska ändras, bara kopierat för att få en grund. 
+        // Hämtar användare med offentliga CV:n och projekt som inte är aktiverade, och skickar dessa till startsidan.
+        public IActionResult Index() 
         {
             StartsidaViewModel model = new StartsidaViewModel { };
 
-            //Hämtar 4 CVn från databasen
             model.Anvandare = testDb.Anvandare
                 .Where(u => !u.PrivatProfil)
-                .Where(u => u.CV != null)  // Se till att användare har ett CV
+                .Where(u => u.CV != null) 
                 .Where(u => !u.Aktiverad)
-                .Include(u => u.CV)  // Inkludera CV-data
+                .Include(u => u.CV) 
                 .Take(4)
                 .ToList();
 
             model.Projekt = testDb.Projekt
-                    .Include(p => p.AnvProjekt) // Ladda kopplingar till AnvProjekt
-                        .ThenInclude(ap => ap.Anvandare) // Ladda användarna kopplade till projekten
-                    .OrderByDescending(p => p.DatumSkapad) // Sortera efter skapelsedatum
+                    .Include(p => p.AnvProjekt) 
+                        .ThenInclude(ap => ap.Anvandare) 
+                    .OrderByDescending(p => p.DatumSkapad) 
                     .ToList();
-            //Hämtar det senaste projektet och sorterar genom datum de skapades (fallande) samt konverterar resultatet till lista
-            //model.Projekt = testDb.Projekt
-            //    .OrderByDescending(p => p.DatumSkapad)
-            //    .Take(1)
-            //    .ToList();
 
             return View(model);
         }
@@ -66,6 +60,8 @@ namespace CV_ASP.NET.Controllers
             return View();
         }
 
+
+        // Visar en felvy med ett unikt request-ID för att underlätta felsökning
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

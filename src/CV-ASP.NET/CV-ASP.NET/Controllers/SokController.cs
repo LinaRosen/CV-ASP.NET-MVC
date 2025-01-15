@@ -18,21 +18,18 @@ namespace CV_ASP.NET.Controllers
             _context = context;
         }
 
+        // Hämtar och filtrerar användare baserat på söksträng och tillgänglig profiltyp (offentlig eller privat).
         [HttpGet]
         public IActionResult Index(string searchString)
         {
-            // Börja med en tom lista för filtrerade användare
             var filtreradeAnvandare = new List<Anvandare>();
 
-            // Kontrollera om söksträngen är tom
             if (!string.IsNullOrEmpty(searchString))
             {
                 string[] soktermer = searchString.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-                // Hämta alla användare från databasen
                 var allaAnvandare = _context.Anvandare.ToList();
 
-                // Filtrera användare baserat på söksträng
                 filtreradeAnvandare = allaAnvandare
                     .Where(a => soktermer.Any(term =>
                         a.Fornamn.Contains(term, StringComparison.OrdinalIgnoreCase) ||
@@ -40,16 +37,14 @@ namespace CV_ASP.NET.Controllers
                         a.Anvandarnamn.Contains(term, StringComparison.OrdinalIgnoreCase)))
                     .ToList();
 
-                // Om användaren inte är inloggad, ta bort privata användare
                 if (!User.Identity.IsAuthenticated)
                 {
                     filtreradeAnvandare = filtreradeAnvandare
-                        .Where(a => !a.PrivatProfil) // Filtrera bort privata profiler
+                        .Where(a => !a.PrivatProfil) 
                         .ToList();
                 }
             }
 
-            // Skapa en SokViewModel för vyn
             var viewModel = new SokViewModel
             {
                 Anvandare = filtreradeAnvandare
@@ -57,48 +52,5 @@ namespace CV_ASP.NET.Controllers
 
             return View(viewModel);
         }
-
-        [HttpGet]
-        public async Task<IActionResult> AnvSida(string userId)
-        {
-            // Kontrollera att parametern inte är null eller tom
-            if (string.IsNullOrEmpty(userId))
-            {
-                return BadRequest("User ID is required.");
-            }
-
-            // Hämta användaren från databasen
-            var anvandare = await _context.Anvandare
-                .Include(a => a.CV) // Ladda CV för användaren om det finns
-                .FirstOrDefaultAsync(a => a.Id == userId);
-
-            // Kontrollera om användaren hittades
-            if (anvandare == null)
-            {
-                return NotFound("Användaren hittades inte.");
-            }
-
-            // Skapa ViewModel för användarsidan
-            var viewModel = new AnvandarSidaViewModel
-            {
-                anvandare = anvandare,
-                CV = anvandare.CV,
-                epost = anvandare.Email,
-                // Adressfält från Anvandare, använd de individuella fälten istället för en 'adress' egenskap
-                Gatunamn = anvandare.Gatunamn,
-                Stad = anvandare.Stad,
-                Postnummer = anvandare.Postnummer
-            };
-
-            // Returnera vyn med ViewModel
-            return View(viewModel);
-        }
-
-
-
-
-
-
-
     }
 }

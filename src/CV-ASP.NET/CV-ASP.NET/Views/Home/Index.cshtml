@@ -10,7 +10,23 @@
 </div>
 
 <div class="text-center mt-4">
-    <a class="btn btn-primary" asp-controller="Sok" asp-action="Index">Sök användare</a>
+    <a class="btn btn-primary" asp-controller="Sok" asp-action="Index" style="background-color: black; color: white; margin-bottom: 40px;">Sök användare</a>
+</div>
+
+
+<div class="container-fluid d-inline-flex gap-5 align-content-center">
+    @foreach (var Anvandare in Model.Anvandare)
+    {
+        <div class="card bg-light" style="width:200px">
+            <div class="card-body flex-fill">
+                <h5 class="card-title">@Anvandare.Fornamn @Anvandare.Efternamn</h5>
+                <p>Anvandarnamn: @Anvandare.Anvandarnamn</p>
+                <form method="post" asp-controller="Cv" asp-action="VisaCv" asp-route-anvid="@Anvandare.Id">
+                    <input type="submit" class="btn btn-dark btn-sm" value="Till profil" />
+                </form>
+            </div>
+        </div>
+    }
 </div>
 
 <div class="container mt-5">

@@ -20,6 +20,7 @@ namespace CV_ASP.NET.Controllers
             _context = context;
         }
 
+        // Hämtar och visar användarens information för redigering om användaren är inloggad
         [HttpGet]
         public async Task <IActionResult> RedigeraUppgifter()
         {
@@ -45,9 +46,9 @@ namespace CV_ASP.NET.Controllers
             return View(model);
         }
 
+        // Hanterar POST-förfrågan för att uppdatera användarens information och spara ändringarna i databasen.
         [HttpPost]
         [ActionName("RedigeraUppgifter")]
-        // Redigera användaruppgifter (GET)
         public async Task<IActionResult> RedigeraUpg(RedigeraUppgifterViewModel model)
         {
             string? inloggadAnv = base.HamtaAnv();
@@ -71,17 +72,14 @@ namespace CV_ASP.NET.Controllers
             anvandare.Email = model.anvandare.Email;
             anvandare.PhoneNumber = model.anvandare.PhoneNumber;
             anvandare.PrivatProfil = model.anvandare.PrivatProfil;
-
-            // Uppdatera adressinformationen
             anvandare.Gatunamn = model.anvandare.Gatunamn;
             anvandare.Stad = model.anvandare.Stad;
             anvandare.Postnummer = model.anvandare.Postnummer;
-
-            // Spara ändringar i databasen
+     
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Dina uppgifter har uppdaterats.";
-            return RedirectToAction("Anvsida", "AnvSida"); // Ändra "Profil" och "Anvandare" till rätt vy/kontroller
+            return RedirectToAction("Anvsida", "AnvSida"); 
         }
 
         [HttpGet]
@@ -90,6 +88,7 @@ namespace CV_ASP.NET.Controllers
             return View();
         }
 
+        // Hanterar POST-förfrågan för att ändra användarens lösenord efter att ha verifierat nuvarande lösenord och säkerställt att de nya lösenorden matchar.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AndraLosenord(AndraLosenordViewModel model)
@@ -111,13 +110,13 @@ namespace CV_ASP.NET.Controllers
             if (!await _userManager.CheckPasswordAsync(anvandare, model.NuvarandeLosenord))
             {
                 TempData["ErrorMessage"] = "Det nuvarande lösenordet är felaktigt.";
-                return View(model); // Visa felmeddelande för felaktigt nuvarande lösenord
+                return View(model); 
             }
 
             if (model.NyttLosenord != model.BekraftaNyttLosenord)
             {
                 TempData["ErrorMessage"] = "De nya lösenorden matchar inte.";
-                return View(model); // Visa felmeddelande om lösenorden inte matchar
+                return View(model); 
             }
 
             var result = await _userManager.ChangePasswordAsync(anvandare, model.NuvarandeLosenord, model.NyttLosenord);
@@ -131,13 +130,8 @@ namespace CV_ASP.NET.Controllers
                 TempData["ErrorMessage"] = "Lösenordet kunde inte ändras. Försök igen.";
             }
 
-            return View(model); // Behåll användaren på samma sida efter att lösenordet har ändrats
+            return View(model); 
         }
-
-
     }
-
-
-
 }
 

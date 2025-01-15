@@ -26,54 +26,39 @@ namespace CV_ASP.NET.Controllers
             _webHostEnvironment = webHostEnviroment;
         }
 
-        
+        // Hämtar användarens information, inklusive CV och projekt, och returnerar en vy med användarens profil och CV-sida.
         public async Task<IActionResult> AnvSidaAsync(string Anvid)
         {
             string inloggadAnv = base.HamtaAnv();
-            //String anonymAnv = Anvid ?? inloggadAnv;
 
             var anv = await testDb.Users
-              .Include(u => u.CV) // Lägger till CV-information
+              .Include(u => u.CV) 
               .SingleOrDefaultAsync(u => u.Id == inloggadAnv);
-            /*= testDb.Users.SingleOrDefault(u => u.Id == inloggadAnv);*/
-
-            //var adress = testDb.Adresser.SingleOrDefault(a => a.Anvid == inloggadAnv);
+        
             var cv = testDb.CV.SingleOrDefault(c => c.AnvandarNamn == inloggadAnv);
-
-            //var projekt = testDb.AnvProjekt.Where(c => c.Anvid = inloggadAnv);
-
 
             if (anv == null)
             {
                 ViewData["ErrorMessage"] = "Användare hittades inte.";
-                return View(new AnvandarSidaViewModel()); // Returnerar den aktuella vyn med felmeddelandet.
+                return View(new AnvandarSidaViewModel()); 
             }
 
-            //if (adress == null)
-            //{
-            //    ViewData["ErrorMessage"] = "Adress hittades inte.";
-            //    return View(new AnvandarSidaViewModel()); // Returnerar den aktuella vyn med felmeddelandet.
-            //}
             var identifieradAnv = await _hanteraAnv.FindByIdAsync(anv.Id);
             var AnvEmail = identifieradAnv?.Email;
 
             var AnvandarSida = new AnvandarSidaViewModel
             {
-                anvandare = anv, // Skicka hela listan av användare till vyn
+                anvandare = anv,
                 InloggadAnvandare = inloggadAnv,
                 CV = anv.CV,
                 Projekt = anv.AnvProjekt,
-                //anvandare = anv,
-                //CV = anv.CV,
-                //InloggadAnvandare = inloggadAnv,
-                //adress= adress,
-                //epost= AnvEmail
-
             };
 
             return View(AnvandarSida);
 
         }
+
+        // Hämtar användarens profil och CV baserat på det angivna användar-ID och returnerar en vy med användarens profilinformation och CV.
         public IActionResult AnvSidaSync(string id)
         {
             var anvandare = testDb.Anvandare.FirstOrDefault(a => a.Id == id);
@@ -82,7 +67,7 @@ namespace CV_ASP.NET.Controllers
                 return NotFound();
             }
 
-            var cv = testDb.CV.FirstOrDefault(c => c.AnvandarNamn == anvandare.UserName); // Associera CV med användare
+            var cv = testDb.CV.FirstOrDefault(c => c.AnvandarNamn == anvandare.UserName); 
 
             var viewModel = new AnvandarSidaViewModel
             {
@@ -91,9 +76,7 @@ namespace CV_ASP.NET.Controllers
                 InloggadAnvandare = id
             };
 
-            return View("AnvSida", viewModel); // Här specificerar vi att vyn som ska visas är "AnvSida"
+            return View("AnvSida", viewModel); 
         }
-
-
     }
 }

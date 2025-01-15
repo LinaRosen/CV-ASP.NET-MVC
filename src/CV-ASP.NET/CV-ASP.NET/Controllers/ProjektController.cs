@@ -25,6 +25,7 @@ namespace CV_ASP.NET.Controllers
             return View("SkapaProjekt");
         }
 
+        // Skapar ett nytt projekt och kopplar det till den inloggade användaren. Om skapandet lyckas, visas en framgångsmeddelande och användaren omdirigeras till "SkapaProjekt"-sidan.
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -56,6 +57,9 @@ namespace CV_ASP.NET.Controllers
             return View("SkapaProjekt", projekt);
         }
 
+        // Hämtar och visar alla projekt, anpassat efter om användaren är inloggad eller ej.
+        // För inloggade användare visas projekt där de är medlem, och om projektet skapades av användaren.
+        // För icke-inloggade användare visas projekt där medlemmarna har offentliga profiler.
         [HttpGet]
         public IActionResult ListaProjekt()
         {
@@ -112,6 +116,9 @@ namespace CV_ASP.NET.Controllers
             }
         }
 
+        // Hämtar ett projekt baserat på det angivna id:t.
+        // Om projektet inte skapades av den inloggade användaren, returneras en "Forbid"-sida, som innebär att användaren inte har behörighet att redigera projektet.
+        // Om projektet finns och användaren har behörighet, returneras redigeringssidan för projektet.
         [HttpGet]
         [Authorize]
         public IActionResult RedigeraProjekt(int id)
@@ -131,6 +138,8 @@ namespace CV_ASP.NET.Controllers
             return View(projekt);
         }
 
+        // Kontrollerar att modellen är giltig, hämtar projektet och säkerställer att användaren har behörighet.
+        // Uppdaterar projektets namn och beskrivning, sparar ändringar och omdirigerar till projektlistan.
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -163,7 +172,7 @@ namespace CV_ASP.NET.Controllers
         }
 
 
-
+        // Lägger till användaren som medlem i projektet om inte redan medlem.
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -192,6 +201,7 @@ namespace CV_ASP.NET.Controllers
             return RedirectToAction("ListaProjekt");
         }
 
+        // Tar bort användaren från projektet om de är medlem.
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
