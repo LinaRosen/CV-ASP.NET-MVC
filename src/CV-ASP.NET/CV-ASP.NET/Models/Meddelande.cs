@@ -20,7 +20,7 @@ namespace CV_ASP.NET.Models
 
 
 
-        [Required(ErrorMessage = "Anonym användare är obligatoriskt.")]
+     
         public string? AnonymAnvandare { get; set; }
 
         [ForeignKey(nameof(FranAnvandareId))]
