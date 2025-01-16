@@ -8,17 +8,19 @@ namespace CV_ASP.NET.Models
     {
         [Key]
         public int Mid { get; set; }
-       
 
+
+        [Required(ErrorMessage = "Innehållet är obligatoriskt.")]
+        [StringLength(1000, ErrorMessage = "Innehållet får vara högst 1000 tecken långt.")]
         public string? Innehall { get; set; }
         public bool Last { get; set; }
         public string? FranAnvandareId { get; set; }
         public string? TillAnvandareId { get; set; }
-       
 
 
-       
-        
+
+
+        [Required(ErrorMessage = "Anonym användare är obligatoriskt.")]
         public string? AnonymAnvandare { get; set; }
 
         [ForeignKey(nameof(FranAnvandareId))]
