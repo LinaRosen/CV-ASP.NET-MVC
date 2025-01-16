@@ -49,6 +49,13 @@ namespace CV_ASP.NET.Controllers
                 .Take(4)
                 .ToList();
             }
+            model.Projekt = testDb.Projekt
+                    .Include(p => p.AnvProjekt)
+                        .ThenInclude(ap => ap.Anvandare)
+                        .OrderByDescending(p => p.DatumSkapad)
+                    .Take(1)
+                    .ToList();
+                
 
             return View(model);
         }
