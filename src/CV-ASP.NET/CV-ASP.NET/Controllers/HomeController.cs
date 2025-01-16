@@ -49,13 +49,23 @@ namespace CV_ASP.NET.Controllers
                 .Take(4)
                 .ToList();
             }
+
             model.Projekt = testDb.Projekt
-                    .Include(p => p.AnvProjekt)
-                        .ThenInclude(ap => ap.Anvandare)
-                        .OrderByDescending(p => p.DatumSkapad)
-                    .Take(5)
-                    .ToList();
-                
+            .Include(p => p.AnvProjekt)
+            .ThenInclude(ap => ap.Anvandare)
+            .OrderByDescending(p => p.DatumSkapad)
+            .Select(p => new Projekt
+            {
+                Pid = p.Pid,
+                Namn = p.Namn,
+                Beskrivning = p.Beskrivning,
+                DatumSkapad = p.DatumSkapad,
+                AnvProjekt = p.AnvProjekt
+                .Where(ap => ap.Anvandare != null && (User.Identity.IsAuthenticated || !ap.Anvandare.PrivatProfil))
+                .ToList()
+            })
+            .Take(5)
+            .ToList();
 
             return View(model);
         }
