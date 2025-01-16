@@ -9,20 +9,23 @@ using Microsoft.EntityFrameworkCore;
 namespace CV_ASP.NET.Controllers
 {
 
-    public class AndraUppgifterController : BasController
+    public class AndraKontaktController : BasController
     {
         private readonly UserManager<Anvandare> _userManager;
         private readonly TestDataContext _context;
 
-        public AndraUppgifterController(UserManager<Anvandare> userManager, TestDataContext context) 
+        public AndraKontaktController(UserManager<Anvandare> userManager, TestDataContext context) 
         {
             _userManager = userManager;
             _context = context;
         }
 
-        // Hämtar och visar användarens information för redigering om användaren är inloggad
+
+
+
+
         [HttpGet]
-        public async Task <IActionResult> RedigeraUppgifter()
+        public async Task<IActionResult> RedigeraUppgifter()
         {
             string? inloggadAnv = base.HamtaAnv();
             if (string.IsNullOrEmpty(inloggadAnv))
@@ -30,7 +33,7 @@ namespace CV_ASP.NET.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var anvandare = _context.Users.FirstOrDefault(u => u.Id == inloggadAnv);
+            var anvandare = await _context.Users.FirstOrDefaultAsync(u => u.Id == inloggadAnv);
 
             if (anvandare == null)
             {
@@ -38,26 +41,40 @@ namespace CV_ASP.NET.Controllers
                 return View();
             }
 
-            var model = new RedigeraUppgifterViewModel
+            var model = new AndraKontaktViewModel
             {
-                anvandare = anvandare
+                Anvandarnamn = anvandare.Anvandarnamn,
+                Fornamn = anvandare.Fornamn,
+                Efternamn = anvandare.Efternamn,
+                Email = anvandare.Email,
+                Telefonnummer = anvandare.PhoneNumber,
+                PrivatProfil = anvandare.PrivatProfil,
+                Gatunamn = anvandare.Gatunamn,
+                Stad = anvandare.Stad,
+                Postnummer = anvandare.Postnummer
             };
 
             return View(model);
         }
 
-        // Hanterar POST-förfrågan för att uppdatera användarens information och spara ändringarna i databasen.
+
         [HttpPost]
         [ActionName("RedigeraUppgifter")]
-        public async Task<IActionResult> RedigeraUpg(RedigeraUppgifterViewModel model)
+        public async Task<IActionResult> RedigeraUppgifter(AndraKontaktViewModel model)
         {
+            // Kontrollera modellens giltighet
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             string? inloggadAnv = base.HamtaAnv();
             if (string.IsNullOrEmpty(inloggadAnv))
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            var anvandare = _context.Users.FirstOrDefault(u => u.Id == inloggadAnv);
+            var anvandare = await _context.Users.FirstOrDefaultAsync(u => u.Id == inloggadAnv);
 
             if (anvandare == null)
             {
@@ -66,21 +83,22 @@ namespace CV_ASP.NET.Controllers
             }
 
             // Uppdatera användarens information
-            anvandare.Anvandarnamn = model.anvandare.Anvandarnamn;
-            anvandare.Fornamn = model.anvandare.Fornamn;
-            anvandare.Efternamn = model.anvandare.Efternamn;
-            anvandare.Email = model.anvandare.Email;
-            anvandare.PhoneNumber = model.anvandare.PhoneNumber;
-            anvandare.PrivatProfil = model.anvandare.PrivatProfil;
-            anvandare.Gatunamn = model.anvandare.Gatunamn;
-            anvandare.Stad = model.anvandare.Stad;
-            anvandare.Postnummer = model.anvandare.Postnummer;
-     
+            anvandare.Anvandarnamn = model.Anvandarnamn;
+            anvandare.Fornamn = model.Fornamn;
+            anvandare.Efternamn = model.Efternamn;
+            anvandare.Email = model.Email;
+            anvandare.PhoneNumber = model.Telefonnummer;
+            anvandare.PrivatProfil = model.PrivatProfil;
+            anvandare.Gatunamn = model.Gatunamn;
+            anvandare.Stad = model.Stad;
+            anvandare.Postnummer = model.Postnummer;
+
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Dina uppgifter har uppdaterats.";
-            return RedirectToAction("Anvsida", "AnvSida"); 
+            return RedirectToAction("Anvsida", "AnvSida");
         }
+
 
         [HttpGet]
         public IActionResult AndraLosenord()

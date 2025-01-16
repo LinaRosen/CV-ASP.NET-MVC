@@ -3,6 +3,14 @@
 <h2>Skicka meddelande</h2>
 
 <form asp-action="SkickaMeddelande" asp-controller="Meddelande" method="post">
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+    }
+
     <div class="form-group">
         <label for="TillAnvandareId">Välj mottagare:</label>
         @Html.DropDownListFor(model => model.TillAnvandareId,
@@ -39,6 +47,10 @@
     <div class="form-group">
         <label for="Innehall">Meddelande</label>
         <textarea asp-for="Innehall" class="form-control"></textarea>
+
+        <span class="text-danger">
+            @Html.ValidationMessageFor(model => model.Innehall)
+        </span>
     </div>
 
     <button type="submit" class="btn btn-primary">Skicka meddelande</button>
