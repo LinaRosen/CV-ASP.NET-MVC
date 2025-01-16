@@ -53,7 +53,7 @@ namespace CV_ASP.NET.Controllers
                     .Include(p => p.AnvProjekt)
                         .ThenInclude(ap => ap.Anvandare)
                         .OrderByDescending(p => p.DatumSkapad)
-                    .Take(1)
+                    .Take(5)
                     .ToList();
                 
 
