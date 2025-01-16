@@ -4,6 +4,14 @@
 
 <form asp-action="SkickaMeddelande" asp-controller="Meddelande" method="post">
 
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+
     @if (!ViewData.ModelState.IsValid)
     {
         <div class="alert alert-danger">

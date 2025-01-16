@@ -70,10 +70,19 @@ public class MeddelandeController : BasController
     {
         _logger.LogInformation("SkickaMeddelande metod anropad.");
 
+        // Kontrollera om användaren inte är inloggad (dvs om de är en anonym användare)
+        if (!User.Identity.IsAuthenticated)
+        {
+            // Om AnonymAnvandare är tom för anonyma användare, sätt felmeddelande i TempData och omdirigera
+            if (string.IsNullOrEmpty(meddelande.AnonymAnvandare))
+            {
+                TempData["ErrorMessage"] = "Anonym användare är obligatoriskt.";
+                return RedirectToAction("SkickaMeddelande");
+            }
+        }
 
-        
 
-            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+        foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
             {
                 _logger.LogWarning($"ModelState fel: {error.ErrorMessage}");
             }
