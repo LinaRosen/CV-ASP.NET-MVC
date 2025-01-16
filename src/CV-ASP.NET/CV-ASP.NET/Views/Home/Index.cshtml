@@ -23,12 +23,14 @@
                 {
                     <img src="~/Images/@Anvandare.CV.Profilbild" class="card-img-top" alt="Profilbild" asp-append-version="true" />
                 }
+                <div class="card-body">
                 <h5 class="card-title">@Anvandare.Fornamn @Anvandare.Efternamn</h5>
-                <p>Anvandarnamn: @Anvandare.Anvandarnamn</p>
+                <p>Om mig: @Anvandare.CV.Beskrivning</p>
                 <form method="post" asp-controller="Cv" asp-action="VisaCv" asp-route-anvid="@Anvandare.Id">
                     <input type="submit" class="btn btn-dark btn-sm" value="Till profil" />
                 </form>
             </div>
+        </div>
         </div>
     }
 </div>
