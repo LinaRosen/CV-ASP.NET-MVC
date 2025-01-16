@@ -82,6 +82,15 @@
                             {
                                 <p><em>Inga medlemmar</em></p>
                             }
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <form asp-action="GåMed" asp-controller="Projekt" asp-route-id="@projekt.Pid" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-success btn-sm">Gå med</button>
+                                </form>
+                            }
+                            
+
                         </div>
                     </div>
                 </div>

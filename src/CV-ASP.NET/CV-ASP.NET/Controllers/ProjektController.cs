@@ -225,10 +225,5 @@ namespace CV_ASP.NET.Controllers
 
             return RedirectToAction("ListaProjekt");
         }
-
-
-
     }
-
-
 }
