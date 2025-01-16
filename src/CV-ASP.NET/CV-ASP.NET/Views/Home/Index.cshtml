@@ -19,6 +19,10 @@
     {
         <div class="card bg-light" style="width:200px">
             <div class="card-body flex-fill">
+                @if (Anvandare?.CV?.Profilbild != null)
+                {
+                    <img src="~/Images/@Anvandare.CV.Profilbild" class="card-img-top" alt="Profilbild" asp-append-version="true" />
+                }
                 <h5 class="card-title">@Anvandare.Fornamn @Anvandare.Efternamn</h5>
                 <p>Anvandarnamn: @Anvandare.Anvandarnamn</p>
                 <form method="post" asp-controller="Cv" asp-action="VisaCv" asp-route-anvid="@Anvandare.Id">
