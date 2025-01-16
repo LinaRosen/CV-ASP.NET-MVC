@@ -13,11 +13,13 @@ namespace CV_ASP.NET.Controllers
     {
         private readonly UserManager<Anvandare> _userManager;
         private readonly TestDataContext _context;
+        private SignInManager<Anvandare> signInManager;
 
-        public AndraKontaktController(UserManager<Anvandare> userManager, TestDataContext context) 
+        public AndraKontaktController(UserManager<Anvandare> userManager, SignInManager<Anvandare> signInMngr, TestDataContext context)
         {
             _userManager = userManager;
             _context = context;
+            signInManager = signInMngr;
         }
 
 
@@ -84,6 +86,7 @@ namespace CV_ASP.NET.Controllers
 
             // Uppdatera användarens information
             anvandare.Anvandarnamn = model.Anvandarnamn;
+            anvandare.UserName = model.Anvandarnamn;  // Detta gör att Identity använder det nya användarnamnet.
             anvandare.Fornamn = model.Fornamn;
             anvandare.Efternamn = model.Efternamn;
             anvandare.Email = model.Email;
@@ -93,11 +96,37 @@ namespace CV_ASP.NET.Controllers
             anvandare.Stad = model.Stad;
             anvandare.Postnummer = model.Postnummer;
 
+            // Uppdatera användaren i databasen
+            _context.Anvandare.Update(anvandare);
             await _context.SaveChangesAsync();
 
+            // Uppdatera sessionen med den nya informationen utan att logga ut
+            var user = await _userManager.FindByIdAsync(inloggadAnv);
+            if (user != null)
+            {
+                user.UserName = model.Anvandarnamn; // Se till att uppdatera användarnamnet i Identity
+                user.PhoneNumber = model.Telefonnummer;
+                user.Email = model.Email;
+
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    // Om uppdateringen i Identity lyckades, uppdatera sessionen
+                    await signInManager.SignInAsync(user, isPersistent: false);
+                }
+                else
+                {
+                    // Hantera eventuella problem med uppdateringen
+                    ModelState.AddModelError("", "Något gick fel vid uppdatering av användarinformation.");
+                    return View(model);
+                }
+            }
+
+            // Informera användaren om att uppdateringarna har genomförts
             TempData["SuccessMessage"] = "Dina uppgifter har uppdaterats.";
             return RedirectToAction("Anvsida", "AnvSida");
         }
+
 
 
         [HttpGet]
@@ -128,13 +157,13 @@ namespace CV_ASP.NET.Controllers
             if (!await _userManager.CheckPasswordAsync(anvandare, model.NuvarandeLosenord))
             {
                 TempData["ErrorMessage"] = "Det nuvarande lösenordet är felaktigt.";
-                return View(model); 
+                return View(model);
             }
 
             if (model.NyttLosenord != model.BekraftaNyttLosenord)
             {
                 TempData["ErrorMessage"] = "De nya lösenorden matchar inte.";
-                return View(model); 
+                return View(model);
             }
 
             var result = await _userManager.ChangePasswordAsync(anvandare, model.NuvarandeLosenord, model.NyttLosenord);
@@ -148,7 +177,7 @@ namespace CV_ASP.NET.Controllers
                 TempData["ErrorMessage"] = "Lösenordet kunde inte ändras. Försök igen.";
             }
 
-            return View(model); 
+            return View(model);
         }
     }
 }
