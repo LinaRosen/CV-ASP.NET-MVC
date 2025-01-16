@@ -25,9 +25,9 @@
         <p><i class="fas fa-envelope"></i> <span class="label">Epost:</span> @Html.DisplayFor(p => p.anvandare.Email)</p>
         <p><i class="fas fa-city"></i> <span class="label">Stad:</span> @Html.DisplayFor(p => p.anvandare.Stad)</p>
         <p><i class="fas fa-phone"></i> <span class="label">Telefonnummer:</span> @Html.DisplayFor(p => p.anvandare.PhoneNumber)</p>
-                <a asp-controller="AndraUppgifter" asp-action="RedigeraUppgifter" asp-route-anvId="@Model.anvandare.Id" class="btn btn-primary" style="background-color: black; color: white";>
-            Redigera användare
-        </a>
+                <a asp-controller="AndraKontakt" asp-action="RedigeraUppgifter" asp-route-anvId="@Model.anvandare.Id" class="btn btn-primary" style="background-color: black; color: white" ;>
+                    Redigera användare
+                </a>
 
         @if (Model?.CV == null && Model?.anvandare?.Id != null && Model.anvandare.Id.Equals(Model?.InloggadAnvandare))
         {

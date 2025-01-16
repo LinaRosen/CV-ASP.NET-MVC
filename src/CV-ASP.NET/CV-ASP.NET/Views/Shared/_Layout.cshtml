@@ -28,9 +28,13 @@
                 </button>
                 <div class="navbar-collapse collapse d-flex justify-content-center">
                     <ul class="navbar-nav d-flex justify-content-center align-items-center m-0">
-                        <li class="nav-item me-4">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="LoggInRegistrera" asp-action="LoggaIn">Logga in</a>
-                        </li>
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item me-4">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="LoggInRegistrera" asp-action="LoggaIn">Logga in</a>
+                            </li>
+                        }
+                       
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item me-4">
