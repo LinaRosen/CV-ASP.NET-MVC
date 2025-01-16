@@ -14,12 +14,11 @@
 <div class="row">
     <div class="col-12"">
     <div class="text-center">
-    <h1 class="display-4" style="font-family: 'Helvetica', sans-serif;">-Profil-</h1>
+    <h1 class="display-4" style="font-family: 'Helvetica', sans-serif;">Min profil</h1>
     </div>
     <div class="profil-container">
     <div class="profil-info" style="padding-bottom:60px">
-    <h3>Profilbild:</h3>
-    <img src="~/Images/@Html.ValueFor(p => p.CV.Profilbild)" class="img-fluid" alt="Responsive image" asp-append-version="true" height="200px" width="200px" />
+    <h4>Mina uppgifter</h4>
         <p><i class="fas fa-user"></i> <span class="label">Anvandarnamn:</span> @Html.DisplayFor(p => p.anvandare.Anvandarnamn)</p>
         <p><i class="fas fa-user"></i> <span class="label">Förnamn:</span> @Html.DisplayFor(p => p.anvandare.Fornamn)</p>
         <p><i class="fas fa-user"></i> <span class="label">Efternamn:</span> @Html.DisplayFor(p => p.anvandare.Efternamn)</p>

@@ -22,24 +22,33 @@ namespace CV_ASP.NET.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        // Hämtar användare med offentliga CV:n och projekt som inte är aktiverade, och skickar dessa till startsidan.
+        
         public IActionResult Index() 
         {
             StartsidaViewModel model = new StartsidaViewModel { };
 
-            model.Anvandare = testDb.Anvandare
-                .Where(u => !u.PrivatProfil)
-                .Where(u => u.CV != null) 
+            if (!User.Identity.IsAuthenticated) //Kollar om användaren är inloggad
+            {
+                //Hämtar 4 CVn från databasen
+                model.Anvandare = testDb.Anvandare
+                .Where(u => !u.PrivatProfil) // visar inte privata användare om användare inte är inloggad
+                .Where(u => u.CV != null)  // Se till att användare har ett CV
                 .Where(u => !u.Aktiverad)
-                .Include(u => u.CV) 
+                .Include(u => u.CV)  // Inkludera CV-data
                 .Take(4)
                 .ToList();
+            }
+            else
+            {
+                //Hämtar 4 CVn från databasen
+                model.Anvandare = testDb.Anvandare
 
-            model.Projekt = testDb.Projekt
-                    .Include(p => p.AnvProjekt) 
-                        .ThenInclude(ap => ap.Anvandare) 
-                    .OrderByDescending(p => p.DatumSkapad) 
-                    .ToList();
+                .Where(u => u.CV != null) 
+                .Where(u => !u.Aktiverad)
+                .Include(u => u.CV)  
+                .Take(4)
+                .ToList();
+            }
 
             return View(model);
         }
